@@ -1,12 +1,14 @@
 module com.example.flora {
+
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.web;
+    requires java.sql;
 
-    requires com.dlsc.formsfx;
-    requires org.kordamp.ikonli.javafx;
-    requires eu.hansolo.tilesfx;
+    // Only open UI packages (FXML needs reflection)
+    opens com.example.flora.Features.test.ui
+            to javafx.fxml;
 
-    opens com.example.flora to javafx.fxml;
-    exports com.example.flora;
+
+    // Export only what’s needed
+    exports com.example.flora.App;
 }
