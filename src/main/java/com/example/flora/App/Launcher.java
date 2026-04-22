@@ -1,4 +1,4 @@
-package com.example.flora;
+package com.example.flora.App;
 
 import javafx.application.Application;
 

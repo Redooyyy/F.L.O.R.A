@@ -1,4 +1,4 @@
-package com.example.flora;
+package com.example.flora.Features.test.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
