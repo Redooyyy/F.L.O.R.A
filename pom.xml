@@ -79,7 +79,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/features</directory>
+                <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.fxml</include>
                     <include>**/*.css</include>
