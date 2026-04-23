@@ -5,7 +5,7 @@ module com.example.flora {
     requires java.sql;
 
     // Only open UI packages (FXML needs reflection)
-    opens com.example.flora.Features.test.ui
+    opens com.example.flora.Features.Auth.UI
             to javafx.fxml;
 
 
