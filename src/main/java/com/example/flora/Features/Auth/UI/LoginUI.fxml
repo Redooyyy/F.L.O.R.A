@@ -1,25 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1102.0" style="-fx-background-radius: 21; -fx-background-color: #6A51B0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Auth.UI.LoginUI_Controller">
    <children>
-      <AnchorPane fx:id="slidePane" prefHeight="588.0" prefWidth="473.0" style="-fx-background-color: #27184F; -fx-background-radius: 21;">
+      <ImageView fitHeight="602.0" fitWidth="1114.0" layoutX="47.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-14.0">
+         <image>
+            <Image url="@assets/scene.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="fullname" layoutX="108.0" layoutY="131.0" prefHeight="45.0" prefWidth="367.0" promptText="full name" style="-fx-background-radius: 18;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="email" layoutX="108.0" layoutY="193.0" prefHeight="45.0" prefWidth="367.0" promptText="email" style="-fx-background-radius: 18;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="username" layoutX="620.0" layoutY="228.0" prefHeight="45.0" prefWidth="367.0" promptText="username/email" style="-fx-background-radius: 18;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="pass" layoutX="108.0" layoutY="255.0" prefHeight="45.0" prefWidth="367.0" promptText="password" style="-fx-background-radius: 18;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <ImageView fx:id="welcomeTxt" fitHeight="237.0" fitWidth="398.0" layoutX="604.0" layoutY="65.0" opacity="0.78" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/welcomeTxt-_-.png" />
+         </image>
+         <effect>
+            <Glow level="0.6" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="collabImg" fitHeight="102.0" fitWidth="173.0" layoutX="707.0" layoutY="41.0" opacity="0.78" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/welcome.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="rePass" layoutX="108.0" layoutY="322.0" prefHeight="45.0" prefWidth="367.0" promptText="re-write password" style="-fx-background-radius: 18;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="password" layoutX="620.0" layoutY="301.0" prefHeight="45.0" prefWidth="367.0" promptText="password" style="-fx-background-radius: 18;">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Button fx:id="signupButton" layoutX="226.0" layoutY="417.0" mnemonicParsing="false" onAction="#signup" prefHeight="37.0" prefWidth="132.0" style="-fx-background-radius: 21; -fx-background-color: #24198C;" text="SIGNUP" textFill="WHITE">
+         <font>
+            <Font name="FreeSans Bold" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="loginButton" layoutX="738.0" layoutY="380.0" mnemonicParsing="false" onAction="#login" prefHeight="37.0" prefWidth="132.0" style="-fx-background-radius: 21; -fx-background-color: #00E05A;" text="LOGIN" textFill="WHITE">
+         <font>
+            <Font name="FreeSans Bold" size="15.0" />
+         </font>
+      </Button>
+      <AnchorPane fx:id="slidePane" prefHeight="588.0" prefWidth="480.0" style="-fx-background-color: #27184F; -fx-background-radius: 21;">
          <children>
-            <Button fx:id="signRegButton" layoutX="125.0" layoutY="344.0" mnemonicParsing="false" onAction="#register" prefHeight="55.0" prefWidth="207.0" style="-fx-background-radius: 21; -fx-background-color: #12296E;" text="Register" textFill="WHITE">
+            <Button fx:id="signRegButton" layoutX="125.0" layoutY="361.0" mnemonicParsing="false" onAction="#register" prefHeight="45.0" prefWidth="207.0" style="-fx-background-radius: 21; -fx-background-color: #12296E;" text="SIGNUP" textFill="WHITE">
                <font>
                   <Font name="FreeSans Bold" size="18.0" />
                </font>
             </Button>
-            <ImageView fx:id="work" fitHeight="227.0" fitWidth="238.0" layoutX="109.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="work" fitHeight="227.0" fitWidth="238.0" layoutX="110.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@assets/work.gif" />
+                  <Image url="@assets/lab.gif" />
                </image>
             </ImageView>
+            <Circle fx:id="disCir" fill="DODGERBLUE" layoutX="2.0" layoutY="506.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="cirU" fill="DODGERBLUE" layoutX="391.0" layoutY="1.0" radius="55.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="cirD" fill="DODGERBLUE" layoutX="384.0" layoutY="488.0" radius="51.0" stroke="BLACK" strokeType="INSIDE" />
          </children></AnchorPane>
+      <ImageView fx:id="robo" fitHeight="102.0" fitWidth="124.0" layoutX="949.0" layoutY="454.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/robo.gif" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
