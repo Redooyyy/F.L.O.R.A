@@ -10,9 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class LoginUI_Controller{
     boolean slideToggle = true;
     @FXML
