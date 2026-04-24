@@ -28,6 +28,10 @@ public class User {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public Integer getId() {
         return id;
     }
