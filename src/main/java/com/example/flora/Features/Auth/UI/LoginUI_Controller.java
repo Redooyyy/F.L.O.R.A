@@ -1,5 +1,6 @@
 package com.example.flora.Features.Auth.UI;
 
+import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,9 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 public class LoginUI_Controller{
+
+    private final AuthViewModel authViewModel = new AuthViewModel();
+
     boolean slideToggle = true;
     @FXML
     private AnchorPane slidePane;
@@ -35,13 +39,13 @@ public class LoginUI_Controller{
     @FXML
     private Circle cirD;
     @FXML
-    private TextField password;
+    private TextField password; //sign in password
     @FXML
     private TextField username;
     @FXML
     private TextField rePass;
     @FXML
-    private TextField pass;
+    private TextField pass; //signUp password
     @FXML
     private TextField email;
     @FXML
@@ -112,8 +116,17 @@ public class LoginUI_Controller{
        rePass.setVisible(slideToggle);
        signupButton.setVisible(slideToggle);
     }
+
+    //TODO: email validity check
+    //TODO: password validity check
+
     @FXML
-    private void signup(ActionEvent event) {}
+    private void signup(ActionEvent event) {
+        if(pass == rePass) authViewModel.signup(email.getText().trim(),pass.getText());
+        else System.out.println("Password didn't matched"); //TODO: a warning text in UI
+    }
     @FXML
-    private void login(ActionEvent event) {}
+    private void login(ActionEvent event) {
+        authViewModel.login(email.getText().trim(),password.getText());
+    }
 }
