@@ -1,15 +1,20 @@
 package com.example.flora.Features.Auth.UI;
 
+import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class LoginUI_Controller{
 
@@ -126,7 +131,14 @@ public class LoginUI_Controller{
         else System.out.println("Password didn't matched"); //TODO: a warning text in UI
     }
     @FXML
-    private void login(ActionEvent event) {
-        authViewModel.login(email.getText().trim(),password.getText());
+    private void login(ActionEvent event) throws IOException {
+        //TODO: Uncomment after DB got dummy data
+
+        // authViewModel.login(email.getText().trim(),password.getText());
+
+        //checking navigation to home page
+        Stage stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        SceneTransition sceneTransition = new SceneTransition(stage);
+        sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml");
     }
 }
