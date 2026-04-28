@@ -1,5 +1,6 @@
 package com.example.flora.Features.Home.UI;
 
+import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
 import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
 import javafx.animation.TranslateTransition;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +28,8 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private VBox taskShow;
     @FXML
+    private Button clearAllButton;
+    @FXML
     private VBox notificationBar;
     @FXML
     private VBox sidebar;
@@ -33,6 +37,10 @@ public class HomeUI_Controller implements Initializable {
     private ScrollPane scrollPane; //projects view
     @FXML
     private  ScrollPane scrollPaneP; // projects task view
+    @FXML
+    private ScrollPane notificationScroll;
+    @FXML
+    private  AnchorPane notificationPane;
 
     @FXML
     private void sideBarButton(ActionEvent event) {
@@ -46,7 +54,7 @@ public class HomeUI_Controller implements Initializable {
 
     @FXML
     private void notificationCircle(MouseEvent mouseEvent) {
-        slideEffect(notificationBar,Duration.millis(400),-540);
+        slideEffect(notificationPane,Duration.millis(400),-554);
     }
     @FXML
     private void noificationIcon(MouseEvent mouseEvent) {
@@ -55,7 +63,7 @@ public class HomeUI_Controller implements Initializable {
 
     @FXML
     private void notificationBackText(MouseEvent mouseEvent) {
-        slideEffect(notificationBar,Duration.millis(400),540);
+        slideEffect(notificationPane,Duration.millis(400),554);
     }
     @FXML
     private void notificationBackIcon(MouseEvent mouseEvent) {
@@ -66,7 +74,13 @@ public class HomeUI_Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         removeScrollBar(this.scrollPane);
         removeScrollBar(this.scrollPaneP);
+        removeScrollBar(this.notificationScroll);
+        notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
+        dummyData();
 
+    }
+
+    void dummyData(){
         try {
             loadProjectCard("F.L.O.R.A","Full-Stack","Redoy","In-Progress",.25);
             loadProjectCard("M.E.M.O.","Full-Stack","Redoy","In-Progress",.45);
@@ -80,11 +94,22 @@ public class HomeUI_Controller implements Initializable {
             loadTaskNotifyCard("Hospital Management System","35");
             loadTaskNotifyCard("Student Portal","5");
             loadTaskNotifyCard("Weather App","55");
+
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
+            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
     //TODO: Create project card
 
     void loadProjectCard(String projectName, String projectCategory, String leadName, String projectStatus, double projectProgress) throws IOException {
@@ -110,9 +135,23 @@ public class HomeUI_Controller implements Initializable {
         taskShow.getChildren().add(card);
     }
 
+    void loadNotificationCard(String notificationTitle, String notificationDescription,String notificationTime) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/NotificationCard.fxml"));
+        AnchorPane card = loader.load();
+        NotificationCardController controller = loader.getController();
+        controller.setValue(notificationTitle,notificationDescription,notificationTime);
+        notificationBar.getChildren().add(card);
+    }
+
     void removeScrollBar(ScrollPane scrollPane){
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    @FXML
+    private void clearAll(){
+        notificationBar.getChildren().clear();
+        clearAllButton.setVisible(false);
     }
     void slideEffect(Node node, Duration duration, double x){
         TranslateTransition moveSlide = new TranslateTransition();
