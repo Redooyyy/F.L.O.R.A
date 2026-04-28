@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="258.0" prefWidth="205.0" style="-fx-background-color: #D2A2E0; -fx-background-radius: 22;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Home.UI.Cards.ProjectShowCardController">
+   <children>
+      <Label fx:id="projectName" alignment="TOP_LEFT" layoutX="14.0" layoutY="17.0" prefHeight="103.0" prefWidth="182.0" text="Project Management System" wrapText="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <VBox layoutX="14.0" layoutY="118.0" prefHeight="103.0" prefWidth="182.0">
+         <children>
+            <HBox prefHeight="35.0" prefWidth="182.0">
+               <children>
+                  <Label prefHeight="34.0" prefWidth="77.0" text="Lead">
+                     <font>
+                        <Font name="FreeSans" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="leadName" prefHeight="34.0" prefWidth="105.0">
+                     <font>
+                        <Font name="FreeSans" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="35.0" prefWidth="182.0">
+               <children>
+                  <Label prefHeight="34.0" prefWidth="77.0" text="Category">
+                     <font>
+                        <Font name="FreeSans" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="projectCategory" prefHeight="34.0" prefWidth="105.0">
+                     <font>
+                        <Font name="FreeSans" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="35.0" prefWidth="182.0">
+               <children>
+                  <Label prefHeight="34.0" prefWidth="77.0" text="Status">
+                     <font>
+                        <Font name="FreeSans" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="projectStatus" prefHeight="34.0" prefWidth="103.0">
+                     <font>
+                        <Font name="FreeSans" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <ProgressBar fx:id="projectProgressBar" layoutX="15.0" layoutY="230.0" prefHeight="12.0" prefWidth="142.0" progress="0.0" />
+      <Label fx:id="progressPercent" layoutX="160.0" layoutY="228.0" prefHeight="16.0" prefWidth="37.0">
+         <font>
+            <Font name="FreeSans" size="14.0" />
+         </font>
+      </Label>
+      <Separator layoutX="11.0" layoutY="109.0" prefHeight="12.0" prefWidth="182.0" />
+   </children>
+</AnchorPane>
