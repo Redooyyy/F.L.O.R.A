@@ -45,14 +45,29 @@
          <children>
             <AnchorPane layoutX="23.0" layoutY="14.0" prefHeight="135.0" prefWidth="120.0" style="-fx-background-color: #EACCFC; -fx-background-radius: 19;">
                <children>
-                  <Label alignment="CENTER" layoutX="7.0" layoutY="44.0" prefHeight="73.0" prefWidth="107.0" text="100">
+                  <Label fx:id="dueTask" alignment="CENTER" layoutX="7.0" layoutY="39.0" prefHeight="73.0" prefWidth="107.0" text="100" textFill="#ff3434">
                      <font>
                         <Font name="System Bold" size="40.0" />
                      </font>
                   </Label>
-                  <Label layoutX="14.0" layoutY="14.0" prefHeight="24.0" prefWidth="85.0" text="Label" />
+                  <Label layoutX="24.0" layoutY="11.0" prefHeight="19.0" prefWidth="83.0" text="Due Tasks" textFill="#757070">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font></Label>
                </children></AnchorPane>
-            <AnchorPane layoutX="177.0" layoutY="14.0" prefHeight="135.0" prefWidth="120.0" style="-fx-background-color: #EACCFC; -fx-background-radius: 19;" />
+            <AnchorPane layoutX="177.0" layoutY="14.0" prefHeight="135.0" prefWidth="120.0" style="-fx-background-color: #EACCFC; -fx-background-radius: 19;">
+               <children>
+                  <Label layoutX="22.0" layoutY="11.0" prefHeight="19.0" prefWidth="83.0" text="Completed " textFill="#757070">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="completedTask" alignment="CENTER" layoutX="7.0" layoutY="39.0" prefHeight="73.0" prefWidth="107.0" text="100" textFill="#1c9e23">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
             <ScrollPane fx:id="scrollPaneP" layoutX="6.0" layoutY="176.0" prefHeight="281.0" prefWidth="305.0" stylesheets="@style.css">
                <content>
                   <VBox fx:id="taskShow" prefHeight="285.0" prefWidth="303.0" spacing="10.0" />
