@@ -3,6 +3,7 @@ package com.example.flora.Features.Home.UI;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
 import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +24,35 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HomeUI_Controller implements Initializable {
+    @FXML
+    private Label completedTask;
+    @FXML
+    private Label dueTask;
+    @FXML
+    private Label sendTimeInvite;
+    @FXML
+    private Label roleInvite;
+    @FXML
+    private Label projectInvite;
+    @FXML
+    private Label senderInvite;
+    @FXML
+    private Label emailBodyInvite;
+    @FXML
+    private AnchorPane invitationPane;
+    @FXML
+    private Label sendTime;
+    @FXML
+    private Label role;
+    @FXML
+    private Label project;
+    @FXML
+    private Label sender;
+    @FXML
+    private Label emailBody;
+    @FXML
+    private AnchorPane notificationShow;
+
     private int projectcount=0;
     @FXML
     private HBox ProjectsShow;
@@ -64,6 +95,8 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private void notificationBackText(MouseEvent mouseEvent) {
         slideEffect(notificationPane,Duration.millis(400),554);
+        closeNotificationDesc();
+        closeNotificationInviteDesc();
     }
     @FXML
     private void notificationBackIcon(MouseEvent mouseEvent) {
@@ -78,6 +111,16 @@ public class HomeUI_Controller implements Initializable {
         notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
         dummyData();
 
+    }
+
+    public void setNotification(String title, String description, String time){
+        this.emailBody.setText(description);
+        this.sendTime.setText(": "+time);
+        //static sender for testing
+        this.sender.setText(": Mim Akter Bushra");
+        this.project.setText(": Project Management System");
+        this.role.setText(": Project Lead");
+        showNotification();
     }
 
     void dummyData(){
@@ -139,6 +182,8 @@ public class HomeUI_Controller implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/NotificationCard.fxml"));
         AnchorPane card = loader.load();
         NotificationCardController controller = loader.getController();
+        //passing current instance
+        controller.setHomeController(this);
         controller.setValue(notificationTitle,notificationDescription,notificationTime);
         notificationBar.getChildren().add(card);
     }
@@ -153,6 +198,37 @@ public class HomeUI_Controller implements Initializable {
         notificationBar.getChildren().clear();
         clearAllButton.setVisible(false);
     }
+    
+    @FXML
+    private void acceptInvite(){}
+    @FXML
+    private void declineInvite(){}
+
+    @FXML
+    private void newProjectAdd(MouseEvent event){}
+
+    @FXML
+    private void closeNotificationDesc(){
+        slideEffect(notificationShow,Duration.millis(400),-818);
+    }
+    @FXML
+            private void closeNotificationInviteDesc(){}
+
+    //notification pulse
+    void showNotification(){
+        if(notificationShow.getTranslateX() == 818.0){
+            slideEffect(notificationShow,Duration.millis(400),-818);
+            //for pulse effect
+            PauseTransition wait = new PauseTransition(Duration.millis(400));
+            wait.setOnFinished(e ->
+                    slideEffect(notificationShow, Duration.millis(400), 818)
+            );
+            wait.play();
+        } else {
+            slideEffect(notificationShow,Duration.millis(400),818);
+        }
+    }
+
     void slideEffect(Node node, Duration duration, double x){
         TranslateTransition moveSlide = new TranslateTransition();
         moveSlide.setNode(node);
