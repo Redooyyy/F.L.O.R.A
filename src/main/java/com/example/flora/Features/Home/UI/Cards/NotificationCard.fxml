@@ -6,21 +6,20 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="card" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="66.0" prefWidth="503.0" style="-fx-background-radius: 19; -fx-background-color: #EACCFC;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Home.UI.Cards.NotificationCardController">
+<AnchorPane fx:id="card" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#showPane" prefHeight="66.0" prefWidth="503.0" style="-fx-background-radius: 19; -fx-background-color: #EACCFC;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Home.UI.Cards.NotificationCardController">
    <children>
       <Circle fill="#8f68bc" layoutX="36.0" layoutY="34.0" radius="23.0" stroke="#cf30be" strokeType="INSIDE" />
-      <Label fx:id="notificationTitle" layoutX="72.0" layoutY="8.0" prefHeight="27.0" prefWidth="335.0" text="Label">
+      <Label fx:id="notificationTitle" layoutX="72.0" layoutY="8.0" onMouseClicked="#showLabel" prefHeight="27.0" prefWidth="335.0" text="Label">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="notificationDescription" layoutX="73.0" layoutY="31.0" prefHeight="27.0" prefWidth="335.0" text="Label" textFill="#757575">
+      <Label fx:id="notificationDescription" layoutX="73.0" layoutY="31.0" onMouseClicked="#showDesc" prefHeight="27.0" prefWidth="335.0" text="Label" textFill="#757575">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <Label fx:id="notificationTime" alignment="CENTER_RIGHT" layoutX="415.0" layoutY="35.0" prefHeight="27.0" prefWidth="73.0" text="Jan 24" textFill="#757575">
+      <Label fx:id="notificationTime" alignment="CENTER_RIGHT" layoutX="415.0" layoutY="35.0" onMouseClicked="#showTime" prefHeight="27.0" prefWidth="73.0" text="Jan 24" textFill="#757575">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
