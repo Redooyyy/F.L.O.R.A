@@ -95,8 +95,10 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private void notificationBackText(MouseEvent mouseEvent) {
         slideEffect(notificationPane,Duration.millis(400),554);
-        closeNotificationDesc();
-        closeNotificationInviteDesc();
+        if(notificationShow.getTranslateX() == 818.0){
+            closeNotificationDesc();
+            closeNotificationInviteDesc();
+        }
     }
     @FXML
     private void notificationBackIcon(MouseEvent mouseEvent) {
