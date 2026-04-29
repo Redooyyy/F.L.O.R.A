@@ -89,7 +89,7 @@
             </TextField>
             <AnchorPane layoutX="679.0" layoutY="10.0" prefHeight="46.0" prefWidth="184.0" style="-fx-background-color: #DFDCE0; -fx-background-radius: 19;">
                <children>
-                  <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="8.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="8.0" layoutY="4.0" onMouseClicked="#newProjectAdd" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@assets/plus.png" />
                      </image>
@@ -122,7 +122,7 @@
          </children>
       </VBox>
       <Circle fill="#1f0826" layoutX="1064.0" layoutY="40.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <AnchorPane fx:id="notificationPane" layoutX="1132.0" prefHeight="588.0" prefWidth="524.0" style="-fx-background-color: #12031F; -fx-background-radius: 19;">
+      <AnchorPane fx:id="notificationPane" layoutX="1132.0" prefHeight="588.0" prefWidth="524.0" style="-fx-background-color: #12031F; -fx-background-radius: 19; visibility: true;">
          <children>
             <ScrollPane fx:id="notificationScroll" layoutX="8.0" layoutY="48.0" prefHeight="534.0" prefWidth="507.0" stylesheets="@style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="48.0">
                <content>
@@ -149,6 +149,180 @@
             <Button fx:id="clearAllButton" layoutX="420.0" layoutY="9.0" mnemonicParsing="false" onAction="#clearAll" prefHeight="31.0" prefWidth="91.0" style="-fx-background-color: red; -fx-background-radius: 19;" text="Clear All   " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="notificationShow" layoutX="-818.0" prefHeight="588.0" prefWidth="576.0" style="-fx-background-color: #1F0338; -fx-background-radius: 19;">
+         <children>
+            <AnchorPane layoutX="17.0" layoutY="45.0" prefHeight="354.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+               <children>
+                  <Label fx:id="emailBody" alignment="TOP_LEFT" layoutX="9.0" layoutY="17.0" prefHeight="351.0" prefWidth="524.0" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="17.0" layoutY="434.0" prefHeight="130.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+               <children>
+                  <VBox layoutX="153.0" layoutY="-35.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Sender" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="sender" prefHeight="32.0" prefWidth="423.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Project" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="project" prefHeight="32.0" prefWidth="420.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Role" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="role" prefHeight="32.0" prefWidth="421.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Send" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="sendTime" prefHeight="32.0" prefWidth="418.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <Button layoutX="477.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationDesc" prefHeight="30.0" prefWidth="76.0" style="-fx-background-color: red; -fx-background-radius: 12;" text="Close" textFill="#e4e4e4">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="invitationPane" layoutX="-818.0" prefHeight="588.0" prefWidth="576.0" style="-fx-background-color: #1F0338; -fx-background-radius: 19;">
+         <children>
+            <AnchorPane layoutX="17.0" layoutY="46.0" prefHeight="310.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+               <children>
+                  <Label fx:id="emailBodyInvite" alignment="TOP_LEFT" layoutX="9.0" layoutY="17.0" prefHeight="351.0" prefWidth="524.0" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="17.0" layoutY="434.0" prefHeight="130.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+               <children>
+                  <VBox layoutX="153.0" layoutY="-35.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Sender" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="senderInvite" prefHeight="32.0" prefWidth="423.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Project" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="projectInvite" prefHeight="32.0" prefWidth="435.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Role" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="roleInvite" prefHeight="32.0" prefWidth="424.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="32.0" prefWidth="542.0">
+                           <children>
+                              <Label prefHeight="57.0" prefWidth="111.0" text="    Send" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="sendTimeInvite" prefHeight="32.0" prefWidth="420.0" text=":" textFill="#f5f5f5">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <Button layoutX="45.0" layoutY="360.0" mnemonicParsing="false" onAction="#acceptInvite" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #067312; -fx-background-radius: 19;" text="   Accept" textFill="#fcfcfc" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="375.0">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="433.0" layoutY="359.0" mnemonicParsing="false" onAction="#declineInvite" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #7D0909; -fx-background-radius: 19;" text="   Decline" textFill="#fcfcfc" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="375.0">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="472.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationInviteDesc" prefHeight="30.0" prefWidth="76.0" style="-fx-background-color: red; -fx-background-radius: 12;" text="Close" textFill="#e4e4e4">
+               <font>
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Button>
          </children>
