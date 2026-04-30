@@ -3,6 +3,7 @@ module com.example.flora {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires eu.hansolo.tilesfx;
 
     // Only open UI packages (FXML needs reflection)
     opens com.example.flora.Features.Auth.UI to javafx.fxml;
