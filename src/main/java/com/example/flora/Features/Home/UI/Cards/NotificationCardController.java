@@ -61,6 +61,7 @@ public class NotificationCardController {
                     notificationTitle.getText(),
                     notificationDescription.getText(),
                     notificationTime.getText()
+                    //TODO:sender, project, etc add
             );
         }}
 
