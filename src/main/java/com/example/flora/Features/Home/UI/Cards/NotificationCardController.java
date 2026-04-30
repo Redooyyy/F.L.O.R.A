@@ -1,8 +1,9 @@
 package com.example.flora.Features.Home.UI.Cards;
 
 import com.example.flora.Features.Home.UI.HomeUI_Controller;
+import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
+import com.example.flora.Features.Home.model.Notification;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +26,8 @@ public class NotificationCardController {
     @FXML
     private Label notificationTitle;
     private HomeUI_Controller homeController;
+    private Notification notification;
+    private NotificationViewModel notificationViewModel;
 
     public Label getNotificationTitle() {
         return notificationTitle;
@@ -39,11 +42,14 @@ public class NotificationCardController {
     }
 
     // Inject parent controller
-    public void setHomeController(HomeUI_Controller homeController) {
+    public void setData(HomeUI_Controller homeController, NotificationViewModel notificationViewModel, Notification  notification) {
         this.homeController = homeController;
+        this.notificationViewModel=notificationViewModel;
+        this.notification = notification;
+        setValue(notification.getTitle(),notification.getDescription(),notification.getTime().toString());
     }
 
-    public void setValue(String notificationTitle, String notificationDescription, String notificationTime){
+     void setValue(String notificationTitle, String notificationDescription, String notificationTime){
         this.notificationDescription.setText(notificationDescription);
         this.notificationTitle.setText(notificationTitle);
         this.notificationTime.setText(notificationTime);
@@ -82,4 +88,7 @@ public class NotificationCardController {
     private void showTime(MouseEvent event) throws IOException {
         showPane(event);
     }
+
+    //TODO:Must write read notification UI change logic
+
 }
