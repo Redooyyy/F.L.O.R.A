@@ -3,8 +3,11 @@ package com.example.flora.Features.Home.UI;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
 import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
+import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
+import com.example.flora.Features.Home.model.Notification;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -72,6 +75,25 @@ public class HomeUI_Controller implements Initializable {
     private ScrollPane notificationScroll;
     @FXML
     private  AnchorPane notificationPane;
+    @FXML
+    private NotificationViewModel notificationViewModel;
+
+    //NOTE:Notification
+    public void activateNotification(NotificationViewModel notificationViewModel, int userId) throws IOException {
+        this.notificationViewModel = notificationViewModel;
+
+        notificationViewModel.getNotifications().addListener((ListChangeListener< Notification>) a ->{
+            //refresh
+            try {
+                loadNotificationCard();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        notificationViewModel.load(userId);
+        loadNotificationCard();
+
+    }
 
     @FXML
     private void sideBarButton(ActionEvent event) {
@@ -140,17 +162,6 @@ public class HomeUI_Controller implements Initializable {
             loadTaskNotifyCard("Student Portal","5");
             loadTaskNotifyCard("Weather App","55");
 
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
-            loadNotificationCard("New Task","You have been assigned a new task. Fix UI responsiveness","09:30");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -180,14 +191,23 @@ public class HomeUI_Controller implements Initializable {
         taskShow.getChildren().add(card);
     }
 
-    void loadNotificationCard(String notificationTitle, String notificationDescription,String notificationTime) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/NotificationCard.fxml"));
-        AnchorPane card = loader.load();
-        NotificationCardController controller = loader.getController();
-        //passing current instance
-        controller.setHomeController(this);
-        controller.setValue(notificationTitle,notificationDescription,notificationTime);
-        notificationBar.getChildren().add(card);
+    void loadNotificationCard() throws IOException {
+
+        notificationBar.getChildren().clear();
+        for(Notification notification : notificationViewModel.getNotifications()){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/NotificationCard.fxml"));
+                AnchorPane card = loader.load();
+                NotificationCardController controller = loader.getController();
+                //passing current instance
+                controller.setData(this,notificationViewModel,notification);
+                notificationBar.getChildren().add(card);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
     void removeScrollBar(ScrollPane scrollPane){
