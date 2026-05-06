@@ -1,0 +1,8 @@
+/*This line of code I found in stack overflow!! I couldn't make scroll-pane transparent from scene builder so I had to do it -_- */
+.scroll-pane {
+-fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport{
+-fx-background-color: transparent;
+}

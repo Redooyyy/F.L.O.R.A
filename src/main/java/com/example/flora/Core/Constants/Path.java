@@ -1,0 +1,7 @@
+package com.example.flora.Core.Constants;
+
+public class Path {
+    public static String LOGIN = "/Auth/UI/LoginUI.fxml";
+    public static String HOME = "/Home/UI/HomeUI.fxml";
+    public static String PROJECT = "/Project/UI/ProjectUI.fxml";
+}

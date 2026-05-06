@@ -1,5 +1,6 @@
 package com.example.flora.App;
 
+import com.example.flora.Core.Constants.Path;
 import com.example.flora.Core.Constants.WindowConstants;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +12,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Home/UI/HomeUI.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Auth/UI/LoginUI.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),WindowConstants.width,WindowConstants.height);
         stage.setTitle("Hello!");
         stage.setResizable(false);

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1102.0" style="-fx-background-color: #6D5691; -fx-background-radius: 19;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Project.UI.ProjectUI_Controller">
+   <children>
+      <AnchorPane layoutX="828.0" layoutY="86.0" prefHeight="200.0" prefWidth="284.0" style="-fx-background-radius: 19; -fx-background-color: #6530B8;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Circle fill="DODGERBLUE" layoutX="231.0" layoutY="50.0" radius="39.0" stroke="#a000a3" strokeType="INSIDE" strokeWidth="2.0" />
+            <Text fill="WHITE" layoutX="22.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello," wrappingWidth="127.13000106811523">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Text>
+            <Text fx:id="nickName" fill="WHITE" layoutX="23.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reo" wrappingWidth="169.13000106811523">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Text>
+            <Separator layoutX="42.0" layoutY="136.0" prefWidth="200.0" />
+            <Separator layoutX="19.0" layoutY="196.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
+            <Text fill="#b5b5b5" layoutX="21.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Project" wrappingWidth="91.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Separator layoutX="149.0" layoutY="196.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
+            <Text fill="#b5b5b5" layoutX="157.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Completed" wrappingWidth="91.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Separator layoutX="20.0" layoutY="288.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
+            <Text fill="#b5b5b5" layoutX="22.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In Progress" wrappingWidth="91.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Separator layoutX="149.0" layoutY="288.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
+            <Text fill="#b5b5b5" layoutX="157.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Out of Scedule" wrappingWidth="102.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Separator layoutX="21.0" layoutY="380.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
+            <Text fill="#b5b5b5" layoutX="23.0" layoutY="366.0" strokeType="OUTSIDE" strokeWidth="0.0" text="On hold" wrappingWidth="91.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Text>
+            <Text fx:id="totalProject" fill="WHITE" layoutX="30.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="110.13000106811523">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Text>
+            <Text fx:id="completedProject" fill="WHITE" layoutX="159.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="110.13000106811523">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Text>
+            <Text fx:id="inProgressProject" fill="WHITE" layoutX="30.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="110.13000106811523">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Text>
+            <Text fx:id="onholdProject" fill="WHITE" layoutX="30.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="110.13000106811523">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Text>
+            <Text fx:id="outOfScheduleProject" fill="WHITE" layoutX="159.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100" wrappingWidth="110.13000106811523">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <ScrollPane fx:id="projectCardView" fitToWidth="true" layoutX="79.0" layoutY="10.0" prefHeight="568.0" prefWidth="728.0" stylesheets="@style.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="79.0" AnchorPane.rightAnchor="295.0" AnchorPane.topAnchor="10.0">
+         <content>
+            <GridPane fx:id="projectGrid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33" />
+                  <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33" />
+                  <ColumnConstraints hgrow="ALWAYS" percentWidth="33.33" />
+               </columnConstraints>
+
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
