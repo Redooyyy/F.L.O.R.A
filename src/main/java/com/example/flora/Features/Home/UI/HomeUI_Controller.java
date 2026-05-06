@@ -295,6 +295,21 @@ public class HomeUI_Controller implements Initializable {
 
 
 
+    //NOTE: navigation Zone
+    @FXML
+    private void homePage(){}
+
+    @FXML
+    private void projectPage(){}
+
+    @FXML
+    private void bugPage(){}
+
+    @FXML
+    private void settingPage(){}
+
+    @FXML
+    private void logout(){}
 
     //NOTE: Helper functions
     void removeScrollBar(ScrollPane scrollPane){
