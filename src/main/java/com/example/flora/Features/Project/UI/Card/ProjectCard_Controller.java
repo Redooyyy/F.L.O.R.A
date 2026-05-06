@@ -28,7 +28,7 @@ public class ProjectCard_Controller {
     @FXML
     private Label tech6;
 
-    
+    //TODO: set values functions
 
 
 }
