@@ -4,6 +4,7 @@ import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -94,5 +95,53 @@ public class SceneTransition {
         });
 
         out.play();
+    }
+
+    private void loadingContent(AnchorPane contentPane, AnchorPane newPane) {
+        newPane.setOpacity(0);
+        newPane.setTranslateX(40);
+
+        AnchorPane.setBottomAnchor(newPane, 0.0);
+        AnchorPane.setTopAnchor(newPane, 0.0);
+        AnchorPane.setLeftAnchor(newPane, 0.0);
+        AnchorPane.setRightAnchor(newPane, 0.0);
+
+
+        AnchorPane oldPane = contentPane.getChildren().isEmpty()
+                ? null
+                : (AnchorPane) contentPane.getChildren().get(0);
+
+        if (oldPane != null) {
+
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(200), oldPane);
+            fadeOut.setToValue(0);
+
+            TranslateTransition moveOut = new TranslateTransition(Duration.millis(200), oldPane);
+            moveOut.setToX(-40);
+
+            ParallelTransition out = new ParallelTransition(fadeOut, moveOut);
+            out.setOnFinished(e -> {
+                contentPane.getChildren().clear();
+                contentPane.getChildren().add(newPane);
+                playFadeIn(newPane);
+            });
+            out.play();
+        } else {
+
+            contentPane.getChildren().add(newPane);
+            playFadeIn(newPane);
+        }
+    }
+
+    private void playFadeIn(AnchorPane pane) {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(250), pane);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        TranslateTransition moveIn = new TranslateTransition(Duration.millis(250), pane);
+        moveIn.setFromX(40);
+        moveIn.setToX(0);
+
+        new ParallelTransition(fadeIn, moveIn).play();
     }
 }
