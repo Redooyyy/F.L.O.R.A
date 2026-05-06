@@ -156,7 +156,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets left="145.0" top="130.0" />
+                  <Insets left="15.0" top="130.0" />
                </VBox.margin>
             </Button>
          </children>
