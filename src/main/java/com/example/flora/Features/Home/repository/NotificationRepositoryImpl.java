@@ -3,9 +3,15 @@ package com.example.flora.Features.Home.repository;
 import com.example.flora.Features.Home.model.Notification;
 
 
+import java.sql.Connection;
 import java.util.List;
 
 public class NotificationRepositoryImpl implements NotificationRepository {
+    private Connection connection;
+
+    public NotificationRepositoryImpl(Connection connection){
+        this.connection = connection;
+    }
 
     @Override
     public void createNotification(int userId, String title, String description) {

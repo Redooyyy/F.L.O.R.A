@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class LoginUI_Controller{
 
-    private final AuthViewModel authViewModel = new AuthViewModel();
+    private final AuthViewModel authViewModel;
 
     boolean slideToggle = true;
     @FXML
@@ -55,6 +55,10 @@ public class LoginUI_Controller{
     private TextField email;
     @FXML
     private TextField fullname;
+
+    public LoginUI_Controller(AuthViewModel authViewModel){
+        this.authViewModel = authViewModel;
+    }
 
 
     @FXML
