@@ -7,6 +7,9 @@ import com.example.flora.Features.Auth.service.AuthService;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.repository.NotificationRepositoryImpl;
 import com.example.flora.Features.Home.services.NotificationService;
+import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
+import com.example.flora.Features.Project.repository.ProjectRepositoryImpl;
+import com.example.flora.Features.Project.service.ProjectService;
 
 import java.sql.SQLException;
 
@@ -20,6 +23,9 @@ public class AppContainer {
  private final NotificationService notificationService;
  private final NotificationViewModel notificationViewModel;
 
+ private final ProjectService projectService;
+ private final ProjectViewModel projectViewModel;
+
  public AppContainer() throws SQLException {
      databaseManager = DatabaseManager.getDatabaseManager();
 
@@ -31,6 +37,10 @@ public class AppContainer {
      notificationService = new NotificationService(notificationRepository);
      notificationViewModel = new NotificationViewModel(notificationService);
 
+     ProjectRepositoryImpl projectRepository = new ProjectRepositoryImpl(databaseManager.getConnection());
+     projectService = new ProjectService(projectRepository);
+     projectViewModel = new ProjectViewModel(projectService);
+
  }
 
  //getters
@@ -41,5 +51,9 @@ public class AppContainer {
 
     public NotificationViewModel getNotificationViewModel() {
         return notificationViewModel;
+    }
+
+    public ProjectViewModel getProjectViewModel(){
+     return projectViewModel;
     }
 }

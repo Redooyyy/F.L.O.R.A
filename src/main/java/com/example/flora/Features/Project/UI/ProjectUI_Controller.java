@@ -1,6 +1,7 @@
 package com.example.flora.Features.Project.UI;
 
 import com.example.flora.Features.Project.UI.Card.ProjectCard_Controller;
+import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -35,6 +36,11 @@ public class ProjectUI_Controller implements Initializable {
     @FXML
     private GridPane projectGrid;
 
+    private final ProjectViewModel projectViewModel;
+
+    public ProjectUI_Controller(ProjectViewModel projectViewModel){
+        this.projectViewModel = projectViewModel;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
