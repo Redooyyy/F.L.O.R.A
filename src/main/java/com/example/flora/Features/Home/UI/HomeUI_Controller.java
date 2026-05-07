@@ -3,8 +3,6 @@ package com.example.flora.Features.Home.UI;
 import com.example.flora.Core.Constants.Path;
 import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
-import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
-import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
 import javafx.animation.PauseTransition;
@@ -20,21 +18,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class HomeUI_Controller implements Initializable {
-    public AnchorPane contentPane;
+    @FXML
+    private AnchorPane contentPane;
     @FXML
     private VBox sidebar;
-
-
 
     //NOTE:Notification variables
     @FXML
@@ -72,13 +68,20 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private AnchorPane invitationPane;
 
-
+private boolean toogleBar=false;
 
     //NOTE: Init zone
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         removeScrollBar(this.notificationScroll);
         notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
+
+        //call homePage so after login it'll appear
+        try {
+            overviewPage();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -94,6 +97,7 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private void menuBar(MouseEvent mouseEvent) {
         slideEffect(sidebar,Duration.millis(300),230);
+        toogleBar = true;
     }
 
 
@@ -198,7 +202,7 @@ public class HomeUI_Controller implements Initializable {
     private void closeNotificationInviteDesc(){}
 
 
-    
+
 
     //NOTE: Project Zone
     //accept project invitation
@@ -215,21 +219,15 @@ public class HomeUI_Controller implements Initializable {
 
     //NOTE: navigation Zone
     @FXML
-    private void homePage(ActionEvent event) throws IOException {
-        Stage stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
-        AnchorPane pane = FXMLLoader.load(getClass().getResource(Path.OVERVIEW));
-
-        SceneTransition sceneTransition = new SceneTransition(stage);
-        sceneTransition.loadingContent(contentPane,pane);
+    private void overviewPage() throws IOException {
+        loadPage(Path.OVERVIEW);
+        toggle();
     }
 
     @FXML
-    private void projectPage(ActionEvent event) throws IOException {
-        Stage stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
-        AnchorPane pane = FXMLLoader.load(getClass().getResource(Path.PROJECT));
-
-        SceneTransition sceneTransition = new SceneTransition(stage);
-        sceneTransition.loadingContent(contentPane,pane);
+    private void projectPage() throws IOException {
+        loadPage(Path.PROJECT);
+        toggle();
     }
 
     @FXML
@@ -251,7 +249,17 @@ public class HomeUI_Controller implements Initializable {
         TranslateTransition moveSlide = new TranslateTransition();
         moveSlide.setNode(node);
         moveSlide.setDuration(duration);
-        moveSlide.setByX(x);
+        moveSlide.setToX(x);
         moveSlide.play();
+    }
+
+    private void loadPage(String path) throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(path)));
+        SceneTransition sceneTransition = new SceneTransition(null); // no stage needed for content swap
+        sceneTransition.loadingContent(contentPane, pane);
+    }
+
+    void toggle(){
+        if(toogleBar) sideBarButton(null);
     }
 }
