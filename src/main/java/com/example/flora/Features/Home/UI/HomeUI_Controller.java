@@ -1,10 +1,12 @@
 package com.example.flora.Features.Home.UI;
 
 import com.example.flora.Core.Constants.Path;
+import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
+import com.example.flora.Features.Project.UI.ProjectUI_Controller;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
@@ -44,8 +46,6 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private  AnchorPane notificationPane;
     @FXML
-    private NotificationViewModel notificationViewModel;
-    @FXML
     private Label sendTime;
     @FXML
     private Label role;
@@ -68,7 +68,15 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private AnchorPane invitationPane;
 
+    private final AppContainer appContainer;
+    private final NotificationViewModel notificationViewModel;
+
 private boolean toogleBar=false;
+
+public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notificationViewModel){
+    this.appContainer = appContainer;
+    this.notificationViewModel = notificationViewModel;
+}
 
     //NOTE: Init zone
     @Override
@@ -106,9 +114,7 @@ private boolean toogleBar=false;
 
     //NOTE: Notification Zone//
     //notification activate
-    public void activateNotification(NotificationViewModel notificationViewModel, int userId) throws IOException {
-        this.notificationViewModel = notificationViewModel;
-
+    public void activateNotification(int userId) throws IOException {
         notificationViewModel.getNotifications().addListener((ListChangeListener< Notification>) a ->{
             //refresh
             try {
@@ -120,6 +126,7 @@ private boolean toogleBar=false;
         notificationViewModel.load(userId);
         loadNotificationCard();
     }
+    //TODO: update notification model for sender, project lead, project name
     //notification set in tiles
     public void setNotification(String title, String description, String time){
         this.emailBody.setText(description);
@@ -228,7 +235,7 @@ private boolean toogleBar=false;
 
     @FXML
     private void projectPage() throws IOException {
-        loadPage(Path.PROJECT);
+        loadPage(Path.PROJECT).setControllerFactory(e -> new ProjectUI_Controller(appContainer.getProjectViewModel()));
         toggle();
     }
 
@@ -255,10 +262,12 @@ private boolean toogleBar=false;
         moveSlide.play();
     }
 
-    private void loadPage(String path) throws IOException {
-        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(path)));
+    private FXMLLoader loadPage(String path) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
+        AnchorPane pane = loader.load();
         SceneTransition sceneTransition = new SceneTransition(null); // no stage needed for content swap
         sceneTransition.loadingContent(contentPane, pane);
+        return  loader;
     }
 
     void toggle(){
