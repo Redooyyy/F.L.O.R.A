@@ -1,7 +1,9 @@
 package com.example.flora.Features.Auth.UI;
 
+import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
+import com.example.flora.Features.Home.UI.HomeUI_Controller;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +21,7 @@ import java.io.IOException;
 public class LoginUI_Controller{
 
     private final AuthViewModel authViewModel;
-
+    private  final AppContainer appContainer;
     boolean slideToggle = true;
     @FXML
     private AnchorPane slidePane;
@@ -56,10 +58,10 @@ public class LoginUI_Controller{
     @FXML
     private TextField fullname;
 
-    public LoginUI_Controller(AuthViewModel authViewModel){
+    public LoginUI_Controller(AuthViewModel authViewModel, AppContainer appContainer){
         this.authViewModel = authViewModel;
+        this.appContainer = appContainer;
     }
-
 
     @FXML
     void register(ActionEvent event){
@@ -140,6 +142,8 @@ public class LoginUI_Controller{
         Stage stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         SceneTransition sceneTransition = new SceneTransition(stage);
 
-        sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml");
+        sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml").setControllerFactory(e->
+            new HomeUI_Controller(appContainer,appContainer.getNotificationViewModel())
+        );
     }
 }
