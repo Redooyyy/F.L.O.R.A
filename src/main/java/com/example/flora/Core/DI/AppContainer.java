@@ -10,6 +10,9 @@ import com.example.flora.Features.Home.services.NotificationService;
 import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import com.example.flora.Features.Project.repository.ProjectRepositoryImpl;
 import com.example.flora.Features.Project.service.ProjectService;
+import com.example.flora.Features.Task.ViewModel.TaskViewModel;
+import com.example.flora.Features.Task.repository.TaskRepositoryImpl;
+import com.example.flora.Features.Task.service.TaskServices;
 
 import java.sql.SQLException;
 
@@ -26,6 +29,9 @@ public class AppContainer {
  private final ProjectService projectService;
  private final ProjectViewModel projectViewModel;
 
+ private  final TaskServices taskServices;
+ private final TaskViewModel taskViewModel;
+
  public AppContainer() throws SQLException {
      databaseManager = DatabaseManager.getDatabaseManager();
 
@@ -41,6 +47,11 @@ public class AppContainer {
      projectService = new ProjectService(projectRepository);
      projectViewModel = new ProjectViewModel(projectService);
 
+     TaskRepositoryImpl taskRepository = new TaskRepositoryImpl(databaseManager.getConnection());
+     taskServices = new TaskServices(taskRepository);
+     taskViewModel = new TaskViewModel(taskServices);
+
+
  }
 
  //getters
@@ -55,5 +66,9 @@ public class AppContainer {
 
     public ProjectViewModel getProjectViewModel(){
      return projectViewModel;
+    }
+
+    public TaskViewModel getTaskViewModel() {
+        return taskViewModel;
     }
 }
