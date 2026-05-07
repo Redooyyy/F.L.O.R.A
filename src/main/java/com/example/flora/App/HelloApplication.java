@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
         AppContainer appContainer = new AppContainer();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(Path.LOGIN));
 
-        fxmlLoader.setControllerFactory(e->new LoginUI_Controller(appContainer.getAuthViewModel()));
+        fxmlLoader.setControllerFactory(e->new LoginUI_Controller(appContainer.getAuthViewModel(),appContainer));
 
         Scene scene = new Scene(fxmlLoader.load(),WindowConstants.width,WindowConstants.height);
         stage.setTitle("F.L.O.R.A");
