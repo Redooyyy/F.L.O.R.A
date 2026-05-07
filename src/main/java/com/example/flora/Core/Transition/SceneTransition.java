@@ -19,10 +19,10 @@ public class SceneTransition {
     }
 
     // LOGIN → OVERVIEW (soft entrance animation)
-    public void switchFromLogin(String toFxml) throws IOException {
+    public FXMLLoader switchFromLogin(String toFxml) throws IOException {
 
-        Parent newRoot = FXMLLoader.load(getClass().getResource(toFxml));
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(toFxml));
+        Parent newRoot = loader.load();
         Scene scene = stage.getScene();
         Parent oldRoot = scene.getRoot();
 
@@ -55,6 +55,7 @@ public class SceneTransition {
         });
 
         out.play();
+        return loader;
     }
 
 
