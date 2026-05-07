@@ -1,8 +1,8 @@
 package com.example.flora.Features.Home.UI;
 
+import com.example.flora.Core.Constants.Path;
+import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
-import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
-import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
 import javafx.animation.PauseTransition;
@@ -18,32 +18,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class HomeUI_Controller implements Initializable {
-    //NOTE:Project
     @FXML
-    private Label completedTask;
-    @FXML
-    private Label dueTask;
-    @FXML
-    private HBox ProjectsShow;
-    @FXML
-    private VBox taskShow;
+    private AnchorPane contentPane;
     @FXML
     private VBox sidebar;
-    @FXML
-    private ScrollPane scrollPane; //projects view
-    @FXML
-    private  ScrollPane scrollPaneP; // projects task view
-
-
 
     //NOTE:Notification variables
     @FXML
@@ -81,67 +68,22 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private AnchorPane invitationPane;
 
-
-
-
-
+private boolean toogleBar=false;
 
     //NOTE: Init zone
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        removeScrollBar(this.scrollPane);
-        removeScrollBar(this.scrollPaneP);
         removeScrollBar(this.notificationScroll);
         notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
-        dummyData();
 
-    }
-
-
-
-
-
-
-    //NOTE: Dummy data for testing
-    void dummyData(){
+        //call homePage so after login it'll appear
         try {
-            loadProjectCard("F.L.O.R.A","Full-Stack","Redoy","In-Progress",.25);
-            loadProjectCard("M.E.M.O.","Full-Stack","Redoy","In-Progress",.45);
-            loadProjectCard("Hospital Management System","Full-Stack","Redoy","In-Progress",.95);
-            loadProjectCard("AI-Assistant","Full-Stack","Redoy","In-Progress",.55);
-            loadProjectCard("Student Portal","Full-Stack","Redoy","In-Progress",.15);
-            loadProjectCard("Weather App","Full-Stack","Redoy","In-Progress",1.00);
-
-            loadTaskNotifyCard("Project Management System","15");
-            loadTaskNotifyCard("MEMO","25");
-            loadTaskNotifyCard("Hospital Management System","35");
-            loadTaskNotifyCard("Student Portal","5");
-            loadTaskNotifyCard("Weather App","55");
-
+            overviewPage();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
-
-
-
-
-
-
-
-
-    //NOTE: Project card
-    void loadProjectCard(String projectName, String projectCategory, String leadName, String projectStatus, double projectProgress) throws IOException {
-        FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("/Home/UI/Cards/ProjectShowCard.fxml"));
-        AnchorPane card = loader.load();
-        ProjectShowCardController controller =
-                loader.getController();
-        controller.setData(projectName,projectCategory,leadName,projectStatus,projectProgress);
-        ProjectsShow.getChildren().add(card);
-    }
-
-
 
 
 
@@ -155,25 +97,8 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private void menuBar(MouseEvent mouseEvent) {
         slideEffect(sidebar,Duration.millis(300),230);
+        toogleBar = true;
     }
-
-
-
-
-
-
-
-    //NOTE:Task notify
-    void loadTaskNotifyCard(String projectName, String taskCount) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/taskNotify.fxml"));
-        AnchorPane card = loader.load();
-        TaskNotifyController controller = loader.getController();
-        controller.setValue(projectName,taskCount);
-        taskShow.getChildren().add(card);
-    }
-
-
-
 
 
 
@@ -279,9 +204,6 @@ public class HomeUI_Controller implements Initializable {
 
 
 
-
-
-
     //NOTE: Project Zone
     //accept project invitation
     @FXML
@@ -295,6 +217,27 @@ public class HomeUI_Controller implements Initializable {
 
 
 
+    //NOTE: navigation Zone
+    @FXML
+    private void overviewPage() throws IOException {
+        loadPage(Path.OVERVIEW);
+        toggle();
+    }
+
+    @FXML
+    private void projectPage() throws IOException {
+        loadPage(Path.PROJECT);
+        toggle();
+    }
+
+    @FXML
+    private void bugPage(){}
+
+    @FXML
+    private void settingPage(){}
+
+    @FXML
+    private void logout(){}
 
     //NOTE: Helper functions
     void removeScrollBar(ScrollPane scrollPane){
@@ -306,7 +249,17 @@ public class HomeUI_Controller implements Initializable {
         TranslateTransition moveSlide = new TranslateTransition();
         moveSlide.setNode(node);
         moveSlide.setDuration(duration);
-        moveSlide.setByX(x);
+        moveSlide.setToX(x);
         moveSlide.play();
+    }
+
+    private void loadPage(String path) throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(path)));
+        SceneTransition sceneTransition = new SceneTransition(null); // no stage needed for content swap
+        sceneTransition.loadingContent(contentPane, pane);
+    }
+
+    void toggle(){
+        if(toogleBar) sideBarButton(null);
     }
 }

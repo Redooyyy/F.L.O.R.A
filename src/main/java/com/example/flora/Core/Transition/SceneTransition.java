@@ -97,7 +97,7 @@ public class SceneTransition {
         out.play();
     }
 
-    private void loadingContent(AnchorPane contentPane, AnchorPane newPane) {
+    public void loadingContent(AnchorPane contentPane, AnchorPane newPane) {
         newPane.setOpacity(0);
         newPane.setTranslateX(40);
 

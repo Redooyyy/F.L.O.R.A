@@ -12,7 +12,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Auth/UI/LoginUI.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(Path.LOGIN));
         Scene scene = new Scene(fxmlLoader.load(),WindowConstants.width,WindowConstants.height);
         stage.setTitle("Hello!");
         stage.setResizable(false);
