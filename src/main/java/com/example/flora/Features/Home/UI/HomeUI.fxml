@@ -68,7 +68,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#homePage" prefHeight="52.0" prefWidth="215.0" style="-fx-background-radius: 19; -fx-background-color: #2C034F;" text="Home" textAlignment="CENTER" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#overviewPage" prefHeight="52.0" prefWidth="215.0" style="-fx-background-radius: 19; -fx-background-color: #2C034F;" text="Home" textAlignment="CENTER" textFill="WHITE">
                <VBox.margin>
                   <Insets top="60.0" />
                </VBox.margin>
