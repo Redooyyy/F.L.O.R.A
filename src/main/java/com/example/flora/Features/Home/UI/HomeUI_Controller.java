@@ -1,5 +1,7 @@
 package com.example.flora.Features.Home.UI;
 
+import com.example.flora.Core.Constants.Path;
+import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
 import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
@@ -20,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -27,21 +30,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HomeUI_Controller implements Initializable {
-    //NOTE:Project
-    @FXML
-    private Label completedTask;
-    @FXML
-    private Label dueTask;
-    @FXML
-    private HBox ProjectsShow;
-    @FXML
-    private VBox taskShow;
+    public AnchorPane contentPane;
     @FXML
     private VBox sidebar;
-    @FXML
-    private ScrollPane scrollPane; //projects view
-    @FXML
-    private  ScrollPane scrollPaneP; // projects task view
 
 
 
@@ -83,65 +74,13 @@ public class HomeUI_Controller implements Initializable {
 
 
 
-
-
-
     //NOTE: Init zone
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        removeScrollBar(this.scrollPane);
-        removeScrollBar(this.scrollPaneP);
         removeScrollBar(this.notificationScroll);
         notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
-        dummyData();
 
     }
-
-
-
-
-
-
-    //NOTE: Dummy data for testing
-    void dummyData(){
-        try {
-            loadProjectCard("F.L.O.R.A","Full-Stack","Redoy","In-Progress",.25);
-            loadProjectCard("M.E.M.O.","Full-Stack","Redoy","In-Progress",.45);
-            loadProjectCard("Hospital Management System","Full-Stack","Redoy","In-Progress",.95);
-            loadProjectCard("AI-Assistant","Full-Stack","Redoy","In-Progress",.55);
-            loadProjectCard("Student Portal","Full-Stack","Redoy","In-Progress",.15);
-            loadProjectCard("Weather App","Full-Stack","Redoy","In-Progress",1.00);
-
-            loadTaskNotifyCard("Project Management System","15");
-            loadTaskNotifyCard("MEMO","25");
-            loadTaskNotifyCard("Hospital Management System","35");
-            loadTaskNotifyCard("Student Portal","5");
-            loadTaskNotifyCard("Weather App","55");
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-
-
-
-
-
-
-    //NOTE: Project card
-    void loadProjectCard(String projectName, String projectCategory, String leadName, String projectStatus, double projectProgress) throws IOException {
-        FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("/Home/UI/Cards/ProjectShowCard.fxml"));
-        AnchorPane card = loader.load();
-        ProjectShowCardController controller =
-                loader.getController();
-        controller.setData(projectName,projectCategory,leadName,projectStatus,projectProgress);
-        ProjectsShow.getChildren().add(card);
-    }
-
-
 
 
 
@@ -156,24 +95,6 @@ public class HomeUI_Controller implements Initializable {
     private void menuBar(MouseEvent mouseEvent) {
         slideEffect(sidebar,Duration.millis(300),230);
     }
-
-
-
-
-
-
-
-    //NOTE:Task notify
-    void loadTaskNotifyCard(String projectName, String taskCount) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/taskNotify.fxml"));
-        AnchorPane card = loader.load();
-        TaskNotifyController controller = loader.getController();
-        controller.setValue(projectName,taskCount);
-        taskShow.getChildren().add(card);
-    }
-
-
-
 
 
 
@@ -277,10 +198,7 @@ public class HomeUI_Controller implements Initializable {
     private void closeNotificationInviteDesc(){}
 
 
-
-
-
-
+    
 
     //NOTE: Project Zone
     //accept project invitation
@@ -297,10 +215,22 @@ public class HomeUI_Controller implements Initializable {
 
     //NOTE: navigation Zone
     @FXML
-    private void homePage(){}
+    private void homePage(ActionEvent event) throws IOException {
+        Stage stage = (Stage) (((Node)event.getSource()).getScene().getWindow());
+        AnchorPane pane = FXMLLoader.load(getClass().getResource(Path.OVERVIEW));
+
+        SceneTransition sceneTransition = new SceneTransition(stage);
+        sceneTransition.loadingContent(contentPane,pane);
+    }
 
     @FXML
-    private void projectPage(){}
+    private void projectPage(ActionEvent event) throws IOException {
+        Stage stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        AnchorPane pane = FXMLLoader.load(getClass().getResource(Path.PROJECT));
+
+        SceneTransition sceneTransition = new SceneTransition(stage);
+        sceneTransition.loadingContent(contentPane,pane);
+    }
 
     @FXML
     private void bugPage(){}
