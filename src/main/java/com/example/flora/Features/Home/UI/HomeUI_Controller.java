@@ -82,6 +82,7 @@ private boolean toogleBar=false;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        setNotification("Invitation","Hey I am here to invite you to my project", "9:30");
 
     }
 
@@ -138,7 +139,8 @@ private boolean toogleBar=false;
                 AnchorPane card = loader.load();
                 NotificationCardController controller = loader.getController();
                 //passing current instance
-                controller.setData(this,notificationViewModel,notification);
+                 controller.setData(this,notificationViewModel,notification);
+
                 notificationBar.getChildren().add(card);
 
             } catch (Exception e) {

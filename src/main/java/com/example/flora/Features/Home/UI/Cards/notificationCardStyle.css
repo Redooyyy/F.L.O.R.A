@@ -1,0 +1,68 @@
+/* ══════════════════════════════════════════
+   NotificationCard.css  —  Flora Dark Purple Theme
+   ══════════════════════════════════════════ */
+
+/* ── Card root ── */
+.notif-card {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+.notif-card:hover {
+    -fx-background-color: #1E1A2E;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.28), 18, 0, 3, 0);
+    -fx-translate-x: 2;
+}
+
+/* ── Avatar circle ── */
+.notif-avatar {
+    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, #7C5CE4, #A855F7);
+    -fx-stroke: rgba(109,79,194,0.4);
+    -fx-stroke-width: 1.5;
+}
+
+/* ── Initials on avatar ── */
+.notif-initials {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+/* ── Title ── */
+.notif-title {
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Description ── */
+.notif-desc {
+    -fx-text-fill: #6B5F8A;
+}
+
+/* ── Timestamp ── */
+.notif-time {
+    -fx-text-fill: #6B5F8A;
+}
+
+/* ── Delete button ── */
+.notif-delete-btn {
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-background-radius: 10;
+    -fx-text-fill: #F87171;
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-opacity: 0;    /* hidden by default; shown on card hover via controller or CSS */
+}
+.notif-card:hover .notif-delete-btn {
+    -fx-opacity: 1;
+}
+.notif-delete-btn:hover {
+    -fx-background-color: #F87171;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(248,113,113,0.5), 10, 0, 0, 0);
+}

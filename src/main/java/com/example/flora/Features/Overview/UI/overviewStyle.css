@@ -1,0 +1,77 @@
+/* ── Overview.css ── */
+
+/* Root background */
+.overview-root {
+    -fx-background-color: #13111A;
+}
+
+/* Left and right panels */
+.overview-panel {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 19;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 19;
+    -fx-border-width: 1;
+}
+
+/* Stat cards (the two big ones on the left) */
+.stat-card {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 16;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.stat-card:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.2), 20, 0, 0, 4);
+}
+
+.stat-card-label {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.stat-card-value {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.stat-card-value-green {
+    -fx-text-fill: #34D399;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+/* Section title label */
+.section-title {
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* ScrollPane transparent cleanup */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 4;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb,
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 4;
+}

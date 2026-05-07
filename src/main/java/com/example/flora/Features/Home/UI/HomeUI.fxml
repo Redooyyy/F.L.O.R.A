@@ -12,11 +12,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1102.0" style="-fx-background-color: #6D5691; -fx-background-radius: 19;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Home.UI.HomeUI_Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="588.0" prefWidth="1102.0" styleClass="home-root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Home.UI.HomeUI_Controller">
    <children>
-      <AnchorPane layoutX="8.0" layoutY="7.0" prefHeight="65.0" prefWidth="70.0" style="-fx-background-color: #1F0826; -fx-background-radius: 19;" />
-      <ImageView fitHeight="45.0" fitWidth="39.0" layoutX="22.0" layoutY="19.0" onMouseClicked="#menuBar" pickOnBounds="true" preserveRatio="true">
+      <AnchorPane layoutX="8.0" layoutY="7.0" prefHeight="65.0" prefWidth="70.0" styleClass="topbar-icon-box" />
+      <ImageView fitHeight="45.0" fitWidth="39.0" layoutX="22.0" layoutY="19.0" onMouseClicked="#menuBar" pickOnBounds="true" preserveRatio="true" styleClass="topbar-icon-box">
          <image>
             <Image url="@assets/sidebar.png" />
          </image>
@@ -24,43 +25,43 @@
       <AnchorPane fx:id="contentPane" layoutX="3.0" layoutY="80.0" prefHeight="508.0" prefWidth="1109.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
 
       </AnchorPane>
-      <AnchorPane layoutX="85.0" layoutY="7.0" prefHeight="65.0" prefWidth="939.0" style="-fx-background-color: #1F0826; -fx-background-radius: 19;">
+      <AnchorPane layoutX="85.0" layoutY="7.0" prefHeight="65.0" prefWidth="939.0" styleClass="topbar">
          <children>
             <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="31.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@assets/search.png" />
                </image>
             </ImageView>
-            <TextField layoutX="76.0" layoutY="9.0" prefHeight="46.0" prefWidth="384.0" style="-fx-background-color: #491459; -fx-background-radius: 19; -fx-text-fill: white;">
+            <TextField layoutX="76.0" layoutY="9.0" prefHeight="46.0" prefWidth="384.0" styleClass="search-field">
                <font>
                   <Font size="15.0" />
                </font>
             </TextField>
-            <AnchorPane layoutX="679.0" layoutY="10.0" prefHeight="46.0" prefWidth="184.0" style="-fx-background-color: #DFDCE0; -fx-background-radius: 19;">
+            <AnchorPane layoutX="679.0" layoutY="10.0" prefHeight="46.0" prefWidth="184.0" styleClass="new-project-btn">
                <children>
-                  <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="8.0" layoutY="4.0" onMouseClicked="#newProjectAdd" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="8.0" layoutY="4.0" onMouseClicked="#newProjectAdd" pickOnBounds="true" preserveRatio="true" styleClass="topbar-icon-box">
                      <image>
                         <Image url="@assets/plus.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="60.0" layoutY="3.0" prefHeight="39.0" prefWidth="99.0" text="New Project" textFill="#656262">
+                  <Label layoutX="60.0" layoutY="3.0" prefHeight="39.0" prefWidth="99.0" styleClass="new-project-label" text="New Project" textFill="#656262">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <Circle fill="#3c2a45" layoutX="898.0" layoutY="34.0" onMouseClicked="#notificationCircle" radius="23.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fitHeight="31.0" fitWidth="31.0" layoutX="883.0" layoutY="17.0" onMouseClicked="#noificationIcon" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/bell.png" />
-               </image>
-            </ImageView>
+            <Circle fill="#3c2a45" layoutX="898.0" layoutY="34.0" onMouseClicked="#notificationCircle" radius="23.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="bell-circle" />
+            <Text fill="#cd00b1" layoutX="888.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="bell-circle" text="󰂜">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
-      <VBox fx:id="sidebar" layoutX="-230.0" prefHeight="588.0" prefWidth="209.0" style="-fx-background-color: #12031F; -fx-background-radius: 19;">
+      <VBox fx:id="sidebar" layoutX="-230.0" prefHeight="588.0" prefWidth="209.0" styleClass="sidebar">
          <children>
-            <Button mnemonicParsing="false" onAction="#sideBarButton" prefHeight="39.0" prefWidth="55.0" style="-fx-background-radius: 80; -fx-background-color: #491459;" text="&lt;" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#sideBarButton" prefHeight="39.0" prefWidth="55.0" styleClass="sidebar-collapse-btn" text="&lt;" textFill="WHITE">
                <VBox.margin>
                   <Insets left="5.0" top="5.0" />
                </VBox.margin>
@@ -68,7 +69,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#overviewPage" prefHeight="52.0" prefWidth="215.0" style="-fx-background-radius: 19; -fx-background-color: #2C034F;" text="Home" textAlignment="CENTER" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#overviewPage" prefHeight="52.0" prefWidth="215.0" styleClass="sidebar-nav-btn" text="Home" textAlignment="CENTER" textFill="WHITE">
                <VBox.margin>
                   <Insets top="60.0" />
                </VBox.margin>
@@ -76,7 +77,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#projectPage" prefHeight="52.0" prefWidth="215.0" style="-fx-background-radius: 19; -fx-background-color: #2C034F;" text="Project" textAlignment="CENTER" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#projectPage" prefHeight="52.0" prefWidth="215.0" styleClass="sidebar-nav-btn" text="Project" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -84,7 +85,7 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#bugPage" prefHeight="52.0" prefWidth="215.0" style="-fx-background-radius: 19; -fx-background-color: #2C034F;" text="Bug" textAlignment="CENTER" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#bugPage" prefHeight="52.0" prefWidth="215.0" styleClass="sidebar-nav-btn" text="Bug" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -92,7 +93,7 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#settingPage" prefHeight="52.0" prefWidth="215.0" style="-fx-background-radius: 19; -fx-background-color: #2C034F;" text="Settings" textAlignment="CENTER" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#settingPage" prefHeight="52.0" prefWidth="215.0" styleClass="sidebar-nav-btn" text="Settings" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -100,7 +101,7 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#logout" prefHeight="39.0" prefWidth="54.0" style="-fx-background-radius: 80; -fx-background-color: red;" text="󰿅" textAlignment="CENTER" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="39.0" prefWidth="54.0" styleClass="sidebar-logout-btn" text="󰿅" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -110,8 +111,8 @@
             </Button>
          </children>
       </VBox>
-      <Circle fill="#1f0826" layoutX="1064.0" layoutY="40.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <AnchorPane fx:id="notificationPane" layoutX="1132.0" prefHeight="588.0" prefWidth="524.0" style="-fx-background-color: #12031F; -fx-background-radius: 19; visibility: true;">
+      <Circle fill="#1f0826" layoutX="1064.0" layoutY="40.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="profile-circle" />
+      <AnchorPane fx:id="notificationPane" layoutX="1132.0" prefHeight="588.0" prefWidth="524.0" styleClass="slide-panel">
          <children>
             <ScrollPane fx:id="notificationScroll" layoutX="8.0" layoutY="48.0" prefHeight="534.0" prefWidth="507.0" stylesheets="@style.css" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="48.0">
                <content>
@@ -125,7 +126,7 @@
                         <Image url="@assets/back.png" />
                      </image>
                   </ImageView>
-                  <Label onMouseClicked="#notificationBackText" prefHeight="39.0" prefWidth="99.0" text="Back" textFill="#f8f8f8">
+                  <Label onMouseClicked="#notificationBackText" prefHeight="39.0" prefWidth="99.0" styleClass="panel-back-label" text="Back" textFill="#f8f8f8">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -142,71 +143,71 @@
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="notificationShow" layoutX="-818.0" prefHeight="588.0" prefWidth="576.0" style="-fx-background-color: #1F0338; -fx-background-radius: 19;">
+      <AnchorPane fx:id="notificationShow" layoutX="-818.0" prefHeight="588.0" prefWidth="576.0" styleClass="slide-panel">
          <children>
-            <AnchorPane layoutX="17.0" layoutY="45.0" prefHeight="354.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+            <AnchorPane layoutX="17.0" layoutY="45.0" prefHeight="354.0" prefWidth="542.0" styleClass="detail-body-box">
                <children>
-                  <Label fx:id="emailBody" alignment="TOP_LEFT" layoutX="9.0" layoutY="17.0" prefHeight="351.0" prefWidth="524.0" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <Label fx:id="emailBody" alignment="TOP_LEFT" layoutX="9.0" layoutY="17.0" prefHeight="351.0" prefWidth="524.0" styleClass="detail-body-text" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="17.0" layoutY="434.0" prefHeight="130.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+            <AnchorPane layoutX="17.0" layoutY="434.0" prefHeight="130.0" prefWidth="542.0">
                <children>
-                  <VBox layoutX="153.0" layoutY="-35.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox layoutX="153.0" layoutY="-35.0" prefHeight="200.0" prefWidth="100.0" styleClass="me" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Sender" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Sender" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="sender" prefHeight="32.0" prefWidth="423.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="sender" prefHeight="32.0" prefWidth="423.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Project" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Project" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="project" prefHeight="32.0" prefWidth="420.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="project" prefHeight="32.0" prefWidth="420.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Role" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Role" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="role" prefHeight="32.0" prefWidth="421.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="role" prefHeight="32.0" prefWidth="421.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Send" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Send" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="sendTime" prefHeight="32.0" prefWidth="418.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="sendTime" prefHeight="32.0" prefWidth="418.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -217,78 +218,78 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <Button layoutX="477.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationDesc" prefHeight="30.0" prefWidth="76.0" style="-fx-background-color: red; -fx-background-radius: 12;" text="Close" textFill="#e4e4e4">
+            <Button layoutX="477.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationDesc" prefHeight="30.0" prefWidth="76.0" styleClass="panel-close-btn" text="Close" textFill="#e4e4e4">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="invitationPane" layoutX="-818.0" prefHeight="588.0" prefWidth="576.0" style="-fx-background-color: #1F0338; -fx-background-radius: 19;">
+      <AnchorPane fx:id="invitationPane" layoutX="-818.0" prefHeight="588.0" prefWidth="576.0" styleClass="slide-panel">
          <children>
-            <AnchorPane layoutX="17.0" layoutY="46.0" prefHeight="310.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+            <AnchorPane layoutX="17.0" layoutY="46.0" prefHeight="310.0" prefWidth="542.0" styleClass="detail-body-box">
                <children>
-                  <Label fx:id="emailBodyInvite" alignment="TOP_LEFT" layoutX="9.0" layoutY="17.0" prefHeight="351.0" prefWidth="524.0" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <Label fx:id="emailBodyInvite" alignment="TOP_LEFT" layoutX="9.0" layoutY="17.0" prefHeight="351.0" prefWidth="524.0" styleClass="detail-body-text" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="17.0" layoutY="434.0" prefHeight="130.0" prefWidth="542.0" style="-fx-background-color: #3E024F; -fx-background-radius: 19;">
+            <AnchorPane layoutX="17.0" layoutY="434.0" prefHeight="130.0" prefWidth="542.0" styleClass="detail-body-box">
                <children>
                   <VBox layoutX="153.0" layoutY="-35.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Sender" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Sender" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="senderInvite" prefHeight="32.0" prefWidth="423.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="senderInvite" prefHeight="32.0" prefWidth="423.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Project" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Project" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="projectInvite" prefHeight="32.0" prefWidth="435.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="projectInvite" prefHeight="32.0" prefWidth="435.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Role" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Role" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="roleInvite" prefHeight="32.0" prefWidth="424.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="roleInvite" prefHeight="32.0" prefWidth="424.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="32.0" prefWidth="542.0">
+                        <HBox prefHeight="32.0" prefWidth="542.0" styleClass="detail-meta-box">
                            <children>
-                              <Label prefHeight="57.0" prefWidth="111.0" text="    Send" textFill="#f5f5f5">
+                              <Label prefHeight="57.0" prefWidth="111.0" styleClass="meta-key" text="    Send" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="sendTimeInvite" prefHeight="32.0" prefWidth="420.0" text=":" textFill="#f5f5f5">
+                              <Label fx:id="sendTimeInvite" prefHeight="32.0" prefWidth="420.0" styleClass="meta-val" text=":" textFill="#f5f5f5">
                                  <font>
                                     <Font name="System Bold" size="16.0" />
                                  </font>
@@ -299,17 +300,17 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <Button layoutX="45.0" layoutY="360.0" mnemonicParsing="false" onAction="#acceptInvite" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #067312; -fx-background-radius: 19;" text="   Accept" textFill="#fcfcfc" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="375.0">
+            <Button layoutX="45.0" layoutY="360.0" mnemonicParsing="false" onAction="#acceptInvite" prefHeight="35.0" prefWidth="105.0" styleClass="btn-accept" text="   Accept" textFill="#fcfcfc" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="375.0">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="433.0" layoutY="359.0" mnemonicParsing="false" onAction="#declineInvite" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #7D0909; -fx-background-radius: 19;" text="   Decline" textFill="#fcfcfc" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="375.0">
+            <Button layoutX="433.0" layoutY="359.0" mnemonicParsing="false" onAction="#declineInvite" prefHeight="35.0" prefWidth="105.0" styleClass="btn-decline" text="   Decline" textFill="#fcfcfc" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="375.0">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="472.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationInviteDesc" prefHeight="30.0" prefWidth="76.0" style="-fx-background-color: red; -fx-background-radius: 12;" text="Close" textFill="#e4e4e4">
+            <Button layoutX="472.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationInviteDesc" prefHeight="30.0" prefWidth="76.0" styleClass="panel-close-btn" text="Close" textFill="#e4e4e4">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>

@@ -1,0 +1,99 @@
+/* ── ProjectShowCard.css ── */
+
+/* Card root */
+.project-show-card {
+    -fx-background-color: #1E1A2E;
+    -fx-background-radius: 16;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.project-show-card:hover {
+    -fx-background-color: #231E38;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.28), 22, 0, 0, 6);
+}
+
+/* Project name */
+.proj-card-name {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Row key labels (Lead, Category, Status) */
+.proj-card-key {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Row value labels */
+.proj-card-val {
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 12px;
+}
+
+/* Status badge styles */
+.status-active {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 20;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.status-hold {
+    -fx-background-color: rgba(251,183,36,0.12);
+    -fx-background-radius: 20;
+    -fx-text-fill: #FBB724;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.status-done {
+    -fx-background-color: rgba(99,179,237,0.12);
+    -fx-background-radius: 20;
+    -fx-text-fill: #63B3ED;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.status-late {
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-background-radius: 20;
+    -fx-text-fill: #F87171;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+/* Separator */
+.proj-card-separator {
+    -fx-background-color: #2D2845;
+    -fx-border-color: #2D2845;
+}
+
+/* Progress bar */
+.progress-bar {
+    -fx-accent: #7C5CE4;
+    -fx-pref-height: 6px;
+    -fx-background-radius: 6;
+}
+
+.progress-bar > .track {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 6;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: linear-gradient(to right, #7C5CE4, #A855F7);
+    -fx-background-radius: 6;
+    -fx-background-insets: 0;
+}
+
+/* Progress percent label */
+.progress-pct {
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 10px;
+}
