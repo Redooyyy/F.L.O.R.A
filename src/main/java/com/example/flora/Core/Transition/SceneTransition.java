@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -19,9 +20,10 @@ public class SceneTransition {
     }
 
     // LOGIN → OVERVIEW (soft entrance animation)
-    public FXMLLoader switchFromLogin(String toFxml) throws IOException {
+    public void switchFromLogin(String toFxml,Callback<Class<?>, Object> controllerFactory) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(toFxml));
+        loader.setControllerFactory(controllerFactory);
         Parent newRoot = loader.load();
         Scene scene = stage.getScene();
         Parent oldRoot = scene.getRoot();
@@ -55,7 +57,6 @@ public class SceneTransition {
         });
 
         out.play();
-        return loader;
     }
 
 

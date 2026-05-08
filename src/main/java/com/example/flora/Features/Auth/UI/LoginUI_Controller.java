@@ -142,8 +142,6 @@ public class LoginUI_Controller{
         Stage stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
         SceneTransition sceneTransition = new SceneTransition(stage);
 
-        sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml").setControllerFactory(e->
-            new HomeUI_Controller(appContainer,appContainer.getNotificationViewModel())
-        );
+        sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml",e->new HomeUI_Controller(appContainer,appContainer.getNotificationViewModel()));
     }
 }

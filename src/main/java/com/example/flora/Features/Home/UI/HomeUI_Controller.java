@@ -6,7 +6,9 @@ import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
+import com.example.flora.Features.Overview.UI.Overview_Controller;
 import com.example.flora.Features.Project.UI.ProjectUI_Controller;
+import com.example.flora.Features.Task.UI.TaskUI_Controller;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
@@ -21,6 +23,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -229,18 +232,27 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     //NOTE: navigation Zone
     @FXML
     private void overviewPage() throws IOException {
-        loadPage(Path.OVERVIEW);
+        loadPage(Path.OVERVIEW,e-> new Overview_Controller());
         toggle();
     }
 
     @FXML
     private void projectPage() throws IOException {
-        loadPage(Path.PROJECT).setControllerFactory(e -> new ProjectUI_Controller(appContainer.getProjectViewModel()));
+        loadPage(Path.PROJECT, e->new ProjectUI_Controller(appContainer.getProjectViewModel()));
         toggle();
     }
 
     @FXML
-    private void bugPage(){}
+    private void taskPage() throws IOException {
+    loadPage(Path.TASK,e->new TaskUI_Controller(appContainer.getTaskViewModel()));
+    toggle();
+    }
+
+    @FXML
+    private void bugPage(){
+
+    }
+
 
     @FXML
     private void settingPage(){}
@@ -262,8 +274,9 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
         moveSlide.play();
     }
 
-    private FXMLLoader loadPage(String path) throws IOException {
+    private FXMLLoader loadPage(String path, Callback<Class<?>, Object> controllerFactory) throws IOException {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
+        loader.setControllerFactory(controllerFactory);
         AnchorPane pane = loader.load();
         SceneTransition sceneTransition = new SceneTransition(null); // no stage needed for content swap
         sceneTransition.loadingContent(contentPane, pane);
