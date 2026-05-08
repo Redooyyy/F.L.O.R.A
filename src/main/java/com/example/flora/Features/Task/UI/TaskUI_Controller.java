@@ -1,5 +1,6 @@
 package com.example.flora.Features.Task.UI;
 
+import com.example.flora.Features.Home.UI.HomeUI_Controller;
 import com.example.flora.Features.Task.UI.Card.TaskCardUI_Controller;
 import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.TaskStatus;
@@ -28,12 +29,16 @@ public class TaskUI_Controller implements Initializable {
     @FXML
     private VBox TaskCardScroll;
 
-    public TaskUI_Controller(TaskViewModel taskViewModel){
+    private final HomeUI_Controller controller;
+
+    public TaskUI_Controller(TaskViewModel taskViewModel, HomeUI_Controller controller){
         this.taskViewModel = taskViewModel;
+        this.controller = controller;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        controller.slideLeft();
         removeScrollBar(tasScroll);
         removeScrollBar(proScroll);
         try {
