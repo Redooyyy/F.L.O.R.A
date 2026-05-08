@@ -85,6 +85,14 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </Button>
+            <Button mnemonicParsing="false" onAction="#taskPage" prefHeight="52.0" prefWidth="215.0" styleClass="sidebar-nav-btn" text="Tasks" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
             <Button mnemonicParsing="false" onAction="#bugPage" prefHeight="52.0" prefWidth="215.0" styleClass="sidebar-nav-btn" text="Bug" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
