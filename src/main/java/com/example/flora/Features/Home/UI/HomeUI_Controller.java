@@ -315,6 +315,7 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     }
     void loadStatus(){
         currStatus.setText(option[buttonPressed]);
+        applyStatusStyle(buttonPressed);
     }
 
     public void updateStatus(ActionEvent event) {
@@ -333,5 +334,23 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
         this.taskDetail.setText(taskDetail);
         this.taskTitle.setText(taskTitle);
         this.currStatus.setText(status.toString());
+    }
+
+    private void applyStatusStyle(int index) {
+        // Remove all status classes first
+        currStatus.getStyleClass().removeAll(
+                "status-todo",
+                "status-progress",
+                "status-review",
+                "status-done"
+        );
+
+        // Add the right one
+        switch (index) {
+            case 0 -> currStatus.getStyleClass().add("status-todo");       // TODO
+            case 1 -> currStatus.getStyleClass().add("status-progress");   // IN_PROGRESS
+            case 2 -> currStatus.getStyleClass().add("status-review");     // IN_REVIEW
+            case 3 -> currStatus.getStyleClass().add("status-done");       // DONE
+        }
     }
 }

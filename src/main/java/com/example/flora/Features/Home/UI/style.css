@@ -284,3 +284,198 @@
 .scroll-pane .scroll-bar:horizontal .thumb:hover {
     -fx-background-color: #A855F7;
 }
+
+
+
+/* ── SlideTaskInfo.css ── */
+
+/* ── Slide panel root ── */
+.slide-panel {
+    -fx-background-color: #0E0C18;
+    -fx-background-radius: 19;
+    -fx-border-color: #2D2845;
+    -fx-border-width: 0 0 0 1;
+}
+
+/* ── Task title ── */
+.slide-task-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* ── Detail text area ── */
+.slide-detail-box {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 14px;
+}
+
+/* ── Status indicator button ── */
+.status-indicator-btn {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(52,211,153,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.status-indicator-btn:hover {
+    -fx-background-color: rgba(52,211,153,0.22);
+    -fx-border-color: #34D399;
+    -fx-effect: dropshadow(gaussian, rgba(52,211,153,0.2), 10, 0, 0, 3);
+}
+
+/* For IN_PROGRESS status specifically */
+.status-indicator-btn-progress {
+    -fx-background-color: rgba(251,183,36,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(251,183,36,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #FBB724;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.status-indicator-btn-progress:hover {
+    -fx-background-color: rgba(251,183,36,0.22);
+    -fx-border-color: #FBB724;
+}
+
+/* ── Update button ── */
+.update-btn {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6D4FC2, #A855F7);
+    -fx-background-radius: 12;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.update-btn:hover {
+    -fx-opacity: 0.88;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.4), 14, 0, 0, 4);
+    -fx-translate-y: -1;
+}
+
+/* ── Close button ── */
+.slide-close-btn {
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #F87171;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.slide-close-btn:hover {
+    -fx-background-color: rgba(248,113,113,0.25);
+    -fx-border-color: #F87171;
+    -fx-effect: dropshadow(gaussian, rgba(248,113,113,0.2), 8, 0, 0, 2);
+}
+
+/* ── Separator ── */
+.slide-divider {
+    -fx-background-color: #2D2845;
+    -fx-border-color: #2D2845;
+}
+
+.status-review {
+    -fx-background-color: rgba(99,179,237,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(99,179,237,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #63B3ED;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.status-review:hover {
+    -fx-background-color: rgba(99,179,237,0.22);
+    -fx-border-color: #63B3ED;
+}
+
+/* TODO - Blue */
+.status-todo {
+    -fx-background-color: rgba(99,179,237,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(99,179,237,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #63B3ED;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.status-todo:hover {
+    -fx-background-color: rgba(99,179,237,0.22);
+    -fx-border-color: #63B3ED;
+}
+
+/* IN_PROGRESS - Amber */
+.status-progress {
+    -fx-background-color: rgba(251,183,36,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(251,183,36,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #FBB724;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.status-progress:hover {
+    -fx-background-color: rgba(251,183,36,0.22);
+    -fx-border-color: #FBB724;
+}
+
+/* IN_REVIEW - Purple */
+.status-review {
+    -fx-background-color: rgba(196,181,245,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(196,181,245,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.status-review:hover {
+    -fx-background-color: rgba(196,181,245,0.22);
+    -fx-border-color: #C4B5F5;
+}
+
+/* DONE - Green */
+.status-done {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(52,211,153,0.3);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.status-done:hover {
+    -fx-background-color: rgba(52,211,153,0.22);
+    -fx-border-color: #34D399;
+}
