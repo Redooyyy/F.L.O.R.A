@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1102.0" style="-fx-background-color: #654C8C; -fx-background-radius: 19;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Task.UI.TaskUI_Controller">
    <children>
-      <ScrollPane layoutY="77.0" prefHeight="455.0" prefWidth="293.0" stylesheets="@TaskStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <ScrollPane fx:id="proScroll" layoutY="77.0" prefHeight="455.0" prefWidth="293.0" stylesheets="@TaskStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <content>
             <VBox fx:id="projectCardScroll" prefHeight="453.0" prefWidth="290.0" />
          </content>
@@ -22,7 +22,7 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ScrollPane layoutX="6.0" layoutY="95.0" prefHeight="410.0" prefWidth="307.0" stylesheets="@TaskStyle.css">
+            <ScrollPane fx:id="tasScroll" layoutX="6.0" layoutY="95.0" prefHeight="410.0" prefWidth="307.0" stylesheets="@TaskStyle.css">
                <content>
                   <VBox fx:id="TaskCardScroll" prefHeight="407.0" prefWidth="273.0" spacing="10.0" />
                </content>

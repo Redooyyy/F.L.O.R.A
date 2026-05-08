@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -17,6 +18,10 @@ import java.util.ResourceBundle;
 public class TaskUI_Controller implements Initializable {
     private final TaskViewModel taskViewModel;
     @FXML
+    private ScrollPane tasScroll;
+    @FXML
+    private ScrollPane proScroll;
+    @FXML
     private Label projectNameInViewBox;
     @FXML
     private VBox projectCardScroll;
@@ -25,6 +30,17 @@ public class TaskUI_Controller implements Initializable {
 
     public TaskUI_Controller(TaskViewModel taskViewModel){
         this.taskViewModel = taskViewModel;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        removeScrollBar(tasScroll);
+        removeScrollBar(proScroll);
+        try {
+            addCards();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     AnchorPane cards() throws IOException {
@@ -43,12 +59,10 @@ public class TaskUI_Controller implements Initializable {
         TaskCardScroll.getChildren().add(cards());
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        try {
-            addCards();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+
+    void removeScrollBar(ScrollPane scrollPane){
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 }
