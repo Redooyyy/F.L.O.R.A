@@ -9,6 +9,7 @@ import com.example.flora.Features.Home.model.Notification;
 import com.example.flora.Features.Overview.UI.Overview_Controller;
 import com.example.flora.Features.Project.UI.ProjectUI_Controller;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
+import com.example.flora.Features.Task.model.TaskStatus;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
@@ -84,6 +85,7 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     //NOTE: Init zone
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    loadStatus();
         removeScrollBar(this.notificationScroll);
         notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
 
@@ -244,7 +246,7 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
 
     @FXML
     private void taskPage() throws IOException {
-    loadPage(Path.TASK,e->new TaskUI_Controller(appContainer.getTaskViewModel()));
+    loadPage(Path.TASK,e->new TaskUI_Controller(appContainer.getTaskViewModel(),this));
     toggle();
     }
 
@@ -285,5 +287,51 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
 
     void toggle(){
         if(toogleBar) sideBarButton(null);
+    }
+
+
+
+    //NOTE: TASK part
+    @FXML
+    private AnchorPane slideTaskInfo;
+    @FXML
+    private Label taskTitle;
+    @FXML
+    private Label taskDetail;
+    @FXML
+    private Button currStatus;
+    private static int buttonPressed =0;
+    private final String[] option= {
+            TaskStatus.TODO.toString(),
+            TaskStatus.IN_PROGRESS.toString(),
+            TaskStatus.IN_REVIEW.toString(),
+            TaskStatus.DONE.toString()
+    };
+
+    public void statusIndicate(ActionEvent event) {
+        buttonPressed++;
+        if(buttonPressed>3) buttonPressed = 0;
+        loadStatus();
+    }
+    void loadStatus(){
+        currStatus.setText(option[buttonPressed]);
+    }
+
+    public void updateStatus(ActionEvent event) {
+    }
+
+    public void close(ActionEvent event) {
+    slideRight(); // working
+    }
+    public void slideLeft(){
+        slideEffect(slideTaskInfo,Duration.millis(500),-487);
+    }
+    void slideRight(){
+        slideEffect(slideTaskInfo,Duration.millis(500),487);
+    }
+    public void taskValue(String taskTitle, String taskDetail, TaskStatus status){
+        this.taskDetail.setText(taskDetail);
+        this.taskTitle.setText(taskTitle);
+        this.currStatus.setText(status.toString());
     }
 }

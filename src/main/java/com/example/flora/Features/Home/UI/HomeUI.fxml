@@ -325,6 +325,38 @@
             </Button>
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="slideTaskInfo" layoutX="1133.0" layoutY="136.0" prefHeight="456.0" prefWidth="460.0" style="-fx-background-color: #08000D; -fx-background-radius: 19;">
+         <children>
+            <Label fx:id="taskTitle" alignment="CENTER" layoutX="77.0" layoutY="7.0" prefHeight="37.0" prefWidth="307.0" text="Hospital Management System" textFill="#f8f8f8">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="taskDetail" alignment="TOP_LEFT" layoutX="7.0" layoutY="71.0" prefHeight="293.0" prefWidth="447.0" text="Hospital Management System" textFill="#f8f8f8">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+            <Button fx:id="currStatus" layoutX="290.0" layoutY="397.0" mnemonicParsing="false" onAction="#statusIndicate" prefHeight="37.0" prefWidth="125.0" style="-fx-background-color: green; -fx-background-radius: 19;" text="IN_PROGRESS" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="55.0" layoutY="395.0" mnemonicParsing="false" onAction="#updateStatus" prefHeight="37.0" prefWidth="125.0" style="-fx-background-color: blue; -fx-background-radius: 19;" text="Update" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="7.0" layoutY="11.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="62.0" style="-fx-background-color: red; -fx-background-radius: 19;" text="Close" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
    <padding>
       <Insets left="10.0" />
