@@ -144,7 +144,7 @@
                   </Label>
                </children>
             </HBox>
-            <Button fx:id="clearAllButton" layoutX="420.0" layoutY="9.0" mnemonicParsing="false" onAction="#clearAll" prefHeight="31.0" prefWidth="91.0" style="-fx-background-color: red; -fx-background-radius: 19;" text="Clear All   " textFill="WHITE">
+            <Button fx:id="clearAllButton" layoutX="420.0" layoutY="9.0" mnemonicParsing="false" onAction="#clearAll" prefHeight="31.0" prefWidth="91.0" styleClass="slide-close-btn" text="Clear All   " textFill="WHITE">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
@@ -319,6 +319,38 @@
                </font>
             </Button>
             <Button layoutX="472.0" layoutY="7.0" mnemonicParsing="false" onAction="#closeNotificationInviteDesc" prefHeight="30.0" prefWidth="76.0" styleClass="panel-close-btn" text="Close" textFill="#e4e4e4">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="slideTaskInfo" layoutX="1133.0" layoutY="136.0" prefHeight="456.0" prefWidth="460.0" styleClass="slide-panel" stylesheets="@style.css">
+         <children>
+            <Label fx:id="taskTitle" alignment="CENTER" layoutX="77.0" layoutY="7.0" prefHeight="37.0" prefWidth="307.0" styleClass="slide-task-title" text="Hospital Management System" textFill="#f8f8f8">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="taskDetail" alignment="TOP_LEFT" layoutX="7.0" layoutY="71.0" prefHeight="293.0" prefWidth="447.0" styleClass="detail-body-box" text="Hospital Management System" textFill="#f8f8f8" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+            <Button fx:id="currStatus" layoutX="290.0" layoutY="397.0" mnemonicParsing="false" onAction="#statusIndicate" prefHeight="37.0" prefWidth="125.0" styleClass="status-indicator-btn-progress" text="IN_PROGRESS" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="55.0" layoutY="395.0" mnemonicParsing="false" onAction="#updateStatus" prefHeight="37.0" prefWidth="125.0" styleClass="update-btn" text="Update" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button layoutX="7.0" layoutY="11.0" mnemonicParsing="false" onAction="#close" prefHeight="20.0" prefWidth="62.0" styleClass="slide-close-btn" text="Close" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
