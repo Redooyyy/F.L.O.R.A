@@ -22,9 +22,9 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ScrollPane layoutX="6.0" layoutY="95.0" prefHeight="410.0" prefWidth="275.0" stylesheets="@TaskStyle.css">
+            <ScrollPane layoutX="6.0" layoutY="95.0" prefHeight="410.0" prefWidth="307.0" stylesheets="@TaskStyle.css">
                <content>
-                  <VBox fx:id="TaskCardScroll" prefHeight="407.0" prefWidth="273.0" />
+                  <VBox fx:id="TaskCardScroll" prefHeight="407.0" prefWidth="273.0" spacing="10.0" />
                </content>
             </ScrollPane>
          </children>
