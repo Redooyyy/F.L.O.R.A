@@ -135,6 +135,44 @@ public class SceneTransition {
         }
     }
 
+    public void switchToLogin(String toFxml, Callback<Class<?>, Object> controllerFactory) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(toFxml));
+        loader.setControllerFactory(controllerFactory);
+        Parent newRoot = loader.load();
+        Scene scene = stage.getScene();
+        Parent oldRoot = scene.getRoot();
+
+        newRoot.setOpacity(0);
+        newRoot.setScaleX(1.05);
+        newRoot.setScaleY(1.05);
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), oldRoot);
+        fadeOut.setToValue(0);
+
+        ScaleTransition scaleOut = new ScaleTransition(Duration.millis(200), oldRoot);
+        scaleOut.setToX(0.95);
+        scaleOut.setToY(0.95);
+
+        ParallelTransition out = new ParallelTransition(fadeOut, scaleOut);
+        out.setOnFinished(e -> {
+            scene.setRoot(newRoot);
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(350), newRoot);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+
+            ScaleTransition scaleIn = new ScaleTransition(Duration.millis(350), newRoot);
+            scaleIn.setFromX(1.05);
+            scaleIn.setFromY(1.05);
+            scaleIn.setToX(1);
+            scaleIn.setToY(1);
+
+            new ParallelTransition(fadeIn, scaleIn).play();
+        });
+
+        out.play();
+    }
+
     private void playFadeIn(AnchorPane pane) {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(250), pane);
         fadeIn.setFromValue(0);
