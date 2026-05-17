@@ -3,6 +3,7 @@ package com.example.flora.Features.Home.UI;
 import com.example.flora.Core.Constants.Path;
 import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Core.Transition.SceneTransition;
+import com.example.flora.Features.Auth.UI.LoginUI_Controller;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
@@ -24,6 +25,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
@@ -260,7 +262,18 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     private void settingPage(){}
 
     @FXML
-    private void logout(){}
+    private void logout() throws IOException {
+        Stage stage = (Stage) contentPane.getScene().getWindow();
+        SceneTransition transition = new SceneTransition(stage);
+        transition.switchToLogin(
+                Path.LOGIN,
+                e -> new LoginUI_Controller(
+                        appContainer.getAuthViewModel(),
+                        appContainer
+                )
+        );
+
+    }
 
     //NOTE: Helper functions
     void removeScrollBar(ScrollPane scrollPane){
