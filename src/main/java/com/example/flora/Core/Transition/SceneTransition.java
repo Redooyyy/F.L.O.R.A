@@ -2,6 +2,7 @@ package com.example.flora.Core.Transition;
 
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -171,6 +172,22 @@ public class SceneTransition {
         });
 
         out.play();
+    }
+
+    // Error / mismatch shaking effect
+    public void shakeAndHighlight(Node node) {
+        String def = node.getStyle();
+        node.setStyle("-fx-border-color: #e74c3c; -fx-border-width: 2; -fx-border-radius: 0;");
+        TranslateTransition tt = new TranslateTransition(Duration.millis(60), node);
+        tt.setFromX(0);
+        tt.setByX(10);
+        tt.setCycleCount(6);
+        tt.setAutoReverse(true);
+        tt.play();
+
+        tt.setOnFinished(e -> {
+            node.setStyle(def);
+        });
     }
 
     private void playFadeIn(AnchorPane pane) {
