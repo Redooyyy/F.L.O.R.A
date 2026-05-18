@@ -1,10 +1,12 @@
 package com.example.flora.Features.Auth.UI;
 
 import com.example.flora.Core.DI.AppContainer;
+import com.example.flora.Core.Transition.ErrorTransition;
 import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import com.example.flora.Features.Home.UI.HomeUI_Controller;
 import javafx.animation.TranslateTransition;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginUI_Controller{
 
@@ -25,6 +28,8 @@ public class LoginUI_Controller{
     boolean slideToggle = true;
     @FXML
     private AnchorPane slidePane;
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private ImageView work;
     @FXML
@@ -138,10 +143,14 @@ public class LoginUI_Controller{
     }
     @FXML
     private void login(ActionEvent event) throws IOException {
-      //  authViewModel.login(email.getText().trim(),password.getText());
-        Stage stage = (Stage)(((Node)event.getSource()).getScene().getWindow());
+        Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
         SceneTransition sceneTransition = new SceneTransition(stage);
-
-        sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml",e->new HomeUI_Controller(appContainer,appContainer.getNotificationViewModel()));
+        if (Objects.equals(password.getText(), "reo")) {
+            //  authViewModel.login(email.getText().trim(),password.getText());
+            sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml", e -> new HomeUI_Controller(appContainer, appContainer.getNotificationViewModel()));
+        } else {
+            sceneTransition.shakeAndHighlight(password);
+            ErrorTransition.showToast("Invalid Username/Password",mainPane,true);
+        }
     }
 }
