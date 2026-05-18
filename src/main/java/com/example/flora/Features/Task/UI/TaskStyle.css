@@ -1,0 +1,137 @@
+
+
+/* ── TaskUI.css ── */
+
+/* ── Root ── */
+.task-root {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 19;
+}
+
+/* ── Left project list panel ── */
+.project-list-panel {
+    -fx-background-color: #0E0C18;
+    -fx-border-color: #2D2845;
+    -fx-border-width: 0 1 0 0;
+}
+
+.project-list-header-label {
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* Project row buttons in the left panel */
+.proj-row {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+.proj-row:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.2), 12, 0, 0, 3);
+    -fx-translate-x: 3;
+}
+
+.proj-row-active {
+    -fx-background-color: #231E38;
+    -fx-background-radius: 14;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 14, 0, 0, 3);
+}
+
+.proj-row-meta {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+}
+
+/* ── Main task area ── */
+.task-main-panel {
+    -fx-background-color: #13111A;
+}
+
+.task-area-header {
+    -fx-background-color: #1A1528;
+    -fx-border-color: #2D2845;
+    -fx-border-width: 0 0 1 0;
+}
+
+.task-area-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.task-count-badge {
+    -fx-background-color: rgba(109,79,194,0.15);
+    -fx-background-radius: 20;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* ScrollPane cleanup */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 4;
+    -fx-pref-width: 4px;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 4;
+}
+
+.scroll-pane .scroll-bar:vertical .increment-button,
+.scroll-pane .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-pref-height: 0;
+}
+
+/* Separator */
+.separator {
+    -fx-background-color: #2D2845;
+}
+
+.vertical-separator-glow {
+    -fx-background-color: linear-gradient(
+        to bottom,
+        transparent,
+        #6D4FC2,
+        #A855F7,
+        #6D4FC2,
+        transparent
+    );
+    -fx-pref-width: 1.5;
+    -fx-min-width: 1.5;
+    -fx-max-width: 1.5;
+    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.6), 8, 0, 0, 0);
+    -fx-opacity: 0.8;
+}

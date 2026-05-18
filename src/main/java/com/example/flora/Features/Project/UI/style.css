@@ -1,0 +1,68 @@
+/*This line of code I found in stack overflow!! I couldn't make scroll-pane transparent from scene builder so I had to do it -_- */
+.scroll-pane {
+-fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport{
+-fx-background-color: transparent;
+}
+
+/* ── Root background ── */
+.root-pane {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 19;
+}
+
+/* ── Sidebar panel ── */
+.sidebar-panel {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 19;
+}
+
+/* ── Project card ── */
+.project-card {
+    -fx-background-color: #1E1A2E;
+    -fx-background-radius: 16;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.project-card:hover {
+    -fx-background-color: #231E38;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.3), 20, 0, 0, 6);
+}
+
+/* ── Tech / device pills ── */
+.pill-label {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 20;
+    -fx-border-color: #3D3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #9D8FBF;
+}
+
+/* ── Stat boxes ── */
+.stat-box {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.stat-box:hover {
+    -fx-border-color: #6D4FC2;
+}
+
+/* ── ScrollPane cleanup ── */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}

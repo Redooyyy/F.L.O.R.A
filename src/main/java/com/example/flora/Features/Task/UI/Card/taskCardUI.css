@@ -1,0 +1,88 @@
+/* ── TaskCardUI.css ── */
+
+/* ── Task Card root ── */
+.task-card {
+    -fx-background-color: #1E1A2E;
+    -fx-background-radius: 16;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+
+.task-card:hover {
+    -fx-background-color: #231E38;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 20, 0, 0, 5);
+    -fx-translate-y: -2;
+}
+
+/* Task title text */
+.task-card-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* Task subtitle text */
+.task-card-sub {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 13px;
+}
+
+/* Due date badge */
+.due-badge {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 20;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+/* ── Status badges ── */
+.status-progress {
+    -fx-background-color: rgba(251,183,36,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(251,183,36,0.3);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #FBB724;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.status-done {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(52,211,153,0.3);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.status-todo {
+    -fx-background-color: rgba(99,179,237,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(99,179,237,0.3);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #63B3ED;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.status-late {
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(248,113,113,0.3);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #F87171;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}

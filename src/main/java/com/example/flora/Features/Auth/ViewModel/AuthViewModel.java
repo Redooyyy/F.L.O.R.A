@@ -6,6 +6,10 @@ import com.example.flora.Features.Auth.service.AuthService;
 public class AuthViewModel {
     public AuthService authService; //TODO: Must inject dependency
 
+    public AuthViewModel(AuthService service){
+        this.authService = service;
+    }
+
     public User login(String email, String password){
         return authService.login(email,password);
     }

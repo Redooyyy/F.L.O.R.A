@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="222.0" styleClass="project-card" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Project.UI.Card.ProjectCard_Controller">
+   <children>
+      <Label fx:id="projectName" alignment="TOP_LEFT" layoutX="11.0" layoutY="10.0" prefHeight="65.0" prefWidth="204.0" text="Hospital Management System" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Text fill="#bcb7b7" layoutX="11.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="󰐠">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Label fx:id="projectLead" alignment="TOP_LEFT" layoutX="39.0" layoutY="87.0" prefHeight="22.0" prefWidth="178.0" text="Ebne Talha Bin Faruk" textFill="WHITE" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Text fill="#bcb7b7" layoutX="10.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="󰾰" wrappingWidth="23.399999618530273">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Label fx:id="device1" alignment="CENTER" layoutX="39.0" layoutY="171.0" styleClass="pill-label" stylesheets="@../style.css" text="Linux" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="device2" alignment="CENTER" layoutX="100.0" layoutY="171.0" styleClass="pill-label" stylesheets="@../style.css" text="Mobile" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="device3" alignment="CENTER" layoutX="161.0" layoutY="171.0" styleClass="pill-label" stylesheets="@../style.css" text="IOS" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Text fill="#bcb7b7" layoutX="7.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="23.399999618530273">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Label fx:id="tech1" alignment="CENTER" layoutX="37.0" layoutY="212.0" styleClass="pill-label" stylesheets="@../style.css" text="NodeJS" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="tech2" alignment="CENTER" layoutX="98.0" layoutY="212.0" styleClass="pill-label" stylesheets="@../style.css" text="NextJs" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="tech3" alignment="CENTER" layoutX="159.0" layoutY="212.0" styleClass="pill-label" stylesheets="@../style.css" text="TS" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="tech4" alignment="CENTER" layoutX="37.0" layoutY="241.0" styleClass="pill-label" stylesheets="@../style.css" text="React" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="tech5" alignment="CENTER" layoutX="98.0" layoutY="241.0" styleClass="pill-label" stylesheets="@../style.css" text="Flutter" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+      <Label fx:id="tech6" alignment="CENTER" layoutX="159.0" layoutY="241.0" styleClass="pill-label" stylesheets="@../style.css" text="mySQL" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="2.0" left="4.0" right="4.0" top="2.0" />
+         </padding>
+      </Label>
+   </children>
+</AnchorPane>

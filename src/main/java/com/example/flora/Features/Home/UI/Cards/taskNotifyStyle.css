@@ -1,0 +1,89 @@
+/* ── TaskNotify.css ── */
+
+/* Card root */
+.task-notify-card {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+
+.task-notify-card:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.22), 16, 0, 0, 3);
+    -fx-translate-x: 3;
+}
+
+/* Avatar circle */
+.task-avatar {
+    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, #7C5CE4, #A855F7);
+    -fx-stroke: transparent;
+}
+
+/* Project name text */
+.task-proj-name {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Subtitle (category · status) */
+.task-proj-sub {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+}
+
+/* "Task :" label */
+.task-count-label {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+/* Task count number */
+.task-count {
+    -fx-text-fill: #F87171;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Task count — zero / completed */
+// TODO: done task add
+.task-count-done {
+    -fx-text-fill: #34D399;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Mini stat boxes (Due Tasks / Completed at top of right panel) */
+.mini-stat-box {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+
+.mini-stat-box:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.2), 16, 0, 0, 3);
+}
+
+.mini-stat-label {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.mini-stat-value-red {
+    -fx-text-fill: #F87171;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.mini-stat-value-green {
+    -fx-text-fill: #34D399;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
