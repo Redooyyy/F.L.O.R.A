@@ -1,0 +1,1032 @@
+package com.example.flora.Features.Project.UI;
+
+import com.example.flora.Core.Helper.DateAndTime;
+import com.example.flora.Features.Bug.model.Bug;
+import com.example.flora.Features.Bug.model.BugStatus;
+import com.example.flora.Features.Project.model.Project;
+import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
+import com.example.flora.Features.Task.model.Task;
+import com.example.flora.Features.Task.model.TaskStatus;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
+import javafx.util.StringConverter;
+
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.LinkedHashMap;
+import java.util.ArrayList;
+
+import static com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel.DATE_FMT;
+
+
+public class ProjectDetailUI_Controller implements Initializable {
+
+
+    @FXML
+    private AnchorPane projectDetailRoot;
+
+
+    @FXML
+    private Label detailProjectName;
+    @FXML
+    private Label roleBadge;
+
+
+    @FXML
+    private Button tabTasks;
+    @FXML
+    private Button tabMembers;
+    @FXML
+    private Button tabBugs;
+
+
+    @FXML
+    private AnchorPane tasksTab;
+    @FXML
+    private AnchorPane membersTab;
+    @FXML
+    private AnchorPane bugsTab;
+
+
+    @FXML
+    private Button addTaskToggleBtn;
+    @FXML
+    private MenuButton filterMenuBtn;
+
+
+    @FXML
+    private VBox addTaskPanel;
+    @FXML
+    private Button modeAssignBtn;
+    @FXML
+    private Button modeDraftBtn;
+    @FXML
+    private HBox assignFields;
+    @FXML
+    private HBox draftFields;
+    @FXML
+    private TextField taskTitleInput;
+    @FXML
+    private TextField taskAssigneeInput;
+    @FXML
+    private Label assignDeadlineChip;
+    @FXML
+    private TextField draftTitleInput;
+    @FXML
+    private Label draftDeadlineChip;
+
+
+    @FXML
+    private VBox taskList;
+    @FXML
+    private ScrollPane taskScroll;
+
+
+    @FXML
+    private HBox inviteRow;
+    @FXML
+    private TextField inviteSearchField;
+    @FXML
+    private Label inviteFeedback;
+    @FXML
+    private VBox memberList;
+
+
+    @FXML
+    private HBox reportBugRow;
+    @FXML
+    private TextField bugTitleInput;
+    @FXML
+    private VBox bugList;
+    @FXML
+    private Button bugFilterAll;
+    @FXML
+    private Button bugFilterOpen;
+    @FXML
+    private Button bugFilterClosed;
+
+
+    @FXML
+    private Label infoLeader;
+    @FXML
+    private Label infoCreated;
+    @FXML
+    private Label infoMemberCount;
+    @FXML
+    private Label infoDescription;
+    @FXML
+    private Label statTasks;
+    @FXML
+    private Label statBugs;
+
+    //TODO:DI must
+     // just for testing
+    private final ProjectDetailViewModel viewModel = new ProjectDetailViewModel();
+
+
+    private boolean addPanelOpen     = false;
+    private Runnable onClose;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        removeScrollBars(taskScroll);
+        showTab(tasksTab, tabTasks);
+
+
+        viewModel.taskCountProperty().addListener((obs, o, n) ->
+                statTasks.setText(String.valueOf(n)));
+        viewModel.bugCountProperty().addListener((obs, o, n) ->
+                statBugs.setText(String.valueOf(n)));
+        viewModel.memberCountProperty().addListener((obs, o, n) ->
+                infoMemberCount.setText(n + " members"));
+
+         viewModel.activeTaskFilterProperty().addListener((obs, o, n) -> renderTasks());
+        viewModel.getTasks().addListener(
+                (javafx.collections.ListChangeListener<Task>) c -> renderTasks());
+
+         viewModel.activeBugFilterProperty().addListener((obs, o, n) -> renderBugs());
+        viewModel.getBugs().addListener(
+                (javafx.collections.ListChangeListener<Bug>) c -> renderBugs());
+
+         viewModel.getMembers().addListener(
+                (javafx.collections.ListChangeListener<String>) c -> renderMembers());
+    }
+
+
+    public void openProject(Project project, String currentUserId,
+                            boolean isLeader, Runnable onClose) {
+        this.onClose = onClose;
+
+        viewModel.init(project, currentUserId, isLeader);
+
+        populateInfo(project);
+        applyRoleVisibility(isLeader);
+        showTab(tasksTab, tabTasks);
+        slideIn();
+    }
+
+
+    @FXML private void showTasksTab(ActionEvent e)   { showTab(tasksTab,   tabTasks);   }
+    @FXML private void showMembersTab(ActionEvent e) { showTab(membersTab, tabMembers); }
+    @FXML private void showBugsTab(ActionEvent e)    { showTab(bugsTab,    tabBugs);    }
+
+    private void showTab(AnchorPane active, Button btn) {
+        tasksTab.setVisible(false);
+        membersTab.setVisible(false);
+        bugsTab.setVisible(false);
+        active.setVisible(true);
+        for (Button b : new Button[]{tabTasks, tabMembers, tabBugs}) {
+            b.getStyleClass().removeAll("tab-btn-active", "tab-btn");
+            b.getStyleClass().add("tab-btn");
+        }
+        btn.getStyleClass().removeAll("tab-btn");
+        btn.getStyleClass().add("tab-btn-active");
+    }
+
+
+    @FXML
+    private void toggleAddTaskPanel(ActionEvent e) {
+        addPanelOpen = !addPanelOpen;
+        addTaskPanel.setVisible(addPanelOpen);
+        addTaskPanel.setManaged(addPanelOpen);
+        addTaskToggleBtn.setText(addPanelOpen ? "✕  Cancel" : "➕  Add Task");
+        addTaskToggleBtn.getStyleClass().removeAll("btn-accept", "slide-close-btn");
+        addTaskToggleBtn.getStyleClass().add(addPanelOpen ? "slide-close-btn" : "btn-accept");
+        AnchorPane.setTopAnchor(taskScroll, addPanelOpen ? 170.0 : 52.0);
+    }
+
+
+    @FXML
+    private void switchToAssignMode(ActionEvent e) {
+        assignFields.setVisible(true);  assignFields.setManaged(true);
+        draftFields.setVisible(false);  draftFields.setManaged(false);
+        setModeActive(modeAssignBtn, modeDraftBtn);
+    }
+
+    @FXML
+    private void switchToDraftMode(ActionEvent e) {
+        assignFields.setVisible(false); assignFields.setManaged(false);
+        draftFields.setVisible(true);   draftFields.setManaged(true);
+        setModeActive(modeDraftBtn, modeAssignBtn);
+    }
+
+    private void setModeActive(Button active, Button inactive) {
+        active.getStyleClass().removeAll("task-filter-btn", "task-filter-btn-active");
+        active.getStyleClass().add("task-filter-btn-active");
+        inactive.getStyleClass().removeAll("task-filter-btn", "task-filter-btn-active");
+        inactive.getStyleClass().add("task-filter-btn");
+    }
+
+
+    @FXML
+    private void toggleAssignDeadline(MouseEvent e) {
+        toggleDeadlineRow("assign-dl-row", assignFields, assignDeadlineChip, true);
+    }
+
+    @FXML
+    private void toggleDraftDeadline(MouseEvent e) {
+        toggleDeadlineRow("draft-dl-row", draftFields, draftDeadlineChip, false);
+    }
+
+    private void toggleDeadlineRow(String id, HBox anchor, Label chip, boolean isAssign) {
+        int     anchorIdx = addTaskPanel.getChildren().indexOf(anchor);
+        boolean exists    = addTaskPanel.getChildren().stream()
+                .anyMatch(n -> id.equals(n.getUserData()));
+        if (exists) {
+            addTaskPanel.getChildren().removeIf(n -> id.equals(n.getUserData()));
+            chip.setText("📅  Set deadline");
+            if (isAssign) viewModel.clearPendingAssignDeadline();
+            else          viewModel.clearPendingDraftDeadline();
+        } else {
+            addTaskPanel.getChildren().add(anchorIdx + 1,
+                    buildInlineDateRow(id, chip, isAssign));
+        }
+    }
+
+    private HBox buildInlineDateRow(String id, Label chip, boolean isAssign) {
+        HBox row = new HBox(8);
+        row.setUserData(id);
+        row.setAlignment(Pos.CENTER_LEFT);
+
+        DatePicker dp = new DatePicker();
+        dp.setPromptText("Pick a date...");
+        dp.setPrefWidth(170);
+        dp.setPrefHeight(32);
+        dp.getStyleClass().add("modal-text-field");
+        dp.setStyle("-fx-font-size: 12px;");
+        dp.setConverter(dateConverter());
+
+        Button minus7 = quickAdjust("−7d", dp, -7);
+        Button minus1 = quickAdjust("−1d", dp, -1);
+        Button plus1  = quickAdjust("+1d", dp,  1);
+        Button plus7  = quickAdjust("+7d", dp,  7);
+
+        Button okBtn = new Button("✔  Set");
+        okBtn.getStyleClass().add("btn-accept");
+        okBtn.setPadding(new Insets(3, 10, 3, 10));
+        okBtn.setOnAction(ev -> {
+            LocalDate chosen = dp.getValue();
+            if (isAssign) viewModel.setPendingAssignDeadline(chosen);
+            else          viewModel.setPendingDraftDeadline(chosen);
+            chip.setText(chosen != null ? "📅  " + chosen.format(DATE_FMT) : "📅  Set deadline");
+            addTaskPanel.getChildren().removeIf(n -> id.equals(n.getUserData()));
+        });
+
+        row.getChildren().addAll(minus7, minus1, dp, plus1, plus7, okBtn);
+        return row;
+    }
+
+
+    @FXML private void filterMyTasks(ActionEvent e)    { setTaskFilter("👤  My Tasks",     "MY");        }
+    @FXML private void filterAllTasks(ActionEvent e)   { setTaskFilter("📋  All Tasks",    "ALL");       }
+    @FXML private void filterCompleted(ActionEvent e)  { setTaskFilter("✅  Completed",    "COMPLETED"); }
+    @FXML private void filterDue(ActionEvent e)        { setTaskFilter("⏳  Due / Overdue","DUE");       }
+    @FXML private void filterDrafts(ActionEvent e)     { setTaskFilter("✏  Drafts",        "DRAFTS");    }
+    @FXML private void filterByAssignee(ActionEvent e) {
+        filterMenuBtn.setText("👥  By Assignee");
+        renderGroupedByAssignee();
+    }
+
+    private void setTaskFilter(String label, String mode) {
+        filterMenuBtn.setText(label);
+        viewModel.setActiveTaskFilter(mode); // triggers listener → renderTasks()
+    }
+
+
+    private void renderTasks() {
+        taskList.getChildren().clear();
+        List<Task> list = viewModel.getFilteredTasks();
+        if (list.isEmpty()) {
+            taskList.getChildren().add(emptyLabel("No tasks for this filter."));
+        } else {
+            for (Task t : list) taskList.getChildren().add(buildTaskCard(t));
+        }
+    }
+
+    private void renderGroupedByAssignee() {
+        taskList.getChildren().clear();
+        Map<String, List<Task>> grouped = new LinkedHashMap<>();
+        viewModel.getTasks().stream()
+                .filter(t -> !viewModel.isDraft(t))
+                .forEach(t -> grouped.computeIfAbsent(t.getAssigneeId(), k -> new ArrayList<>()).add(t));
+
+        if (grouped.isEmpty()) {
+            taskList.getChildren().add(emptyLabel("No tasks yet."));
+            return;
+        }
+        for (Map.Entry<String, List<Task>> entry : grouped.entrySet()) {
+            taskList.getChildren().add(buildAssigneeHeader(entry.getKey(), entry.getValue().size()));
+            for (Task t : entry.getValue()) {
+                VBox card = buildTaskCard(t);
+                card.setPadding(new Insets(0, 0, 0, 18));
+                taskList.getChildren().add(card);
+            }
+        }
+    }
+
+
+    private VBox buildTaskCard(Task t) {
+        boolean draft = viewModel.isDraft(t);
+
+        VBox card = new VBox(0);
+        card.getStyleClass().add("detail-list-row");
+        card.setPrefWidth(750);
+
+        HBox titleRow = new HBox(10);
+        titleRow.setPadding(new Insets(10, 14, 4, 14));
+        titleRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label titleLbl = new Label(draft ? "✏ " + t.getTitle() : t.getTitle());
+        titleLbl.setTextFill(Color.web(draft ? "#FBB024" : "#EDE9F6"));
+        titleLbl.getStyleClass().add("row-title");
+        HBox.setHgrow(titleLbl, Priority.ALWAYS);
+
+        titleRow.getChildren().add(titleLbl);
+
+        if (!draft && t.getCreatedAt() != null && !t.getCreatedAt().isBlank()) {
+            Label createdChip = new Label("🗓 " + t.getCreatedAt());
+            createdChip.getStyleClass().add("created-at-chip");
+            createdChip.setPadding(new Insets(3, 8, 3, 8));
+
+            titleRow.getChildren().add(createdChip);
+        }
+
+        HBox metaRow = new HBox(10);
+        metaRow.setPadding(new Insets(0, 14, 10, 14));
+        metaRow.setAlignment(Pos.CENTER_LEFT);
+
+        HBox chips = new HBox(10);
+        chips.setAlignment(Pos.CENTER_LEFT);
+
+        HBox actions = new HBox(8);
+        actions.setAlignment(Pos.CENTER_RIGHT);
+        HBox.setHgrow(actions, Priority.ALWAYS);
+
+        Label deadlineChip = buildDeadlineChip(t);
+
+        Label assigneeLbl = new Label(draft ? "Unassigned" : "@" + t.getAssigneeId());
+        assigneeLbl.getStyleClass().add(draft ? "fixer-unclaimed" : "pill-label");
+        assigneeLbl.setPadding(new Insets(3, 8, 3, 8));
+
+        Label statusLbl = new Label(t.getStatus().name());
+        statusLbl.getStyleClass().add(statusStyleClass(t.getStatus()));
+        statusLbl.setPadding(new Insets(3, 8, 3, 8));
+        statusLbl.setPrefWidth(95);
+        statusLbl.setAlignment(Pos.CENTER);
+
+        chips.getChildren().addAll(deadlineChip, assigneeLbl, statusLbl);
+
+        VBox expandPanel = new VBox(8);
+        expandPanel.setPadding(new Insets(0, 14, 10, 14));
+        expandPanel.setVisible(false);
+        expandPanel.setManaged(false);
+        expandPanel.setStyle("-fx-border-color: #2D2845; -fx-border-width: 1 0 0 0;");
+
+        boolean isAssignee = !draft
+                && t.getAssigneeId() != null
+                && t.getAssigneeId().equalsIgnoreCase(viewModel.getCurrentUserId());
+
+        if (isAssignee && t.getStatus() != TaskStatus.DONE) {
+
+            Button changeStatusBtn = new Button("⟳ Status");
+            changeStatusBtn.getStyleClass().add("update-btn");
+            changeStatusBtn.setPadding(new Insets(3, 8, 3, 8));
+
+            changeStatusBtn.setOnAction(ev -> {
+                boolean open = expandPanel.isVisible();
+                expandPanel.getChildren().clear();
+
+                if (!open || !"cs".equals(expandPanel.getUserData())) {
+                    expandPanel.getChildren().add(
+                            buildChangeStatusRow(t, statusLbl, expandPanel)
+                    );
+                    expandPanel.setUserData("cs");
+                    expandPanel.setVisible(true);
+                    expandPanel.setManaged(true);
+
+                    javafx.animation.FadeTransition ft =
+                            new javafx.animation.FadeTransition(
+                                    javafx.util.Duration.millis(200), expandPanel);
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
+                } else {
+                    expandPanel.setVisible(false);
+                    expandPanel.setManaged(false);
+                }
+            });
+
+            actions.getChildren().add(changeStatusBtn);
+        }
+
+        if (viewModel.isLeader()) {
+
+            Button doneBtn = new Button("✔ Done");
+            doneBtn.getStyleClass().add("btn-accept");
+            doneBtn.setPadding(new Insets(3, 8, 3, 8));
+
+            doneBtn.setOnAction(ev -> {
+                viewModel.markTaskDone(t);
+
+                statusLbl.setText(TaskStatus.DONE.name());
+                statusLbl.getStyleClass().removeAll(
+                        "status-todo", "status-progress", "status-review"
+                );
+                statusLbl.getStyleClass().add("status-done");
+            });
+
+            Button editDlBtn = new Button("📅 Deadline");
+            editDlBtn.getStyleClass().add("update-btn");
+            editDlBtn.setPadding(new Insets(3, 8, 3, 8));
+
+            editDlBtn.setOnAction(ev -> {
+                boolean open = expandPanel.isVisible();
+                expandPanel.getChildren().clear();
+
+                if (!open || !"dl".equals(expandPanel.getUserData())) {
+                    expandPanel.getChildren().add(
+                            buildDeadlineExpandRow(t, deadlineChip, expandPanel)
+                    );
+                    expandPanel.setUserData("dl");
+                    expandPanel.setVisible(true);
+                    expandPanel.setManaged(true);
+                } else {
+                    expandPanel.setVisible(false);
+                    expandPanel.setManaged(false);
+                }
+            });
+
+            Button reassignBtn = new Button("↺ Reassign");
+            reassignBtn.getStyleClass().add("update-btn");
+            reassignBtn.setPadding(new Insets(3, 8, 3, 8));
+
+            reassignBtn.setOnAction(ev -> {
+                boolean open = expandPanel.isVisible();
+                expandPanel.getChildren().clear();
+
+                if (!open || !"ra".equals(expandPanel.getUserData())) {
+                    expandPanel.getChildren().add(
+                            buildReassignExpandRow(t, assigneeLbl, expandPanel)
+                    );
+                    expandPanel.setUserData("ra");
+                    expandPanel.setVisible(true);
+                    expandPanel.setManaged(true);
+                } else {
+                    expandPanel.setVisible(false);
+                    expandPanel.setManaged(false);
+                }
+            });
+
+            actions.getChildren().addAll(editDlBtn, reassignBtn, doneBtn);
+        }
+
+        metaRow.getChildren().addAll(chips, actions);
+
+        card.getChildren().addAll(titleRow, metaRow, expandPanel);
+
+        return card;
+    }
+
+    private HBox buildDeadlineExpandRow(Task t, Label deadlineChip, VBox expandPanel) {
+        HBox row = new HBox(8);
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.setPadding(new Insets(8, 0, 2, 0));
+
+        Label lbl = new Label("New deadline:");
+        lbl.setTextFill(Color.web("#9D8FBF"));
+        lbl.setStyle("-fx-font-size: 12px;");
+
+        LocalDate current = DateAndTime.parseDate(t.getDueDate());
+        DatePicker dp = new DatePicker(current != null ? current : LocalDate.now());
+        dp.setPrefWidth(160);
+        dp.setPrefHeight(30);
+        dp.getStyleClass().add("modal-text-field");
+        dp.setStyle("-fx-font-size: 12px;");
+        dp.setConverter(dateConverter());
+
+        Button m7      = quickAdjust("−7d", dp, -7);
+        Button m1      = quickAdjust("−1d", dp, -1);
+        Button p1      = quickAdjust("+1d", dp,  1);
+        Button p7      = quickAdjust("+7d", dp,  7);
+
+        Button saveBtn = new Button("✔ Save");
+        saveBtn.getStyleClass().add("btn-accept");
+        saveBtn.setPadding(new Insets(3, 10, 3, 10));
+        saveBtn.setOnAction(ev -> {
+            viewModel.updateTaskDeadline(t, dp.getValue());
+            refreshDeadlineChip(deadlineChip, t);
+            expandPanel.setVisible(false);
+            expandPanel.setManaged(false);
+        });
+
+        Button cancelBtn = new Button("✕");
+        cancelBtn.getStyleClass().add("slide-close-btn");
+        cancelBtn.setPadding(new Insets(3, 8, 3, 8));
+        cancelBtn.setOnAction(ev -> {
+            expandPanel.setVisible(false);
+            expandPanel.setManaged(false);
+        });
+
+        row.getChildren().addAll(lbl, m7, m1, dp, p1, p7, saveBtn, cancelBtn);
+        return row;
+    }
+
+    private HBox buildReassignExpandRow(Task t, Label assigneeLabel, VBox expandPanel) {
+        HBox row = new HBox(8);
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.setPadding(new Insets(8, 0, 2, 0));
+
+        Label lbl = new Label("Reassign to:");
+        lbl.setTextFill(Color.web("#9D8FBF"));
+        lbl.setStyle("-fx-font-size: 12px;");
+
+        TextField field = new TextField(t.getAssigneeId() != null ? t.getAssigneeId() : "");
+        field.setPromptText("Username...");
+        field.setPrefWidth(200);
+        field.setPrefHeight(30);
+        field.getStyleClass().add("modal-text-field");
+
+        Button saveBtn = new Button("✔ Reassign");
+        saveBtn.getStyleClass().add("btn-accept");
+        saveBtn.setPadding(new Insets(3, 10, 3, 10));
+        saveBtn.setOnAction(ev -> {
+            String newMember = field.getText().trim();
+            viewModel.reassignTask(t, newMember);
+            assigneeLabel.setText("@" + newMember);
+            assigneeLabel.getStyleClass().removeAll("fixer-unclaimed");
+            assigneeLabel.getStyleClass().add("pill-label");
+            expandPanel.setVisible(false);
+            expandPanel.setManaged(false);
+        });
+
+        Button cancelBtn = new Button("✕");
+        cancelBtn.getStyleClass().add("slide-close-btn");
+        cancelBtn.setPadding(new Insets(3, 8, 3, 8));
+        cancelBtn.setOnAction(ev -> {
+            expandPanel.setVisible(false);
+            expandPanel.setManaged(false);
+        });
+
+        row.getChildren().addAll(lbl, field, saveBtn, cancelBtn);
+        return row;
+    }
+
+    private HBox buildChangeStatusRow(Task t, Label statusLbl, VBox expandPanel) {
+        HBox row = new HBox(8);
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.setPadding(new Insets(8, 0, 4, 0));
+
+        Label lbl = new Label("Set status:");
+        lbl.setTextFill(Color.web("#9D8FBF"));
+        lbl.setStyle("-fx-font-size: 12px;");
+
+        TaskStatus[] allStatuses = TaskStatus.values();
+        Button[] statusBtns = new Button[allStatuses.length];
+        for (int i = 0; i < allStatuses.length; i++) {
+            TaskStatus s = allStatuses[i];
+            Button sb = new Button(statusLabel(s));
+            sb.getStyleClass().add(statusStyleClass(s));
+            sb.setPadding(new Insets(4, 10, 4, 10));
+            // Dim non-current statuses
+            if (s == t.getStatus()) {
+                sb.setStyle("-fx-cursor: hand; -fx-border-width: 2;");
+            } else {
+                sb.setStyle("-fx-cursor: hand; -fx-opacity: 0.50;");
+            }
+            sb.setOnAction(ev -> {
+                viewModel.updateTaskStatus(t, s);
+                // Update inline status label
+                statusLbl.setText(s.name());
+                statusLbl.getStyleClass().removeAll(
+                        "status-todo", "status-progress", "status-review", "status-done");
+                statusLbl.getStyleClass().add(statusStyleClass(s));
+                // Pop animation
+                javafx.animation.ScaleTransition pop =
+                        new javafx.animation.ScaleTransition(
+                                javafx.util.Duration.millis(200), statusLbl);
+                pop.setFromX(0.80); pop.setFromY(0.80);
+                pop.setToX(1.0);    pop.setToY(1.0);
+                pop.play();
+                // Fade-out the panel
+                javafx.animation.FadeTransition ft =
+                        new javafx.animation.FadeTransition(
+                                javafx.util.Duration.millis(180), expandPanel);
+                ft.setFromValue(1); ft.setToValue(0);
+                ft.setOnFinished(e -> {
+                    expandPanel.setVisible(false);
+                    expandPanel.setManaged(false);
+                    expandPanel.setOpacity(1);
+                });
+                ft.play();
+            });
+            statusBtns[i] = sb;
+        }
+
+        row.getChildren().add(lbl);
+        row.getChildren().addAll(statusBtns);
+        return row;
+    }
+
+    private String statusLabel(TaskStatus s) {
+        return switch (s) {
+            case TODO        -> "📌 To Do";
+            case IN_PROGRESS -> "⚙ In Progress";
+            case IN_REVIEW   -> "👁 In Review";
+            case DONE        -> "✅ Done";
+        };
+    }
+
+
+    @FXML
+    private void assignTask(ActionEvent event) {
+        viewModel.assignTask(
+                taskTitleInput.getText().trim(),
+                taskAssigneeInput.getText().trim(),
+                viewModel.getPendingAssignDeadline()
+        );
+        taskTitleInput.clear();
+        taskAssigneeInput.clear();
+        assignDeadlineChip.setText("📅  Set deadline");
+        addTaskPanel.getChildren().removeIf(n -> "assign-dl-row".equals(n.getUserData()));
+    }
+
+    @FXML
+    private void saveDraftTask(ActionEvent event) {
+        viewModel.saveDraftTask(
+                draftTitleInput.getText().trim(),
+                viewModel.getPendingDraftDeadline()
+        );
+        draftTitleInput.clear();
+        draftDeadlineChip.setText("📅  Set deadline");
+        addTaskPanel.getChildren().removeIf(n -> "draft-dl-row".equals(n.getUserData()));
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  Members
+    // ─────────────────────────────────────────────────────────────────────────
+
+    @FXML
+    private void sendInvite(ActionEvent event) {
+        String username = inviteSearchField.getText().trim();
+        boolean ok = viewModel.sendInvite(username);
+        inviteFeedback.setText(ok ? "✔ Invite sent to @" + username : "✖ Could not send invite.");
+        inviteFeedback.getStyleClass().removeAll("feedback-ok", "feedback-err");
+        inviteFeedback.getStyleClass().add(ok ? "feedback-ok" : "feedback-err");
+        inviteSearchField.clear();
+        javafx.animation.PauseTransition w =
+                new javafx.animation.PauseTransition(Duration.seconds(2.5));
+        w.setOnFinished(e -> inviteFeedback.setText(""));
+        w.play();
+    }
+
+    private void renderMembers() {
+        memberList.getChildren().clear();
+        String leaderId = viewModel.getCurrentProject().getOwnerId();
+        for (String username : viewModel.getMembers()) {
+            memberList.getChildren().add(buildMemberRow(username, username.equals(leaderId)));
+        }
+    }
+
+    private HBox buildMemberRow(String username, boolean isProjectLeader) {
+        HBox row = new HBox(12);
+        row.getStyleClass().add("detail-list-row");
+        row.setPadding(new Insets(10, 14, 10, 14));
+        row.setAlignment(Pos.CENTER_LEFT);
+
+        Label avatar = new Label(username.substring(0, 1).toUpperCase());
+        avatar.getStyleClass().add("member-avatar");
+        avatar.setPrefSize(36, 36);
+        avatar.setAlignment(Pos.CENTER);
+
+        Label name = new Label("@" + username);
+        name.setTextFill(Color.web("#EDE9F6"));
+        name.getStyleClass().add("row-title");
+
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        Label badge = new Label(isProjectLeader ? "LEADER" : "MEMBER");
+        badge.getStyleClass().add(isProjectLeader ? "role-badge-leader" : "role-badge-member");
+        badge.setPadding(new Insets(3, 8, 3, 8));
+
+        row.getChildren().addAll(avatar, name, spacer, badge);
+
+        if (viewModel.isLeader() && !username.equals(viewModel.getCurrentUserId())) {
+            Button removeBtn = new Button("Remove");
+            removeBtn.getStyleClass().add("slide-close-btn");
+            removeBtn.setOnAction(e -> viewModel.removeMember(username));
+            row.getChildren().add(removeBtn);
+        }
+
+        return row;
+    }
+
+
+    @FXML
+    private void reportBug(ActionEvent event) {
+        viewModel.reportBug(bugTitleInput.getText().trim());
+        bugTitleInput.clear();
+    }
+
+    @FXML private void bugFilterAll(ActionEvent e)    { setBugFilter("ALL",    bugFilterAll);    }
+    @FXML private void bugFilterOpen(ActionEvent e)   { setBugFilter("OPEN",   bugFilterOpen);   }
+    @FXML private void bugFilterClosed(ActionEvent e) { setBugFilter("CLOSED", bugFilterClosed); }
+
+    private void setBugFilter(String filter, Button active) {
+        viewModel.setActiveBugFilter(filter);
+        for (Button b : new Button[]{bugFilterAll, bugFilterOpen, bugFilterClosed}) {
+            b.getStyleClass().removeAll("task-filter-btn-active", "task-filter-btn");
+            b.getStyleClass().add(b == active ? "task-filter-btn-active" : "task-filter-btn");
+        }
+    }
+
+    private void renderBugs() {
+        bugList.getChildren().clear();
+        List<Bug> list = viewModel.getFilteredBugs();
+        if (list.isEmpty()) {
+            bugList.getChildren().add(emptyLabel("No bugs in this view."));
+            return;
+        }
+        for (Bug bug : list) bugList.getChildren().add(buildBugCard(bug));
+    }
+
+    private VBox buildBugCard(Bug bug) {
+        VBox card = new VBox(0);
+        card.getStyleClass().add("detail-list-row");
+
+        HBox line1 = new HBox(10);
+        line1.setPadding(new Insets(10, 14, 10, 14));
+        line1.setAlignment(Pos.CENTER_LEFT);
+
+        Label titleLbl = new Label("🐛  " + bug.getTitle());
+        titleLbl.setTextFill(Color.web("#EDE9F6"));
+        titleLbl.setWrapText(true);
+        titleLbl.getStyleClass().add("row-title");
+        HBox.setHgrow(titleLbl, Priority.ALWAYS);
+
+        Label fixerLbl = new Label(bug.isUnclaimed() ? "Unclaimed" : "🔧 @" + bug.getFixingUserId());
+        fixerLbl.getStyleClass().add(bug.isUnclaimed() ? "fixer-unclaimed" : "pill-label");
+        fixerLbl.setPadding(new Insets(3, 8, 3, 8));
+
+        Label statusLbl = new Label(bug.getStatus().name());
+        statusLbl.getStyleClass().add(bugStatusStyleClass(bug.getStatus()));
+        statusLbl.setPadding(new Insets(3, 8, 3, 8));
+        statusLbl.setAlignment(Pos.CENTER);
+
+        line1.getChildren().addAll(titleLbl, fixerLbl, statusLbl);
+
+        VBox expandPanel = new VBox(0);
+        expandPanel.setPadding(new Insets(0, 14, 8, 14));
+        expandPanel.setStyle("-fx-border-color: #2D2845; -fx-border-width: 1 0 0 0;");
+        expandPanel.setVisible(false);
+        expandPanel.setManaged(false);
+
+        if (!bug.isClosed()
+                && !bug.isUnclaimed()
+                && bug.getFixingUserId().equals(viewModel.getCurrentUserId())) {
+
+            Button fixedBtn = new Button("✅  Mark as Fixed");
+            fixedBtn.getStyleClass().add("btn-accept");
+            fixedBtn.setPadding(new Insets(4, 10, 4, 10));
+            fixedBtn.setOnAction(e -> viewModel.markBugFixed(bug));
+            line1.getChildren().add(fixedBtn);
+        }
+
+        if (!viewModel.isLeader() && bug.isUnclaimed() && !bug.isClosed()) {
+            Button claimBtn = new Button("🔧  I'll fix it");
+            claimBtn.getStyleClass().add("btn-accept");
+            claimBtn.setPadding(new Insets(4, 10, 4, 10));
+            claimBtn.setOnAction(e -> viewModel.claimBug(bug));
+            line1.getChildren().add(claimBtn);
+        }
+
+        if (viewModel.isLeader() && bug.isUnclaimed() && !bug.isClosed()) {
+            Button assignBugBtn = new Button("Assign →");
+            assignBugBtn.getStyleClass().add("update-btn");
+            assignBugBtn.setPadding(new Insets(3, 10, 3, 10));
+            assignBugBtn.setOnAction(e -> {
+                boolean open = expandPanel.isVisible();
+                expandPanel.setVisible(!open);
+                expandPanel.setManaged(!open);
+                if (!open && expandPanel.getChildren().isEmpty()) {
+                    expandPanel.getChildren().add(buildBugAssignRow(bug, expandPanel));
+                }
+            });
+            line1.getChildren().add(assignBugBtn);
+        }
+
+        card.getChildren().addAll(line1, expandPanel);
+        return card;
+    }
+
+    private HBox buildBugAssignRow(Bug bug, VBox expandPanel) {
+        HBox aRow = new HBox(8);
+        aRow.setAlignment(Pos.CENTER_LEFT);
+        aRow.setPadding(new Insets(8, 0, 2, 0));
+
+        Label lbl = new Label("Assign to:");
+        lbl.setTextFill(Color.web("#9D8FBF"));
+        lbl.setStyle("-fx-font-size:12px;");
+
+        TextField f = new TextField();
+        f.setPromptText("Username...");
+        f.setPrefWidth(190);
+        f.setPrefHeight(30);
+        f.getStyleClass().add("modal-text-field");
+
+        Button ok = new Button("✔ Assign");
+        ok.getStyleClass().add("btn-accept");
+        ok.setPadding(new Insets(3, 10, 3, 10));
+        ok.setOnAction(ev -> {
+            viewModel.assignBug(bug, f.getText().trim());
+            expandPanel.setVisible(false);
+            expandPanel.setManaged(false);
+        });
+
+        Button cx = new Button("✕");
+        cx.getStyleClass().add("slide-close-btn");
+        cx.setPadding(new Insets(3, 8, 3, 8));
+        cx.setOnAction(ev -> {
+            expandPanel.setVisible(false);
+            expandPanel.setManaged(false);
+        });
+
+        aRow.getChildren().addAll(lbl, f, ok, cx);
+        return aRow;
+    }
+
+
+    @FXML
+    private void closeDetail(ActionEvent event) {
+        slideOut();
+        if (onClose != null) onClose.run();
+    }
+
+
+    private void populateInfo(Project project) {
+        detailProjectName.setText(project.getName());
+        infoDescription.setText(
+                project.getDescription() == null || project.getDescription().isBlank()
+                        ? "No description." : project.getDescription());
+        infoCreated.setText(project.getCreatedAt() != null ? project.getCreatedAt() : "—");
+        infoLeader.setText("@" + project.getOwnerId());
+        statTasks.setText(String.valueOf(viewModel.taskCountProperty().get()));
+        statBugs.setText(String.valueOf(viewModel.bugCountProperty().get()));
+        infoMemberCount.setText(viewModel.memberCountProperty().get() + " members");
+    }
+
+    private void applyRoleVisibility(boolean leader) {
+        addTaskToggleBtn.setVisible(leader);
+        addTaskToggleBtn.setManaged(leader);
+        inviteRow.setVisible(leader);    inviteRow.setManaged(leader);
+        reportBugRow.setVisible(leader); reportBugRow.setManaged(leader);
+
+        if (!leader) {
+            filterMenuBtn.getItems().removeIf(item ->
+                    item.getText() != null && item.getText().contains("Drafts"));
+        }
+
+        roleBadge.setText(leader ? "LEADER" : "MEMBER");
+        roleBadge.getStyleClass().removeAll("role-badge-leader", "role-badge-member");
+        roleBadge.getStyleClass().add(leader ? "role-badge-leader" : "role-badge-member");
+    }
+
+    private Label buildDeadlineChip(Task t) {
+        Label chip = new Label();
+        refreshDeadlineChip(chip, t);
+        return chip;
+    }
+
+    private void refreshDeadlineChip(Label chip, Task t) {
+        LocalDate deadline = DateAndTime.parseDate(t.getDueDate());
+        if (deadline == null) {
+            chip.setText("No deadline");
+            chip.setStyle(chipStyle("#4A4060", "rgba(74,64,96,0.10)", "rgba(74,64,96,0.25)"));
+        } else {
+            long days = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), deadline);
+            String col, bg, br;
+            if      (days < 0)  { col="#F87171"; bg="rgba(248,113,113,0.12)"; br="rgba(248,113,113,0.35)"; }
+            else if (days <= 3) { col="#FBB024"; bg="rgba(251,176,36,0.12)";  br="rgba(251,176,36,0.35)";  }
+            else                { col="#34D399"; bg="rgba(52,211,153,0.10)";  br="rgba(52,211,153,0.30)";  }
+            chip.setText((days < 0 ? "⚠ " : "📅 ") + deadline.format(DATE_FMT));
+            chip.setStyle(chipStyle(col, bg, br));
+        }
+        chip.setPadding(new Insets(3, 8, 3, 8));
+    }
+
+    private String chipStyle(String col, String bg, String br) {
+        return "-fx-background-color:" + bg + ";"
+                + "-fx-background-radius:20;"
+                + "-fx-border-color:" + br + ";"
+                + "-fx-border-radius:20;"
+                + "-fx-border-width:1;"
+                + "-fx-text-fill:" + col + ";"
+                + "-fx-font-size:11px;"
+                + "-fx-font-weight:bold;";
+    }
+
+    private String statusStyleClass(TaskStatus s) {
+        if (s == null) return "status-todo";
+        return switch (s) {
+            case DONE        -> "status-done";
+            case IN_PROGRESS -> "status-progress";
+            case IN_REVIEW   -> "status-review";
+            default          -> "status-todo";
+        };
+    }
+
+    private String bugStatusStyleClass(BugStatus s) {
+        if (s == null) return "status-todo";
+        return switch (s) {
+            case CLOSED      -> "status-done";
+            case IN_PROGRESS -> "status-progress";
+            default          -> "status-todo";
+        };
+    }
+
+    private HBox buildAssigneeHeader(String assignee, int count) {
+        HBox h = new HBox(10);
+        h.setAlignment(Pos.CENTER_LEFT);
+        h.setPadding(new Insets(12, 14, 4, 14));
+
+        Label av = new Label(assignee.substring(0, 1).toUpperCase());
+        av.getStyleClass().add("member-avatar");
+        av.setPrefSize(26, 26);
+        av.setAlignment(Pos.CENTER);
+
+        Label name = new Label("@" + assignee);
+        name.setTextFill(Color.web("#C4B5F5"));
+        name.setStyle("-fx-font-weight: bold; -fx-font-size: 13px;");
+
+        Label cnt = new Label(count + (count == 1 ? " task" : " tasks"));
+        cnt.getStyleClass().add("card-section-label");
+        cnt.setPadding(new Insets(2, 8, 2, 8));
+        cnt.setStyle("-fx-background-color: rgba(109,79,194,0.15);"
+                + "-fx-background-radius: 10;"
+                + "-fx-border-color: rgba(109,79,194,0.30);"
+                + "-fx-border-radius: 10;"
+                + "-fx-border-width: 1;");
+
+        h.getChildren().addAll(av, name, cnt);
+        return h;
+    }
+
+    private Button quickAdjust(String label, DatePicker dp, long days) {
+        Button b = new Button(label);
+        b.getStyleClass().add("update-btn");
+        b.setPadding(new Insets(3, 6, 3, 6));
+        b.setStyle("-fx-font-size:10px;");
+        b.setOnAction(ev -> {
+            LocalDate cur = dp.getValue() != null ? dp.getValue() : LocalDate.now();
+            dp.setValue(cur.plusDays(days));
+        });
+        return b;
+    }
+
+    private StringConverter<LocalDate> dateConverter() {
+        return new StringConverter<>() {
+            @Override public String toString(LocalDate d)   { return d == null ? "" : d.format(DATE_FMT); }
+            @Override public LocalDate fromString(String s) {
+                try { return (s == null || s.isBlank()) ? null : LocalDate.parse(s, DATE_FMT); }
+                catch (Exception e) { return null; }
+            }
+        };
+    }
+
+    private Label emptyLabel(String msg) {
+        Label l = new Label(msg);
+        l.setTextFill(Color.web("#4A4060"));
+        l.setStyle("-fx-font-size:13px; -fx-font-style:italic;");
+        l.setPadding(new Insets(20, 14, 10, 14));
+        return l;
+    }
+
+    private void slideIn() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(420), projectDetailRoot);
+        tt.setToX(0); tt.play();
+    }
+
+    private void slideOut() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(380), projectDetailRoot);
+        tt.setToX(1102); tt.play();
+    }
+
+    private void removeScrollBars(ScrollPane sp) {
+        if (sp == null) return;
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+}
