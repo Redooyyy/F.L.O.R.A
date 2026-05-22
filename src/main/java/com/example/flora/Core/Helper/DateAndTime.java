@@ -1,7 +1,10 @@
 package com.example.flora.Core.Helper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel.DATE_FMT;
 
 public class DateAndTime {
     private static final DateTimeFormatter FORMATTER =
@@ -21,5 +24,11 @@ public class DateAndTime {
     public static String format(LocalDateTime dateTime) {
         if (dateTime == null) return "";
         return dateTime.format(FORMATTER);
+    }
+
+    public static LocalDate parseDate(String s) {
+        if (s == null || s.isBlank()) return null;
+        try { return LocalDate.parse(s, DATE_FMT); }
+        catch (Exception e) { return null; }
     }
 }

@@ -41,7 +41,7 @@
     -fx-border-color: #3D3060;
     -fx-border-radius: 20;
     -fx-border-width: 1;
-    -fx-text-fill: #9D8FBF;
+    -fx-text-fill: #9D8FBF; /* orig */
 }
 
 /* ── Stat boxes ── */
@@ -69,7 +69,7 @@
 
 
 .modal-field-label {
-    -fx-text-fill: #9D8FBF;
+    -fx-text-fill: #9D8FBF; /* orig */
     -fx-font-size: 13px;
 }
 
@@ -150,4 +150,960 @@
     -fx-border-color: rgba(248,113,113,0.25);
     -fx-border-radius: 10;
     -fx-border-width: 1;
+}
+
+/* ── Field label (e.g. "Project Name") ── */
+.modal-field-label {
+    -fx-text-fill: #9D8FBF; /* orig */
+    -fx-font-size: 13px;
+}
+
+/* ── Hint text next to status badge ── */
+.modal-hint-label {
+    -fx-text-fill: #4A4060;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* ── Single-line text field ── */
+.modal-text-field {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-padding: 0 12 0 12;
+}
+.modal-text-field:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+
+/* ── Multi-line text area ── */
+.modal-text-area {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-control-inner-background: #1A1528;
+    -fx-highlight-fill: #6D4FC2;
+}
+.modal-text-area:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+.modal-text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 4;
+    -fx-pref-width: 6;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 4;
+}
+.modal-text-area .content {
+    -fx-background-color: #1A1528;
+}
+
+/* ── Feedback / validation messages ── */
+.modal-feedback-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 10;
+}
+.modal-feedback-ok {
+    -fx-text-fill: #34D399;
+    -fx-background-color: rgba(52,211,153,0.10);
+    -fx-border-color: rgba(52,211,153,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+.modal-feedback-err {
+    -fx-text-fill: #F87171;
+    -fx-background-color: rgba(248,113,113,0.10);
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+
+/* ══════════════════════════════════════════
+   ProjectDetailUI  — append to style.css
+   ══════════════════════════════════════════ */
+
+/* ── Page title (detail header & sidebar) ── */
+.detail-page-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* ── Tab buttons ── */
+.tab-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #9D8FBF; /* orig */
+    -fx-cursor: hand;
+}
+.tab-btn:hover {
+    -fx-background-color: rgba(109,79,194,0.12);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+}
+.tab-btn-active {
+    -fx-background-color: rgba(109,79,194,0.22);
+    -fx-background-radius: 10;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 10, 0, 0, 2);
+}
+
+/* ── List rows (tasks / members / bugs) ── */
+.detail-list-row {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+.detail-list-row:hover {
+    -fx-background-color: #231E38;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.2), 12, 0, 0, 4);
+}
+
+/* Row title label */
+.row-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 14px;
+}
+
+/* ── Role badges ── */
+.role-badge-leader {
+    -fx-background-color: rgba(109,79,194,0.20);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(109,79,194,0.45);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.role-badge-member {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(52,211,153,0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+/* ── Member avatar circle ── */
+.member-avatar {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 18;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 18;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+/* ── Fixer unclaimed label ── */
+.fixer-unclaimed {
+    -fx-background-color: rgba(107,95,138,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: #3D3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 12px;
+}
+
+/* ── Info value label (sidebar) ── */
+.info-val-label {
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Info row box ── */
+.info-row-box {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 12;
+}
+
+/* ── Invite feedback labels ── */
+.feedback-ok {
+    -fx-text-fill: #34D399;
+}
+.feedback-err {
+    -fx-text-fill: #F87171;
+}
+
+/* ── Detail scrollpane ── */
+.detail-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+.detail-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+/*This line of code I found in stack overflow!! I couldn't make scroll-pane transparent from scene builder so I had to do it -_- */
+.scroll-pane {
+-fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport{
+-fx-background-color: transparent;
+}
+
+/* ── Root background ── */
+.root-pane {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 19;
+}
+
+/* ── Sidebar panel ── */
+.sidebar-panel {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 19;
+}
+
+/* ── Project card ── */
+.project-card {
+    -fx-background-color: #1E1A2E;
+    -fx-background-radius: 16;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.project-card:hover {
+    -fx-background-color: #231E38;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.3), 20, 0, 0, 6);
+}
+
+/* ── Tech / device pills ── */
+.pill-label {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 20;
+    -fx-border-color: #3D3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #9D8FBF; /* orig */
+}
+
+/* ── Stat boxes ── */
+.stat-box {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.stat-box:hover {
+    -fx-border-color: #6D4FC2;
+}
+
+/* ── ScrollPane cleanup ── */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+
+.modal-field-label {
+    -fx-text-fill: #9D8FBF; /* orig */
+    -fx-font-size: 13px;
+}
+
+.modal-hint-label {
+    -fx-text-fill: #4A4060;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+
+.modal-text-field {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-padding: 0 12 0 12;
+}
+.modal-text-field:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+
+
+.modal-text-area {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-control-inner-background: #1A1528;
+    -fx-highlight-fill: #6D4FC2;
+}
+.modal-text-area:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+.modal-text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 4;
+    -fx-pref-width: 6;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 4;
+}
+.modal-text-area .content {
+    -fx-background-color: #1A1528;
+}
+
+
+.modal-feedback-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 10;
+}
+.modal-feedback-ok {
+    -fx-text-fill: #34D399;
+    -fx-background-color: rgba(52,211,153,0.10);
+    -fx-border-color: rgba(52,211,153,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+.modal-feedback-err {
+    -fx-text-fill: #F87171;
+    -fx-background-color: rgba(248,113,113,0.10);
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+/* ── Field label (e.g. "Project Name") ── */
+.modal-field-label {
+    -fx-text-fill: #9D8FBF; /* orig */
+    -fx-font-size: 13px;
+}
+
+/* ── Hint text next to status badge ── */
+.modal-hint-label {
+    -fx-text-fill: #4A4060;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+/* ── Single-line text field ── */
+.modal-text-field {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-padding: 0 12 0 12;
+}
+.modal-text-field:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+
+/* ── Multi-line text area ── */
+.modal-text-area {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-control-inner-background: #1A1528;
+    -fx-highlight-fill: #6D4FC2;
+}
+.modal-text-area:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+.modal-text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 4;
+    -fx-pref-width: 6;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 4;
+}
+.modal-text-area .content {
+    -fx-background-color: #1A1528;
+}
+
+/* ── Feedback / validation messages ── */
+.modal-feedback-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 10;
+}
+.modal-feedback-ok {
+    -fx-text-fill: #34D399;
+    -fx-background-color: rgba(52,211,153,0.10);
+    -fx-border-color: rgba(52,211,153,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+.modal-feedback-err {
+    -fx-text-fill: #F87171;
+    -fx-background-color: rgba(248,113,113,0.10);
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+
+/* ══════════════════════════════════════════
+   ProjectDetailUI  — append to style.css
+   ══════════════════════════════════════════ */
+
+/* ── Page title (detail header & sidebar) ── */
+.detail-page-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* ── Tab buttons ── */
+.tab-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #9D8FBF; /* orig */
+    -fx-cursor: hand;
+}
+.tab-btn:hover {
+    -fx-background-color: rgba(109,79,194,0.12);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+}
+.tab-btn-active {
+    -fx-background-color: rgba(109,79,194,0.22);
+    -fx-background-radius: 10;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 10, 0, 0, 2);
+}
+
+/* ── List rows (tasks / members / bugs) ── */
+.detail-list-row {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+.detail-list-row:hover {
+    -fx-background-color: #231E38;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.2), 12, 0, 0, 4);
+}
+
+/* Row title label */
+.row-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 14px;
+}
+
+/* ── Role badges ── */
+.role-badge-leader {
+    -fx-background-color: rgba(109,79,194,0.20);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(109,79,194,0.45);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.role-badge-member {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(52,211,153,0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+/* ── Member avatar circle ── */
+.member-avatar {
+    -fx-background-color: #2D2845;
+    -fx-background-radius: 18;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 18;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+/* ── Fixer unclaimed label ── */
+.fixer-unclaimed {
+    -fx-background-color: rgba(107,95,138,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: #3D3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 12px;
+}
+
+/* ── Info value label (sidebar) ── */
+.info-val-label {
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Info row box ── */
+.info-row-box {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 12;
+}
+
+/* ── Invite feedback labels ── */
+.feedback-ok {
+    -fx-text-fill: #34D399;
+}
+.feedback-err {
+    -fx-text-fill: #F87171;
+}
+
+/* ── Detail scrollpane ── */
+.detail-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+.detail-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+
+/* ══════════════════════════════════════════
+   Task Filter Bar Buttons  (Tasks tab)
+   ══════════════════════════════════════════ */
+
+/* ── Inactive filter pill ── */
+.task-filter-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 20;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.task-filter-btn:hover {
+    -fx-background-color: rgba(109,79,194,0.10);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #C4B5F5;
+}
+
+/* ── Active / selected filter pill ── */
+.task-filter-btn-active {
+    -fx-background-color: rgba(109,79,194,0.22);
+    -fx-background-radius: 20;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.30), 8, 0, 0, 1);
+}
+.task-filter-btn-active:hover {
+    -fx-background-color: rgba(109,79,194,0.32);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   v2 additions  — Deadline chips, Draft badge, Update / Done btns
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Update / reassign / edit-deadline small action button ── */
+.update-btn {
+    -fx-background-color: rgba(109,79,194,0.18);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(109,79,194,0.40);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.update-btn:hover {
+    -fx-background-color: rgba(109,79,194,0.30);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Accept / Done button ── */
+.btn-accept {
+    -fx-background-color: rgba(52,211,153,0.15);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(52,211,153,0.40);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.btn-accept:hover {
+    -fx-background-color: rgba(52,211,153,0.28);
+    -fx-border-color: #34D399;
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Decline / Report Bug button ── */
+.btn-decline {
+    -fx-background-color: rgba(248,113,113,0.13);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(248,113,113,0.38);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #F87171;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.btn-decline:hover {
+    -fx-background-color: rgba(248,113,113,0.25);
+    -fx-border-color: #F87171;
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Slide / Back close button ── */
+.slide-close-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-text-fill: #9D8FBF; /* orig */
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.slide-close-btn:hover {
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-border-color: #F87171;
+    -fx-text-fill: #F87171;
+}
+
+/* ── Status pills ── */
+.status-done {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(52,211,153,0.30);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.status-progress {
+    -fx-background-color: rgba(96,165,250,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(96,165,250,0.30);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #60A5FA;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.status-review {
+    -fx-background-color: rgba(251,191,36,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(251,191,36,0.30);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #FBBF24;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+.status-todo {
+    -fx-background-color: rgba(107,95,138,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: #3D3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+/* ── DatePicker dark styling ── */
+.date-picker {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+}
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 13px;
+}
+.date-picker:focused,
+.date-picker .text-field:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #9D8FBF;
+}
+.date-picker-popup {
+    -fx-background-color: #1A1528;
+    -fx-border-color: #2D2845;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #1E1A2E;
+}
+.date-picker-popup .calendar-grid {
+    -fx-background-color: #1A1528;
+}
+.date-picker-popup .day-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #EDE9F6;
+}
+.date-picker-popup .day-cell:hover {
+    -fx-background-color: rgba(109,79,194,0.22);
+    -fx-background-radius: 6;
+}
+.date-picker-popup .selected {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 6;
+    -fx-text-fill: #EDE9F6;
+}
+.date-picker-popup .today {
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+.date-picker-popup .spinner .button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.date-picker-popup .spinner Label {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-weight: bold;
+}
+
+/* ── Created-At chip (shown on task cards) ── */
+.created-at-chip {
+    -fx-background-color: rgba(74,64,96,0.18);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(74,64,96,0.40);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── Slide divider line ── */
+.slide-divider {
+    -fx-background-color: #2D2845;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Filter MenuButton  (task-filter-menu-btn)
+   Matches the dark-purple theme — with hover/focus animation
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Button body (closed state) ── */
+.task-filter-menu-btn {
+    -fx-background-color: #1E1A2E;
+    -fx-background-radius: 20;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 0 14 0 14;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.0), 10, 0, 0, 0);
+}
+
+/* ── Hover — purple glow animates in ── */
+.task-filter-menu-btn:hover {
+    -fx-background-color: rgba(109,79,194,0.14);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.35), 14, 0, 0, 3);
+}
+
+/* ── Focused (keyboard nav) ── */
+.task-filter-menu-btn:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.40), 14, 0, 0, 0);
+}
+
+.task-filter-menu-btn .label {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* ── Open / showing state ── */
+.task-filter-menu-btn:showing {
+    -fx-background-color: rgba(109,79,194,0.22);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.45), 18, 0, 0, 4);
+}
+
+/* ── Arrow chevron ── */
+.task-filter-menu-btn .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0 20 20 0;
+    -fx-padding: 0 10 0 4;
+}
+.task-filter-menu-btn .arrow-button .arrow {
+    -fx-background-color: #C4B5F5;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+    -fx-scale-shape: true;
+    -fx-pref-width: 8;
+    -fx-pref-height: 5;
+}
+.task-filter-menu-btn:hover .arrow-button .arrow,
+.task-filter-menu-btn:showing .arrow-button .arrow {
+    -fx-background-color: #C4B5F5;
+}
+
+/* ── Popup context-menu panel ── */
+.task-filter-menu-btn .context-menu {
+    -fx-background-color: #1A1528;
+    -fx-border-color: #3D3060;
+    -fx-border-width: 1;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.40), 22, 0, 0, 6);
+    -fx-padding: 4 0 4 0;
+}
+
+/* ── Each menu item ── */
+.task-filter-menu-btn .context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-padding: 7 18 7 18;
+}
+.task-filter-menu-btn .context-menu .menu-item .label {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ── Hovered menu item ── */
+.task-filter-menu-btn .context-menu .menu-item:focused,
+.task-filter-menu-btn .context-menu .menu-item:hover {
+    -fx-background-color: rgba(109,79,194,0.20);
+    -fx-background-radius: 10;
+}
+.task-filter-menu-btn .context-menu .menu-item:focused .label,
+.task-filter-menu-btn .context-menu .menu-item:hover .label {
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Separator between items (if any) ── */
+.task-filter-menu-btn .context-menu .separator {
+    -fx-background-color: #2D2845;
+    -fx-pref-height: 1;
+    -fx-padding: 2 8 2 8;
 }
