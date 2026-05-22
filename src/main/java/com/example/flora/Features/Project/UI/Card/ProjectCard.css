@@ -1,0 +1,129 @@
+
+/* ── Card root ── */
+.project-card {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 16;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.50), 18, 0, 0, 6);
+}
+.project-card:hover {
+    -fx-background-color: #201C33;
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.45), 26, 0, 0, 8);
+}
+
+/* ── Left accent bar colour (override per card via Rectangle fill in controller) ── */
+.card-accent-bar {
+    -fx-fill: #6D4FC2;
+}
+
+/* ── Project name ── */
+.card-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+}
+
+/* ── Lead icon & label ── */
+.card-icon {
+    -fx-text-fill: #6D4FC2;
+}
+.card-lead-label {
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 12px;
+}
+
+/* ── Divider ── */
+.card-divider {
+    -fx-background-color: #2D2845;
+}
+
+/* ── Section headers (Platforms / Tech Stack) ── */
+.card-section-icon {
+    -fx-text-fill: #4A4060;
+}
+.card-section-label {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── Pills ── */
+.card-pill {
+    -fx-background-color: #241F38;
+    -fx-background-radius: 20;
+    -fx-border-color: #3D3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.card-pill:hover {
+    -fx-background-color: rgba(109,79,194,0.20);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Date label ── */
+.card-date-label {
+    -fx-text-fill: #4A4060;
+    -fx-font-size: 11px;
+}
+
+/* ── Status badges ── */
+.status-todo {
+    -fx-background-color: rgba(99,179,237,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(99,179,237,0.35);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #63B3ED;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.status-progress {
+    -fx-background-color: rgba(251,183,36,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(251,183,36,0.35);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #FBB724;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.status-review {
+    -fx-background-color: rgba(196,181,245,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(196,181,245,0.35);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.status-done {
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(52,211,153,0.35);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* ── ScrollPane fix (shared — copied from global style) ── */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
