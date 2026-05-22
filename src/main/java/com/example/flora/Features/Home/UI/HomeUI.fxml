@@ -357,6 +357,15 @@
             </Button>
          </children>
       </AnchorPane>
+
+      <AnchorPane fx:id="addProjectPanel"
+                  translateX="620.0"
+                  prefHeight="588.0" prefWidth="500.0"
+                  layoutX="602.0" layoutY="0.0"
+                  styleClass="slide-panel"
+                  stylesheets="@style.css"/>
+
+
    </children>
    <padding>
       <Insets left="10.0" />

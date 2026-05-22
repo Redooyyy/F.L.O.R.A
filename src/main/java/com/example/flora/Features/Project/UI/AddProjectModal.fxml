@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane
+fx:id="addProjectPanel"
+xmlns="http://javafx.com/javafx/23.0.1"
+xmlns:fx="http://javafx.com/fxml/1"
+fx:controller="com.example.flora.Features.Project.UI.AddProjectModal_Controller"
+prefHeight="588.0"
+prefWidth="500.0"
+styleClass="slide-panel"
+stylesheets="@style.css"
+translateX="620.0">
+
+<children>
+
+    <HBox layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="472.0" alignment="CENTER_LEFT" spacing="10.0">
+        <children>
+            <Button
+                    fx:id="closeBtn"
+                    mnemonicParsing="false"
+                    onAction="#closePanel"
+                    prefHeight="28.0" prefWidth="62.0"
+                    styleClass="slide-close-btn"
+                    text="Close">
+                <font><Font name="System Bold" size="13.0"/></font>
+            </Button>
+
+            <Label
+                    text="New Project"
+                    prefHeight="36.0" prefWidth="296.0"
+                    alignment="CENTER"
+                    styleClass="slide-task-title">
+                <font><Font name="System Bold" size="17.0"/></font>
+            </Label>
+
+            <Button
+                    fx:id="createBtn"
+                    mnemonicParsing="false"
+                    onAction="#createProject"
+                    prefHeight="28.0" prefWidth="90.0"
+                    styleClass="btn-accept"
+                    text="✦  Create">
+                <font><Font name="System Bold" size="13.0"/></font>
+            </Button>
+        </children>
+    </HBox>
+
+    <AnchorPane
+            layoutX="14.0" layoutY="58.0"
+            prefHeight="1.0" prefWidth="472.0"
+            styleClass="slide-divider"/>
+
+    <VBox
+            layoutX="14.0" layoutY="72.0"
+            prefWidth="472.0"
+            spacing="18.0">
+
+        <VBox spacing="6.0">
+            <Label text="Project Name" styleClass="modal-field-label">
+                <font><Font name="System Bold" size="13.0"/></font>
+            </Label>
+            <TextField
+                    fx:id="nameField"
+                    promptText="e.g. Flora – Task Manager"
+                    prefHeight="42.0" prefWidth="472.0"
+                    styleClass="modal-text-field"/>
+        </VBox>
+
+        <VBox spacing="6.0">
+            <Label text="Description" styleClass="modal-field-label">
+                <font><Font name="System Bold" size="13.0"/></font>
+            </Label>
+            <TextArea
+                    fx:id="descriptionField"
+                    promptText="What is this project about?"
+                    prefHeight="120.0" prefWidth="472.0"
+                    wrapText="true"
+                    styleClass="modal-text-area"/>
+        </VBox>
+
+        <AnchorPane prefHeight="1.0" prefWidth="472.0" styleClass="slide-divider"/>
+
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <Label text="Status" styleClass="modal-field-label">
+                <font><Font name="System Bold" size="13.0"/></font>
+            </Label>
+            <Button
+                    fx:id="statusBadge"
+                    mnemonicParsing="false"
+                    onAction="#cycleStatus"
+                    prefHeight="32.0" prefWidth="120.0"
+                    styleClass="status-todo"
+                    text="PLANNING">
+                <font><Font name="System Bold" size="12.0"/></font>
+            </Button>
+            <Label text="← tap to change" styleClass="modal-hint-label"/>
+        </HBox>
+
+        <Label
+                fx:id="feedbackLabel"
+                text=""
+                prefWidth="472.0"
+                styleClass="modal-feedback-label"
+                wrapText="true"
+                visible="false"/>
+
+    </VBox>
+
+</children>
+</AnchorPane>

@@ -8,6 +8,7 @@ import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
 import com.example.flora.Features.Overview.UI.Overview_Controller;
+import com.example.flora.Features.Project.UI.AddProjectModal_Controller;
 import com.example.flora.Features.Project.UI.ProjectUI_Controller;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
 import com.example.flora.Features.Task.model.TaskStatus;
@@ -74,6 +75,13 @@ public class HomeUI_Controller implements Initializable {
     @FXML
     private AnchorPane invitationPane;
 
+    //NOTE:Project variables
+    @FXML
+    private AnchorPane addProjectPanel;
+    private AddProjectModal_Controller projectModalController;
+    private boolean openAddProjectSlide = false;
+
+
     private final AppContainer appContainer;
     private final NotificationViewModel notificationViewModel;
 
@@ -94,6 +102,7 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
         //call homePage so after login it'll appear
         try {
             overviewPage();
+            loadProjectModal();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -229,7 +238,18 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     private void declineInvite(){}
     //add new project
     @FXML
-    private void newProjectAdd(MouseEvent event){}
+    private void newProjectAdd(MouseEvent event) throws IOException {
+    projectModalController.openPanel();
+    }
+
+    private void loadProjectModal() throws IOException {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Project/UI/AddProjectModal.fxml"));
+        AnchorPane panel = loader.load();
+        projectModalController = loader.getController();
+        //TODO: pass current user
+        projectModalController.setValue(this,appContainer.getProjectViewModel()," ");
+        ((AnchorPane) addProjectPanel).getChildren().add(panel);
+    }
 
 
 

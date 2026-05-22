@@ -37,7 +37,7 @@ public class ProjectViewModel {
             throw new RuntimeException(e);
         }
     }
-    public void deketeProject(Project project){
+    public void deleteProject(Project project){
         projectService.deleteProject(project.getId());
         loadProject();
     }

@@ -66,3 +66,88 @@
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
+
+
+.modal-field-label {
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 13px;
+}
+
+.modal-hint-label {
+    -fx-text-fill: #4A4060;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}
+
+
+.modal-text-field {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-padding: 0 12 0 12;
+}
+.modal-text-field:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+
+
+.modal-text-area {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 14px;
+    -fx-control-inner-background: #1A1528;
+    -fx-highlight-fill: #6D4FC2;
+}
+.modal-text-area:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
+}
+.modal-text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 4;
+    -fx-pref-width: 6;
+}
+.modal-text-area .scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #6D4FC2;
+    -fx-background-radius: 4;
+}
+.modal-text-area .content {
+    -fx-background-color: #1A1528;
+}
+
+
+.modal-feedback-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 12 6 12;
+    -fx-background-radius: 10;
+}
+.modal-feedback-ok {
+    -fx-text-fill: #34D399;
+    -fx-background-color: rgba(52,211,153,0.10);
+    -fx-border-color: rgba(52,211,153,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+.modal-feedback-err {
+    -fx-text-fill: #F87171;
+    -fx-background-color: rgba(248,113,113,0.10);
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
