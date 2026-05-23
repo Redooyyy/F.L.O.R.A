@@ -8,7 +8,7 @@ import static com.example.flora.Features.Project.ViewModel.ProjectDetailViewMode
 
 public class DateAndTime {
     private static final DateTimeFormatter FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private DateAndTime() {}
 
