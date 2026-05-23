@@ -31,82 +31,82 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-/**
- * BugUI_Controller
- * ─────────────────
- * Full-page Bug Tracker.
- *
- * Role-based permission model (strictly enforced):
- *  • LEADER of a project  → can assign OR re-assign any bug in that project.
- *  • MEMBER (non-leader)  → on an UNCLAIMED bug: sees only "🔧 I'll fix it" (self-assign).
- *                           on a CLAIMED bug:  sees only who is working on it. No actions.
- *  • FIXER (assignee)     → can Mark as Fixed and toggle OPEN ↔ IN_PROGRESS.
- *                           If the leader is also the fixer they get both sets.
- *  • Anyone else          → read-only. A subtle lock hint is shown.
- *
- *  Bug cards show: project name + project leader name for full context.
- */
 public class BugUI_Controller implements Initializable {
 
-    /* ── FXML bindings ─────────────────────────────────── */
-    @FXML private ScrollPane   leftScroll;
-    @FXML private VBox         projectBugSummaryScroll;
+    @FXML
+    private ScrollPane leftScroll;
+    @FXML
+    private VBox projectBugSummaryScroll;
 
-    @FXML private Label        activeSectionLabel;
-    @FXML private Label        bugCountChip;
-    @FXML private MenuButton   severityFilter;
-    @FXML private Button       btnStatusAll;
-    @FXML private Button       btnStatusOpen;
-    @FXML private Button       btnStatusClaimed;
-    @FXML private Button       btnStatusClosed;
+    @FXML
+    private Label activeSectionLabel;
+    @FXML
+    private Label bugCountChip;
+    @FXML
+    private MenuButton severityFilter;
+    @FXML
+    private Button btnStatusAll;
+    @FXML
+    private Button btnStatusOpen;
+    @FXML
+    private Button btnStatusClaimed;
+    @FXML
+    private Button btnStatusClosed;
 
-    @FXML private ScrollPane   bugScroll;
-    @FXML private VBox         bugCardList;
+    @FXML
+    private ScrollPane bugScroll;
+    @FXML
+    private VBox bugCardList;
 
-    @FXML private AnchorPane   bugDetailSlide;
-    @FXML private Button       closeDetailBtn;
-    @FXML private Label        detailSeverityBadge;
-    @FXML private Label        detailTitle;
-    @FXML private Label        detailDesc;
-    @FXML private Label        detailReporter;
-    @FXML private Label        detailAssignee;
-    @FXML private Label        detailStatus;
-    @FXML private Label        detailDate;
-    @FXML private HBox         detailActionRow;
-    @FXML private HBox         detailAssignRow;
-    @FXML private TextField    detailAssignInput;
+    @FXML
+    private AnchorPane bugDetailSlide;
+    @FXML
+    private Button closeDetailBtn;
+    @FXML
+    private Label detailSeverityBadge;
+    @FXML
+    private Label detailTitle;
+    @FXML
+    private Label detailDesc;
+    @FXML
+    private Label detailReporter;
+    @FXML
+    private Label detailAssignee;
+    @FXML
+    private Label detailStatus;
+    @FXML
+    private Label detailDate;
+    @FXML
+    private HBox detailActionRow;
+    @FXML
+    private HBox detailAssignRow;
+    @FXML
+    private TextField detailAssignInput;
 
-    /* ── Session / role ────────────────────────────────── */
     // TODO: inject from session / DI
     private final String currentUser = "bushra";
-    private final boolean isLeader   = false;   // flip to true to test leader view
+    private final boolean isLeader = false;   // flip to true to test leader view
 
-    // Map: projectName → leaderUserId  (pull from your project service in production)
     private final Map<String, String> projectLeaders = Map.of(
-            "HMS",   "bushra",
+            "HMS", "bushra",
             "Flora", "rafi",
             "EComm", "mehedi",
-            "LMS",   "bushra"
+            "LMS", "bushra"
     );
 
-    /* ── State ─────────────────────────────────────────── */
     private final HomeUI_Controller homeController;
     private final List<Bug> allBugs = new ArrayList<>();
 
-    private String  activeSeverityFilter = "All";
-    private String  activeStatusFilter   = "All";
-    private String  activeProject        = null;
-    private Bug     selectedBug          = null;
-    private boolean detailOpen           = false;
+    private String activeSeverityFilter = "All";
+    private String activeStatusFilter = "All";
+    private String activeProject = null;
+    private Bug selectedBug = null;
+    private boolean detailOpen = false;
 
-    /* ── Constructor ────────────────────────────────────── */
     public BugUI_Controller(HomeUI_Controller homeController) {
         this.homeController = homeController;
     }
 
-    /* ═══════════════════════════════════════════
-       Initialise
-    ═══════════════════════════════════════════ */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         removeScrollBars(leftScroll);
@@ -116,47 +116,42 @@ public class BugUI_Controller implements Initializable {
         applyFilters();
     }
 
-    /* ═══════════════════════════════════════════
-       Seed / dummy data
-    ═══════════════════════════════════════════ */
     private void loadDummyData() {
         allBugs.addAll(List.of(
-                new Bug("1",  "HMS",  "Login page crashes on empty password",
+                new Bug("1", "HMS", "Login page crashes on empty password",
                         "If the user submits login with blank password the app throws NPE and freezes.",
-                        BugSeverity.CRITICAL, BugStatus.OPEN,        null,            "bushra",  "12 May 2025"),
-                new Bug("2",  "HMS",  "Patient list pagination broken",
+                        BugSeverity.CRITICAL, BugStatus.OPEN, null, "bushra", "12 May 2025"),
+                new Bug("2", "HMS", "Patient list pagination broken",
                         "After page 3 the table renders an empty set regardless of DB records.",
-                        BugSeverity.HIGH,     BugStatus.IN_PROGRESS, "rafi",          "bushra",  "13 May 2025"),
-                new Bug("3",  "HMS",  "Date picker locale mismatch",
+                        BugSeverity.HIGH, BugStatus.IN_PROGRESS, "rafi", "bushra", "13 May 2025"),
+                new Bug("3", "HMS", "Date picker locale mismatch",
                         "Date picker shows MM/DD but backend expects DD/MM causing off-by-one errors.",
-                        BugSeverity.MEDIUM,   BugStatus.OPEN,        null,            "mehedi",  "15 May 2025"),
-                new Bug("4",  "HMS",  "Export PDF button invisible on dark theme",
+                        BugSeverity.MEDIUM, BugStatus.OPEN, null, "mehedi", "15 May 2025"),
+                new Bug("4", "HMS", "Export PDF button invisible on dark theme",
                         "The button text colour matches background in dark mode.",
-                        BugSeverity.LOW,      BugStatus.CLOSED,      "current_user",  "mehedi",  "10 May 2025"),
-                new Bug("5",  "Flora","Notification panel overlaps sidebar",
+                        BugSeverity.LOW, BugStatus.CLOSED, "current_user", "mehedi", "10 May 2025"),
+                new Bug("5", "Flora", "Notification panel overlaps sidebar",
                         "When sidebar is expanded the notification pane is partially hidden behind it.",
-                        BugSeverity.HIGH,     BugStatus.OPEN,        null,            "rafi",    "16 May 2025"),
-                new Bug("6",  "Flora","Task card scroll jitters on fast scroll",
+                        BugSeverity.HIGH, BugStatus.OPEN, null, "rafi", "16 May 2025"),
+                new Bug("6", "Flora", "Task card scroll jitters on fast scroll",
                         "Rapid scrolling in the task list causes a layout jitter every ~200ms.",
-                        BugSeverity.MEDIUM,   BugStatus.IN_PROGRESS, "current_user",  "rafi",    "17 May 2025"),
-                new Bug("7",  "EComm","Product images fail to load on slow connection",
+                        BugSeverity.MEDIUM, BugStatus.IN_PROGRESS, "current_user", "rafi", "17 May 2025"),
+                new Bug("7", "EComm", "Product images fail to load on slow connection",
                         "No loading placeholder shown; images show broken icon on first visit.",
-                        BugSeverity.CRITICAL, BugStatus.OPEN,        null,            "rafi",    "18 May 2025"),
-                new Bug("8",  "EComm","Cart total rounding error",
+                        BugSeverity.CRITICAL, BugStatus.OPEN, null, "rafi", "18 May 2025"),
+                new Bug("8", "EComm", "Cart total rounding error",
                         "Total rounds down at exactly x.005 causing 1-cent discrepancies.",
-                        BugSeverity.HIGH,     BugStatus.OPEN,        null,            "mehedi",  "19 May 2025"),
-                new Bug("9",  "EComm","Search bar loses focus on mobile keyboard open",
+                        BugSeverity.HIGH, BugStatus.OPEN, null, "mehedi", "19 May 2025"),
+                new Bug("9", "EComm", "Search bar loses focus on mobile keyboard open",
                         "Keyboard open event triggers scroll that blurs the search input.",
-                        BugSeverity.LOW,      BugStatus.CLOSED,      "rafi",          "bushra",  "14 May 2025"),
-                new Bug("10", "LMS",  "Quiz timer continues after submission",
+                        BugSeverity.LOW, BugStatus.CLOSED, "rafi", "bushra", "14 May 2025"),
+                new Bug("10", "LMS", "Quiz timer continues after submission",
                         "Timer keeps ticking and eventually shows negative seconds after quiz submit.",
-                        BugSeverity.CRITICAL, BugStatus.IN_PROGRESS, "current_user",  "bushra",  "20 May 2025")
+                        BugSeverity.CRITICAL, BugStatus.IN_PROGRESS, "current_user", "bushra", "20 May 2025")
         ));
     }
 
-    /* ═══════════════════════════════════════════
-       Left panel – project summary cards
-    ═══════════════════════════════════════════ */
+
     private void buildProjectSummaryPanel() {
         projectBugSummaryScroll.getChildren()
                 .removeIf(n -> !(n instanceof Label l && l.getStyleClass().contains("left-panel-header")));
@@ -172,6 +167,7 @@ public class BugUI_Controller implements Initializable {
                     projectBugSummaryScroll.getChildren().add(buildProjectCard(p, pb));
                 });
     }
+
 
     private VBox buildProjectCard(String projectName, List<Bug> bugs) {
         VBox card = new VBox(6);
@@ -193,7 +189,6 @@ public class BugUI_Controller implements Initializable {
         HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
         topRow.getChildren().addAll(nameLabel, spacer, countLabel);
 
-        // Leader row (only for specific project cards, not "All")
         if (!isAll) {
             String leader = projectLeaders.getOrDefault(projectName, "—");
             HBox leaderRow = new HBox(5);
@@ -213,14 +208,14 @@ public class BugUI_Controller implements Initializable {
         barRow.setPadding(new Insets(2, 0, 0, 0));
 
         long crit = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.CRITICAL && b.getStatus() != BugStatus.CLOSED).count();
-        long high = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.HIGH     && b.getStatus() != BugStatus.CLOSED).count();
-        long med  = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.MEDIUM   && b.getStatus() != BugStatus.CLOSED).count();
-        long low  = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.LOW      && b.getStatus() != BugStatus.CLOSED).count();
+        long high = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.HIGH && b.getStatus() != BugStatus.CLOSED).count();
+        long med = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.MEDIUM && b.getStatus() != BugStatus.CLOSED).count();
+        long low = bugs.stream().filter(b -> b.getSeverity() == BugSeverity.LOW && b.getStatus() != BugStatus.CLOSED).count();
 
         if (crit > 0) barRow.getChildren().add(severityMini("🔴 " + crit + " Crit", "proj-bug-count-label"));
         if (high > 0) barRow.getChildren().add(severityMini("🟠 " + high, "severity-high"));
-        if (med  > 0) barRow.getChildren().add(severityMini("🟡 " + med,  "severity-medium"));
-        if (low  > 0) barRow.getChildren().add(severityMini("🟢 " + low,  "severity-low"));
+        if (med > 0) barRow.getChildren().add(severityMini("🟡 " + med, "severity-medium"));
+        if (low > 0) barRow.getChildren().add(severityMini("🟢 " + low, "severity-low"));
 
         card.getChildren().add(barRow);
 
@@ -255,19 +250,68 @@ public class BugUI_Controller implements Initializable {
         });
     }
 
-    /* ═══════════════════════════════════════════
-       Filter handlers
-    ═══════════════════════════════════════════ */
-    @FXML private void filterAll()      { activeSeverityFilter = "All";      severityFilter.setText("Severity ▾");  applyFilters(); }
-    @FXML private void filterCritical() { activeSeverityFilter = "CRITICAL"; severityFilter.setText("🔴 Critical"); applyFilters(); }
-    @FXML private void filterHigh()     { activeSeverityFilter = "HIGH";     severityFilter.setText("🟠 High");     applyFilters(); }
-    @FXML private void filterMedium()   { activeSeverityFilter = "MEDIUM";   severityFilter.setText("🟡 Medium");   applyFilters(); }
-    @FXML private void filterLow()      { activeSeverityFilter = "LOW";      severityFilter.setText("🟢 Low");      applyFilters(); }
+    @FXML
+    private void filterAll() {
+        activeSeverityFilter = "All";
+        severityFilter.setText("Severity ▾");
+        applyFilters();
+    }
 
-    @FXML private void statusAll()     { activeStatusFilter = "All";         setActiveStatusBtn(btnStatusAll);     applyFilters(); }
-    @FXML private void statusOpen()    { activeStatusFilter = "OPEN";        setActiveStatusBtn(btnStatusOpen);    applyFilters(); }
-    @FXML private void statusClaimed() { activeStatusFilter = "IN_PROGRESS"; setActiveStatusBtn(btnStatusClaimed); applyFilters(); }
-    @FXML private void statusClosed()  { activeStatusFilter = "CLOSED";      setActiveStatusBtn(btnStatusClosed);  applyFilters(); }
+    @FXML
+    private void filterCritical() {
+        activeSeverityFilter = "CRITICAL";
+        severityFilter.setText("🔴 Critical");
+        applyFilters();
+    }
+
+    @FXML
+    private void filterHigh() {
+        activeSeverityFilter = "HIGH";
+        severityFilter.setText("🟠 High");
+        applyFilters();
+    }
+
+    @FXML
+    private void filterMedium() {
+        activeSeverityFilter = "MEDIUM";
+        severityFilter.setText("🟡 Medium");
+        applyFilters();
+    }
+
+    @FXML
+    private void filterLow() {
+        activeSeverityFilter = "LOW";
+        severityFilter.setText("🟢 Low");
+        applyFilters();
+    }
+
+    @FXML
+    private void statusAll() {
+        activeStatusFilter = "All";
+        setActiveStatusBtn(btnStatusAll);
+        applyFilters();
+    }
+
+    @FXML
+    private void statusOpen() {
+        activeStatusFilter = "OPEN";
+        setActiveStatusBtn(btnStatusOpen);
+        applyFilters();
+    }
+
+    @FXML
+    private void statusClaimed() {
+        activeStatusFilter = "IN_PROGRESS";
+        setActiveStatusBtn(btnStatusClaimed);
+        applyFilters();
+    }
+
+    @FXML
+    private void statusClosed() {
+        activeStatusFilter = "CLOSED";
+        setActiveStatusBtn(btnStatusClosed);
+        applyFilters();
+    }
 
     private void setActiveStatusBtn(Button active) {
         for (Button b : new Button[]{btnStatusAll, btnStatusOpen, btnStatusClaimed, btnStatusClosed}) {
@@ -276,14 +320,11 @@ public class BugUI_Controller implements Initializable {
         }
     }
 
-    /* ═══════════════════════════════════════════
-       Filter + render
-    ═══════════════════════════════════════════ */
     private void applyFilters() {
         List<Bug> filtered = allBugs.stream()
                 .filter(b -> activeProject == null || b.getProjectName().equals(activeProject))
                 .filter(b -> activeSeverityFilter.equals("All") || b.getSeverity().name().equals(activeSeverityFilter))
-                .filter(b -> activeStatusFilter.equals("All")   || b.getStatus().name().equals(activeStatusFilter))
+                .filter(b -> activeStatusFilter.equals("All") || b.getStatus().name().equals(activeStatusFilter))
                 .collect(Collectors.toList());
 
         bugCountChip.setText(String.valueOf(filtered.size()));
@@ -307,16 +348,12 @@ public class BugUI_Controller implements Initializable {
         }
     }
 
-    /* ═══════════════════════════════════════════
-       Bug card builder
-       Shows: project name + project leader for context
-    ═══════════════════════════════════════════ */
+
     private VBox buildBugCard(Bug bug) {
         VBox card = new VBox(8);
         card.getStyleClass().addAll("bug-card", severityCardClass(bug.getSeverity()));
         card.setUserData(bug);
 
-        // ── Row 1: pulse dot + title + severity badge ──
         HBox row1 = new HBox(8);
         row1.setAlignment(Pos.CENTER_LEFT);
 
@@ -338,12 +375,10 @@ public class BugUI_Controller implements Initializable {
 
         row1.getChildren().addAll(title, spacer1, sevBadge);
 
-        // ── Row 2: description ──
         Label desc = new Label(truncate(bug.getDescription(), 80));
         desc.getStyleClass().add("bug-card-desc");
         desc.setWrapText(true);
 
-        // ── Row 3: status + assignee info ──
         HBox row3 = new HBox(8);
         row3.setAlignment(Pos.CENTER_LEFT);
 
@@ -364,14 +399,12 @@ public class BugUI_Controller implements Initializable {
         Region spacer3 = new Region();
         HBox.setHgrow(spacer3, javafx.scene.layout.Priority.ALWAYS);
 
-        // Project name chip
         Label projectChip = new Label("📁 " + bug.getProjectName());
         projectChip.getStyleClass().add("bug-card-meta");
 
         row3.getChildren().addAll(spacer3, projectChip);
         card.getChildren().addAll(row1, desc, row3);
 
-        // ── Row 4: project leader info (always visible for role context) ──
         String leader = projectLeaders.getOrDefault(bug.getProjectName(), "—");
         HBox row4 = new HBox(10);
         row4.setAlignment(Pos.CENTER_LEFT);
@@ -382,7 +415,6 @@ public class BugUI_Controller implements Initializable {
         Region spacer4 = new Region();
         HBox.setHgrow(spacer4, javafx.scene.layout.Priority.ALWAYS);
 
-        // Leader badge — highlighted so it's clearly informational
         Label leaderLabel = new Label("👑 @" + leader);
         leaderLabel.getStyleClass().add("leader-chip");
 
@@ -396,13 +428,10 @@ public class BugUI_Controller implements Initializable {
         return card;
     }
 
-    /* ═══════════════════════════════════════════
-       Detail slide panel
-    ═══════════════════════════════════════════ */
+
     private void openDetail(Bug bug) {
         selectedBug = bug;
 
-        // ── Resolve who is the leader for this bug's project ──
         String projectLeader = projectLeaders.getOrDefault(bug.getProjectName(), "");
         boolean isProjectLeader = isLeader || currentUser.equals(projectLeader);
 
@@ -410,7 +439,6 @@ public class BugUI_Controller implements Initializable {
         System.out.println(projectLeader);
         System.out.println(currentUser);
 
-        // ── Populate labels ──
         detailTitle.setText(bug.getTitle());
         detailDesc.setText(bug.getDescription().isBlank() ? "No description provided." : bug.getDescription());
         detailReporter.setText("@" + bug.getReportedByUserId());
@@ -423,19 +451,14 @@ public class BugUI_Controller implements Initializable {
         detailStatus.setText(bug.getStatus().displayName());
         detailStatus.getStyleClass().setAll(statusBadgeClass(bug.getStatus()));
 
-        // ── Action row ──
         detailActionRow.getChildren().clear();
         detailAssignRow.setVisible(false);
         detailAssignRow.setManaged(false);
 
-        // Is the current user the assigned fixer?
         boolean isFixer = !bug.isUnclaimed() && currentUser.equals(bug.getFixingUserId());
 
         if (!bug.isClosed()) {
 
-            /* ─── FIXER controls ───────────────────────────────────────────────────
-               Only the person assigned to this bug can change its status.
-               Nobody else — including the leader — gets these buttons.            */
             if (isFixer) {
                 Button markFixed = new Button("✅  Mark as Fixed");
                 markFixed.getStyleClass().add("btn-accept");
@@ -458,12 +481,8 @@ public class BugUI_Controller implements Initializable {
                 detailActionRow.getChildren().add(toggleStatus);
             }
 
-            /* ─── ASSIGNMENT controls ──────────────────────────────────────────────
-               Leader of this project: can assign or re-assign to anyone.
-               Regular member:         can ONLY self-assign when unclaimed.
-                                       If claimed — they see nothing actionable.   */
+
             if (isProjectLeader) {
-                // Leader sees assign/re-assign regardless of claimed state
                 String btnLabel = bug.isUnclaimed() ? "👤  Assign to…" : "🔄  Re-assign to…";
                 Button assignBtn = new Button(btnLabel);
                 assignBtn.getStyleClass().add("update-btn");
@@ -474,12 +493,13 @@ public class BugUI_Controller implements Initializable {
                     detailAssignInput.clear();
                     detailAssignInput.requestFocus();
                     FadeTransition ft = new FadeTransition(Duration.millis(200), detailAssignRow);
-                    ft.setFromValue(0); ft.setToValue(1); ft.play();
+                    ft.setFromValue(0);
+                    ft.setToValue(1);
+                    ft.play();
                 });
                 detailActionRow.getChildren().add(assignBtn);
 
             } else if (!isProjectLeader && bug.isUnclaimed()) {
-                // Non-leader: unclaimed bug → offer self-assign only
                 Button claim = new Button("🔧  I'll fix it");
                 claim.getStyleClass().add("btn-accept");
                 claim.setPadding(new Insets(4, 14, 4, 14));
@@ -491,7 +511,6 @@ public class BugUI_Controller implements Initializable {
                 detailActionRow.getChildren().add(claim);
 
             } else if (!isProjectLeader && !bug.isUnclaimed() && !isFixer) {
-                // Non-leader, bug is claimed by someone else → read-only hint
                 Label locked = new Label("🔒  @" + bug.getFixingUserId() + " is working on this");
                 locked.setStyle(
                         "-fx-text-fill: #4A4060; -fx-font-size: 11px;" +
@@ -501,18 +520,25 @@ public class BugUI_Controller implements Initializable {
             }
         }
 
-        if (!detailOpen) { slideDetailIn(); detailOpen = true; }
-        else {
+        if (!detailOpen) {
+            slideDetailIn();
+            detailOpen = true;
+        } else {
             ScaleTransition pop = new ScaleTransition(Duration.millis(150), bugDetailSlide);
-            pop.setFromX(0.97); pop.setFromY(0.97);
-            pop.setToX(1.0);   pop.setToY(1.0);
+            pop.setFromX(0.97);
+            pop.setFromY(0.97);
+            pop.setToX(1.0);
+            pop.setToY(1.0);
             pop.play();
         }
     }
 
     @FXML
     private void closeDetail(ActionEvent e) {
-        if (detailOpen) { slideDetailOut(); detailOpen = false; }
+        if (detailOpen) {
+            slideDetailOut();
+            detailOpen = false;
+        }
     }
 
     @FXML
@@ -540,61 +566,69 @@ public class BugUI_Controller implements Initializable {
         buildProjectSummaryPanel();
     }
 
-    /* ═══════════════════════════════════════════
-       Animations
-    ═══════════════════════════════════════════ */
+
     private void staggerIn(VBox card, int delayMs) {
-        card.setOpacity(0); card.setTranslateY(18);
+        card.setOpacity(0);
+        card.setTranslateY(18);
         FadeTransition fade = new FadeTransition(Duration.millis(280), card);
-        fade.setFromValue(0); fade.setToValue(1); fade.setDelay(Duration.millis(delayMs));
+        fade.setFromValue(0);
+        fade.setToValue(1);
+        fade.setDelay(Duration.millis(delayMs));
         TranslateTransition move = new TranslateTransition(Duration.millis(280), card);
-        move.setFromY(18); move.setToY(0); move.setDelay(Duration.millis(delayMs));
-        fade.play(); move.play();
+        move.setFromY(18);
+        move.setToY(0);
+        move.setDelay(Duration.millis(delayMs));
+        fade.play();
+        move.play();
     }
 
     private void slideDetailIn() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(350), bugDetailSlide);
-        tt.setToX(0); tt.play();
+        tt.setToX(0);
+        tt.play();
     }
 
     private void slideDetailOut() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(300), bugDetailSlide);
-        tt.setToX(440); tt.play();
+        tt.setToX(440);
+        tt.play();
     }
 
     private void pulseCard(VBox card) {
         ScaleTransition sc = new ScaleTransition(Duration.millis(120), card);
-        sc.setFromX(1.0); sc.setToX(1.03);
-        sc.setFromY(1.0); sc.setToY(1.03);
-        sc.setAutoReverse(true); sc.setCycleCount(2); sc.play();
+        sc.setFromX(1.0);
+        sc.setToX(1.03);
+        sc.setFromY(1.0);
+        sc.setToY(1.03);
+        sc.setAutoReverse(true);
+        sc.setCycleCount(2);
+        sc.play();
     }
 
-    /* ═══════════════════════════════════════════
-       Style helpers
-    ═══════════════════════════════════════════ */
+
     private String severityCardClass(BugSeverity s) {
         return switch (s) {
             case CRITICAL -> "bug-card-critical";
-            case HIGH     -> "bug-card-high";
-            case MEDIUM   -> "bug-card-medium";
-            case LOW      -> "bug-card-low";
+            case HIGH -> "bug-card-high";
+            case MEDIUM -> "bug-card-medium";
+            case LOW -> "bug-card-low";
         };
     }
 
     private String severityBadgeClass(BugSeverity s) {
         return switch (s) {
             case CRITICAL -> "severity-critical";
-            case HIGH     -> "severity-high";
-            case MEDIUM   -> "severity-medium";
-            case LOW      -> "severity-low";
+            case HIGH -> "severity-high";
+            case MEDIUM -> "severity-medium";
+            case LOW -> "severity-low";
         };
     }
 
     private String statusBadgeClass(BugStatus s) {
         return switch (s) {
-            case OPEN        -> "bug-status-open";
+            case OPEN -> "bug-status-open";
             case IN_PROGRESS -> "bug-status-progress";
-            case CLOSED      -> "bug-status-closed";
+            case CLOSED -> "bug-status-closed";
         };
     }
 
