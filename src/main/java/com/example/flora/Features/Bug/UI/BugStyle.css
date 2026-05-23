@@ -1,0 +1,519 @@
+/* ══════════════════════════════════════════════════════════
+   BugStyle.css  –  Flora Bug Tracker  (dark-purple + red accent)
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Scroll pane transparency (same trick as HomeUI) ── */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-pane > .viewport { -fx-background-color: transparent; }
+.scroll-pane .scroll-bar:vertical  { -fx-background-color: #1A1528; -fx-background-radius: 4; }
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #6D4FC2; -fx-background-radius: 4;
+}
+.scroll-pane .scroll-bar:vertical .thumb:hover { -fx-background-color: #A855F7; }
+.scroll-pane .scroll-bar:horizontal { visibility: hidden; }
+
+/* ── Root canvas ── */
+.bug-root {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 19;
+}
+
+/* ══════════════════════
+   LEFT PANEL
+══════════════════════ */
+.left-panel-header {
+    -fx-text-fill: #9D8FBF;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 6 2;
+}
+
+/* Project-bug summary card */
+.proj-summary-card {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-padding: 10 14 10 14;
+}
+.proj-summary-card:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-background-color: rgba(109,79,194,0.10);
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.22), 14, 0, 0, 3);
+}
+.proj-summary-card-active {
+    -fx-background-color: rgba(109,79,194,0.18);
+    -fx-background-radius: 14;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 10 14 10 14;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.30), 16, 0, 0, 4);
+}
+
+.proj-name-label {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.proj-bug-count-label {
+    -fx-text-fill: #F87171;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(248,113,113,0.28);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 2 8 2 8;
+}
+
+/* Severity mini-bars inside project card */
+.sev-bar-crit  { -fx-background-color: #F87171; -fx-background-radius: 3; }
+.sev-bar-high  { -fx-background-color: #FB923C; -fx-background-radius: 3; }
+.sev-bar-med   { -fx-background-color: #FBB724; -fx-background-radius: 3; }
+.sev-bar-low   { -fx-background-color: #34D399; -fx-background-radius: 3; }
+
+/* ══════════════════════
+   RIGHT PANEL TOP BAR
+══════════════════════ */
+.bug-main-panel {
+    -fx-background-color: #13111A;
+}
+
+.bug-topbar {
+    -fx-background-color: #0E0C18;
+    -fx-border-color: transparent transparent #2D2845 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.bug-section-title { -fx-text-fill: #EDE9F6; }
+
+.bug-count-chip {
+    -fx-text-fill: #F87171;
+    -fx-background-color: rgba(248,113,113,0.14);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(248,113,113,0.30);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+
+.bug-divider {
+    -fx-background-color: #2D2845;
+    -fx-border-color: #2D2845;
+}
+.bug-h-sep {
+    -fx-background-color: #2D2845;
+    -fx-border-color: #2D2845;
+}
+
+/* Filter menu button */
+.filter-menu-btn {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 12;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+.filter-menu-btn:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-background-color: rgba(109,79,194,0.14);
+}
+.filter-menu-btn .label { -fx-text-fill: #C4B5F5; }
+
+/* Status filter pill buttons */
+.status-filter-btn {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 3 12 3 12;
+}
+.status-filter-btn:hover {
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #C4B5F5;
+}
+.status-filter-btn-active {
+    -fx-background-color: rgba(109,79,194,0.22);
+    -fx-background-radius: 10;
+    -fx-border-color: #6D4FC2;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 3 12 3 12;
+}
+
+/* ══════════════════════════════════════
+   BUG CARDS
+══════════════════════════════════════ */
+
+/* Base card */
+.bug-card {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-padding: 12 16 12 16;
+}
+.bug-card:hover {
+    -fx-background-color: #1F1B35;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.18), 18, 0, 0, 4);
+}
+
+/* Severity-tinted left border + glow */
+.bug-card-critical {
+    -fx-border-color: rgba(248,113,113,0.60) transparent transparent transparent;
+    -fx-border-insets: 0 0 0 0;
+    /* Override: paint a left stripe via background layers */
+    -fx-background-color: linear-gradient(to right, rgba(248,113,113,0.18) 0%, rgba(248,113,113,0.04) 4px, #1A1528 4px);
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(248,113,113,0.35);
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(248,113,113,0.12), 18, 0, 0, 0);
+}
+.bug-card-critical:hover {
+    -fx-effect: dropshadow(gaussian, rgba(248,113,113,0.30), 22, 0, 0, 4);
+    -fx-border-color: rgba(248,113,113,0.70);
+}
+
+.bug-card-high {
+    -fx-background-color: linear-gradient(to right, rgba(251,146,60,0.18) 0%, rgba(251,146,60,0.04) 4px, #1A1528 4px);
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(251,146,60,0.35);
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(251,146,60,0.10), 18, 0, 0, 0);
+}
+.bug-card-high:hover {
+    -fx-effect: dropshadow(gaussian, rgba(251,146,60,0.28), 22, 0, 0, 4);
+    -fx-border-color: rgba(251,146,60,0.70);
+}
+
+.bug-card-medium {
+    -fx-background-color: linear-gradient(to right, rgba(251,183,36,0.16) 0%, rgba(251,183,36,0.03) 4px, #1A1528 4px);
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(251,183,36,0.30);
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+.bug-card-medium:hover {
+    -fx-effect: dropshadow(gaussian, rgba(251,183,36,0.22), 20, 0, 0, 4);
+    -fx-border-color: rgba(251,183,36,0.65);
+}
+
+.bug-card-low {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(52,211,153,0.25);
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+.bug-card-low:hover {
+    -fx-effect: dropshadow(gaussian, rgba(52,211,153,0.18), 18, 0, 0, 3);
+    -fx-border-color: rgba(52,211,153,0.55);
+}
+
+/* ── Bug card text elements ── */
+.bug-card-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+}
+.bug-card-desc {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+}
+.bug-card-meta {
+    -fx-text-fill: #4A4060;
+    -fx-font-size: 11px;
+}
+
+/* Pulse dot for unclaimed bugs */
+.pulse-dot {
+    -fx-background-color: #F87171;
+    -fx-background-radius: 100;
+    -fx-min-width: 8; -fx-max-width: 8;
+    -fx-min-height: 8; -fx-max-height: 8;
+    -fx-effect: dropshadow(gaussian, rgba(248,113,113,0.70), 8, 0, 0, 0);
+}
+
+/* ══════════════════════
+   SEVERITY BADGES
+══════════════════════ */
+.severity-critical {
+    -fx-text-fill: #F87171;
+    -fx-background-color: rgba(248,113,113,0.15);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(248,113,113,0.40);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+.severity-high {
+    -fx-text-fill: #FB923C;
+    -fx-background-color: rgba(251,146,60,0.14);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(251,146,60,0.38);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+.severity-medium {
+    -fx-text-fill: #FBB724;
+    -fx-background-color: rgba(251,183,36,0.13);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(251,183,36,0.35);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+.severity-low {
+    -fx-text-fill: #34D399;
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(52,211,153,0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+
+/* Bug status (open / progress / closed) */
+.bug-status-open {
+    -fx-text-fill: #63B3ED;
+    -fx-background-color: rgba(99,179,237,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(99,179,237,0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+.bug-status-progress {
+    -fx-text-fill: #FBB724;
+    -fx-background-color: rgba(251,183,36,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(251,183,36,0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+.bug-status-closed {
+    -fx-text-fill: #34D399;
+    -fx-background-color: rgba(52,211,153,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(52,211,153,0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 9 2 9;
+}
+
+/* Unclaimed chip */
+.unclaimed-chip {
+    -fx-text-fill: #9D8FBF;
+    -fx-background-color: rgba(157,143,191,0.10);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(157,143,191,0.25);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 10px;
+    -fx-padding: 2 7 2 7;
+}
+
+/* ══════════════════════
+   DETAIL SLIDE PANEL
+══════════════════════ */
+.bug-detail-slide {
+    -fx-background-color: #0E0C18;
+    -fx-border-color: #2D2845 transparent transparent transparent;
+    -fx-border-width: 0 0 0 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.65), 36, 0, -6, 0);
+}
+
+.detail-panel-header  { -fx-text-fill: #EDE9F6; }
+.detail-meta-key {
+    -fx-text-fill: #6B5F8A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.detail-meta-val  { -fx-text-fill: #EDE9F6; -fx-font-size: 13px; }
+.detail-bug-title {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.detail-body-box {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+.detail-body-text { -fx-text-fill: #C4B5F5; -fx-font-size: 13px; }
+.detail-meta-box {
+    -fx-background-color: #1A1528;
+    -fx-background-radius: 14;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+
+/* ── Action buttons (shared with HomeUI palette) ── */
+.btn-accept {
+    -fx-background-color: rgba(52,211,153,0.15);
+    -fx-background-radius: 10;
+    -fx-text-fill: #34D399;
+    -fx-border-color: rgba(52,211,153,0.35);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.btn-accept:hover {
+    -fx-background-color: #34D399;
+    -fx-text-fill: #0A1F17;
+    -fx-effect: dropshadow(gaussian, rgba(52,211,153,0.45), 14, 0, 0, 3);
+}
+
+.slide-close-btn {
+    -fx-background-color: rgba(248,113,113,0.12);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(248,113,113,0.25);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #F87171;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.slide-close-btn:hover {
+    -fx-background-color: rgba(248,113,113,0.25);
+    -fx-border-color: #F87171;
+    -fx-effect: dropshadow(gaussian, rgba(248,113,113,0.22), 10, 0, 0, 2);
+}
+
+.update-btn {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6D4FC2, #A855F7);
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+.update-btn:hover {
+    -fx-opacity: 0.88;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.45), 14, 0, 0, 4);
+}
+
+/* Text input */
+.modal-text-field {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-prompt-text-fill: #4A4060;
+    -fx-font-size: 12px;
+}
+.modal-text-field:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 10, 0, 0, 0);
+}
+/* ══════════════════════════════════════════════════
+   Extra styles added for full Bug model support
+══════════════════════════════════════════════════ */
+
+/* ComboBox matching modal-text-field look */
+.combo-box {
+    -fx-background-color: #13111A;
+    -fx-background-radius: 10;
+    -fx-border-color: #2D2845;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-text-fill: #EDE9F6;
+    -fx-font-size: 12px;
+}
+.combo-box:focused {
+    -fx-border-color: #6D4FC2;
+    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 10, 0, 0, 0);
+}
+.combo-box .list-cell       { -fx-background-color: #1A1528; -fx-text-fill: #EDE9F6; }
+.combo-box-popup .list-view { -fx-background-color: #1A1528; -fx-border-color: #2D2845; }
+.combo-box-popup .list-view .list-cell:hover { -fx-background-color: rgba(109,79,194,0.22); }
+.combo-box .arrow-button    { -fx-background-color: transparent; }
+.combo-box .arrow           { -fx-background-color: #6B5F8A; }
+
+/* Reporter chip (distinct from unclaimed) */
+.reporter-chip {
+    -fx-text-fill: #63B3ED;
+    -fx-background-color: rgba(99,179,237,0.10);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(99,179,237,0.25);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 10px;
+    -fx-padding: 2 7 2 7;
+}
+/* ── Assignee chip (fixer, distinct from unclaimed) ── */
+.assignee-chip {
+    -fx-text-fill: #A78BFA;
+    -fx-background-color: rgba(167,139,250,0.12);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(167,139,250,0.28);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 10px;
+    -fx-padding: 2 7 2 7;
+}
+
+/* ── Leader chip on bug cards ── */
+.leader-chip {
+    -fx-text-fill: #FBB724;
+    -fx-background-color: rgba(251,183,36,0.10);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(251,183,36,0.28);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 7 2 7;
+}

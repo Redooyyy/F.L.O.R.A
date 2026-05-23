@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  BugUI.fxml
+  Flora – Bug Tracker Page
+  Mirror structure: left panel = project/severity selector, right panel = bug cards
+  Unique twist: severity-colour glow on each bug row, "pulse" dot on unclaimed bugs
+-->
+<AnchorPane
+        maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity"
+        prefHeight="512.0" prefWidth="1102.0"
+        styleClass="bug-root"
+        stylesheets="@BugStyle.css"
+        xmlns="http://javafx.com/javafx/23.0.1"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.example.flora.Features.Bug.UI.BugUI_Controller">
+
+    <!-- ══════════════════════════════════════════════════
+         LEFT PANEL  –  Project / severity selector
+    ══════════════════════════════════════════════════ -->
+    <ScrollPane fx:id="leftScroll"
+                AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                prefWidth="292.0"
+                styleClass="scroll-pane">
+        <content>
+            <VBox fx:id="projectBugSummaryScroll"
+                  prefWidth="276.0" spacing="10.0">
+                <padding><Insets top="16.0" left="14.0" right="14.0" bottom="16.0"/></padding>
+
+                <!-- Header -->
+                <Label text="🐛  Projects" styleClass="left-panel-header">
+                    <font><Font name="System Bold" size="14.0"/></font>
+                </Label>
+
+                <!-- project-bug-summary cards injected here by controller -->
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <!-- Glowing vertical divider -->
+    <Separator layoutX="292.0" layoutY="0.0"
+               orientation="VERTICAL"
+               prefHeight="512.0" prefWidth="2.0"
+               styleClass="bug-divider"/>
+
+    <!-- ══════════════════════════════════════════════════
+         RIGHT PANEL  –  Bug list
+    ══════════════════════════════════════════════════ -->
+    <AnchorPane styleClass="bug-main-panel"
+                AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="294.0"
+                AnchorPane.rightAnchor="0.0">
+
+        <!-- ── Top bar ── -->
+        <HBox AnchorPane.topAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              prefHeight="52.0"
+              alignment="CENTER_LEFT"
+              spacing="10.0"
+              styleClass="bug-topbar">
+            <padding><Insets left="20.0" right="16.0"/></padding>
+
+            <!-- Title -->
+            <Label fx:id="activeSectionLabel"
+                   text="All Bugs"
+                   styleClass="bug-section-title">
+                <font><Font name="System Bold" size="18.0"/></font>
+            </Label>
+
+            <!-- live count chip -->
+            <Label fx:id="bugCountChip" text="0"
+                   styleClass="bug-count-chip"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Severity filter -->
+            <MenuButton fx:id="severityFilter" text="Severity ▾"
+                        styleClass="filter-menu-btn">
+                <items>
+                    <MenuItem text="All"        onAction="#filterAll"/>
+                    <MenuItem text="Critical 🔴" onAction="#filterCritical"/>
+                    <MenuItem text="High 🟠"     onAction="#filterHigh"/>
+                    <MenuItem text="Medium 🟡"   onAction="#filterMedium"/>
+                    <MenuItem text="Low 🟢"      onAction="#filterLow"/>
+                </items>
+            </MenuButton>
+
+            <!-- Status filter -->
+            <HBox spacing="6.0" alignment="CENTER">
+                <Button fx:id="btnStatusAll"    text="All"         styleClass="status-filter-btn-active" onAction="#statusAll"/>
+                <Button fx:id="btnStatusOpen"   text="Open"        styleClass="status-filter-btn"        onAction="#statusOpen"/>
+                <Button fx:id="btnStatusClaimed" text="In Progress" styleClass="status-filter-btn"       onAction="#statusClaimed"/>
+                <Button fx:id="btnStatusClosed" text="Closed"      styleClass="status-filter-btn"        onAction="#statusClosed"/>
+            </HBox>
+        </HBox>
+
+        <!-- ── Separator ── -->
+        <Separator AnchorPane.topAnchor="52.0"
+                   AnchorPane.leftAnchor="0.0"
+                   AnchorPane.rightAnchor="0.0"
+                   styleClass="bug-h-sep"/>
+
+        <!-- ── Bug scroll ── -->
+        <ScrollPane fx:id="bugScroll"
+                    styleClass="scroll-pane"
+                    AnchorPane.topAnchor="56.0"
+                    AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    fitToWidth="true">
+            <content>
+                <VBox fx:id="bugCardList" spacing="12.0">
+                    <padding><Insets top="14.0" left="18.0" right="18.0" bottom="18.0"/></padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+    </AnchorPane>
+
+    <!-- ══════════════════════════════════════════════════
+         SLIDE-IN BUG DETAIL PANEL  (comes from right)
+    ══════════════════════════════════════════════════ -->
+    <AnchorPane fx:id="bugDetailSlide"
+                prefWidth="440.0"
+                styleClass="bug-detail-slide"
+                translateX="440.0"
+                AnchorPane.topAnchor="0.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.rightAnchor="0.0">
+
+        <VBox spacing="14.0"
+              AnchorPane.topAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0">
+            <padding><Insets top="20.0" left="22.0" right="22.0" bottom="20.0"/></padding>
+
+            <!-- Header row -->
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Label text="Bug Detail" styleClass="detail-panel-header">
+                    <font><Font name="System Bold" size="16.0"/></font>
+                </Label>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="closeDetailBtn" text="✕  Close"
+                        styleClass="slide-close-btn"
+                        onAction="#closeDetail"/>
+            </HBox>
+
+            <Separator styleClass="bug-h-sep"/>
+
+            <!-- Severity badge -->
+            <HBox spacing="8.0" alignment="CENTER_LEFT">
+                <Label text="Severity" styleClass="detail-meta-key"/>
+                <Label fx:id="detailSeverityBadge" text="CRITICAL"
+                       styleClass="severity-critical"/>
+            </HBox>
+
+            <!-- Title -->
+            <Label fx:id="detailTitle" text="—"
+                   styleClass="detail-bug-title" wrapText="true"/>
+
+            <!-- Description box -->
+            <VBox styleClass="detail-body-box" spacing="6.0">
+                <padding><Insets top="10.0" left="12.0" right="12.0" bottom="10.0"/></padding>
+                <Label text="Description" styleClass="detail-meta-key"/>
+                <Label fx:id="detailDesc" text="—"
+                       styleClass="detail-body-text" wrapText="true"/>
+            </VBox>
+
+            <!-- Meta box -->
+            <VBox styleClass="detail-meta-box" spacing="8.0">
+                <padding><Insets top="10.0" left="14.0" right="14.0" bottom="10.0"/></padding>
+
+                <HBox spacing="8.0">
+                    <Label text="Reported by"  styleClass="detail-meta-key" prefWidth="96"/>
+                    <Label fx:id="detailReporter" text="—" styleClass="detail-meta-val"/>
+                </HBox>
+                <HBox spacing="8.0">
+                    <Label text="Assigned to"  styleClass="detail-meta-key" prefWidth="96"/>
+                    <Label fx:id="detailAssignee" text="Unclaimed" styleClass="detail-meta-val"/>
+                </HBox>
+                <HBox spacing="8.0">
+                    <Label text="Status"        styleClass="detail-meta-key" prefWidth="96"/>
+                    <Label fx:id="detailStatus" text="OPEN" styleClass="status-filter-btn-active"/>
+                </HBox>
+                <HBox spacing="8.0">
+                    <Label text="Reported"      styleClass="detail-meta-key" prefWidth="96"/>
+                    <Label fx:id="detailDate"   text="—" styleClass="detail-meta-val"/>
+                </HBox>
+            </VBox>
+
+            <!-- Action row – claim / mark fixed / assign -->
+            <HBox fx:id="detailActionRow" spacing="10.0" alignment="CENTER_LEFT">
+                <!-- Populated dynamically by controller -->
+            </HBox>
+
+            <!-- Assign sub-panel (hidden by default) -->
+            <HBox fx:id="detailAssignRow" spacing="8.0" alignment="CENTER_LEFT"
+                  visible="false" managed="false">
+                <Label text="Assign to:" styleClass="detail-meta-key"/>
+                <TextField fx:id="detailAssignInput"
+                           promptText="Username…"
+                           styleClass="modal-text-field"
+                           prefWidth="170.0" prefHeight="30.0"/>
+                <Button text="✔ Confirm" styleClass="btn-accept"
+                        onAction="#confirmAssign">
+                    <padding><Insets top="3.0" bottom="3.0" left="10.0" right="10.0"/></padding>
+                </Button>
+                <Button text="✕" styleClass="slide-close-btn"
+                        onAction="#cancelAssign">
+                    <padding><Insets top="3.0" bottom="3.0" left="8.0" right="8.0"/></padding>
+                </Button>
+            </HBox>
+
+        </VBox>
+    </AnchorPane>
+
+</AnchorPane>
