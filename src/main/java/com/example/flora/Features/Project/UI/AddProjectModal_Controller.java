@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 public class AddProjectModal_Controller implements Initializable {
 
-    // ── FXML references ─────────────────────────────────────────────────────
+
     @FXML private AnchorPane addProjectPanel;
     @FXML private TextField  nameField;
     @FXML private TextArea   descriptionField;

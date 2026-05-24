@@ -2,11 +2,16 @@ package com.example.flora.Features.Project.UI;
 
 import com.example.flora.Core.Helper.DateAndTime;
 import com.example.flora.Features.Bug.model.Bug;
+import com.example.flora.Features.Bug.model.BugSeverity;
 import com.example.flora.Features.Bug.model.BugStatus;
 import com.example.flora.Features.Project.model.Project;
 import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
+import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,16 +38,13 @@ import static com.example.flora.Features.Project.ViewModel.ProjectDetailViewMode
 
 public class ProjectDetailUI_Controller implements Initializable {
 
-
     @FXML
     private AnchorPane projectDetailRoot;
-
 
     @FXML
     private Label detailProjectName;
     @FXML
     private Label roleBadge;
-
 
     @FXML
     private Button tabTasks;
@@ -50,8 +52,6 @@ public class ProjectDetailUI_Controller implements Initializable {
     private Button tabMembers;
     @FXML
     private Button tabBugs;
-
-
     @FXML
     private AnchorPane tasksTab;
     @FXML
@@ -59,13 +59,10 @@ public class ProjectDetailUI_Controller implements Initializable {
     @FXML
     private AnchorPane bugsTab;
 
-
     @FXML
     private Button addTaskToggleBtn;
     @FXML
     private MenuButton filterMenuBtn;
-
-
     @FXML
     private VBox addTaskPanel;
     @FXML
@@ -86,13 +83,10 @@ public class ProjectDetailUI_Controller implements Initializable {
     private TextField draftTitleInput;
     @FXML
     private Label draftDeadlineChip;
-
-
     @FXML
     private VBox taskList;
     @FXML
     private ScrollPane taskScroll;
-
 
     @FXML
     private HBox inviteRow;
@@ -103,20 +97,34 @@ public class ProjectDetailUI_Controller implements Initializable {
     @FXML
     private VBox memberList;
 
-
     @FXML
     private HBox reportBugRow;
     @FXML
+    private Button reportBugToggleBtn;
+    @FXML
+    private VBox reportBugPanel;
+    @FXML
     private TextField bugTitleInput;
     @FXML
-    private VBox bugList;
+    private TextField bugReporterInput;
+    @FXML
+    private ComboBox<String> bugSeverityCombo;
+    @FXML
+    private Label bugReportFeedback;
+
     @FXML
     private Button bugFilterAll;
     @FXML
     private Button bugFilterOpen;
     @FXML
+    private Button bugFilterProgress;
+    @FXML
     private Button bugFilterClosed;
 
+    @FXML
+    private VBox bugList;
+    @FXML
+    private ScrollPane bugScroll;
 
     @FXML
     private Label infoLeader;
@@ -131,37 +139,40 @@ public class ProjectDetailUI_Controller implements Initializable {
     @FXML
     private Label statBugs;
 
-    //TODO:DI must
-     // just for testing
-    private final ProjectDetailViewModel viewModel = new ProjectDetailViewModel();
-
-
-    private boolean addPanelOpen     = false;
+    private final ProjectDetailViewModel viewModel;
+    private boolean addPanelOpen = false;
+    private boolean reportBugPanelOpen = false;
     private Runnable onClose;
+
+    public ProjectDetailUI_Controller(ProjectDetailViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         removeScrollBars(taskScroll);
+        removeScrollBars(bugScroll);
         showTab(tasksTab, tabTasks);
 
+        bugSeverityCombo.getItems().addAll(
+                "🔴 CRITICAL", "🟠 HIGH", "🟡 MEDIUM", "🟢 LOW"
+        );
+        bugSeverityCombo.getSelectionModel().selectFirst();
 
-        viewModel.taskCountProperty().addListener((obs, o, n) ->
-                statTasks.setText(String.valueOf(n)));
-        viewModel.bugCountProperty().addListener((obs, o, n) ->
-                statBugs.setText(String.valueOf(n)));
-        viewModel.memberCountProperty().addListener((obs, o, n) ->
-                infoMemberCount.setText(n + " members"));
+        viewModel.taskCountProperty().addListener((obs, o, n) -> statTasks.setText(String.valueOf(n)));
+        viewModel.bugCountProperty().addListener((obs, o, n) -> statBugs.setText(String.valueOf(n)));
+        viewModel.memberCountProperty().addListener((obs, o, n) -> infoMemberCount.setText(n + " members"));
 
-         viewModel.activeTaskFilterProperty().addListener((obs, o, n) -> renderTasks());
+        viewModel.activeTaskFilterProperty().addListener((obs, o, n) -> renderTasks());
         viewModel.getTasks().addListener(
                 (javafx.collections.ListChangeListener<Task>) c -> renderTasks());
 
-         viewModel.activeBugFilterProperty().addListener((obs, o, n) -> renderBugs());
+        viewModel.activeBugFilterProperty().addListener((obs, o, n) -> renderBugs());
         viewModel.getBugs().addListener(
                 (javafx.collections.ListChangeListener<Bug>) c -> renderBugs());
 
-         viewModel.getMembers().addListener(
+        viewModel.getMembers().addListener(
                 (javafx.collections.ListChangeListener<String>) c -> renderMembers());
     }
 
@@ -169,9 +180,7 @@ public class ProjectDetailUI_Controller implements Initializable {
     public void openProject(Project project, String currentUserId,
                             boolean isLeader, Runnable onClose) {
         this.onClose = onClose;
-
         viewModel.init(project, currentUserId, isLeader);
-
         populateInfo(project);
         applyRoleVisibility(isLeader);
         showTab(tasksTab, tabTasks);
@@ -179,9 +188,20 @@ public class ProjectDetailUI_Controller implements Initializable {
     }
 
 
-    @FXML private void showTasksTab(ActionEvent e)   { showTab(tasksTab,   tabTasks);   }
-    @FXML private void showMembersTab(ActionEvent e) { showTab(membersTab, tabMembers); }
-    @FXML private void showBugsTab(ActionEvent e)    { showTab(bugsTab,    tabBugs);    }
+    @FXML
+    private void showTasksTab(ActionEvent e) {
+        showTab(tasksTab, tabTasks);
+    }
+
+    @FXML
+    private void showMembersTab(ActionEvent e) {
+        showTab(membersTab, tabMembers);
+    }
+
+    @FXML
+    private void showBugsTab(ActionEvent e) {
+        showTab(bugsTab, tabBugs);
+    }
 
     private void showTab(AnchorPane active, Button btn) {
         tasksTab.setVisible(false);
@@ -208,18 +228,21 @@ public class ProjectDetailUI_Controller implements Initializable {
         AnchorPane.setTopAnchor(taskScroll, addPanelOpen ? 170.0 : 52.0);
     }
 
-
     @FXML
     private void switchToAssignMode(ActionEvent e) {
-        assignFields.setVisible(true);  assignFields.setManaged(true);
-        draftFields.setVisible(false);  draftFields.setManaged(false);
+        assignFields.setVisible(true);
+        assignFields.setManaged(true);
+        draftFields.setVisible(false);
+        draftFields.setManaged(false);
         setModeActive(modeAssignBtn, modeDraftBtn);
     }
 
     @FXML
     private void switchToDraftMode(ActionEvent e) {
-        assignFields.setVisible(false); assignFields.setManaged(false);
-        draftFields.setVisible(true);   draftFields.setManaged(true);
+        assignFields.setVisible(false);
+        assignFields.setManaged(false);
+        draftFields.setVisible(true);
+        draftFields.setManaged(true);
         setModeActive(modeDraftBtn, modeAssignBtn);
     }
 
@@ -229,7 +252,6 @@ public class ProjectDetailUI_Controller implements Initializable {
         inactive.getStyleClass().removeAll("task-filter-btn", "task-filter-btn-active");
         inactive.getStyleClass().add("task-filter-btn");
     }
-
 
     @FXML
     private void toggleAssignDeadline(MouseEvent e) {
@@ -242,14 +264,14 @@ public class ProjectDetailUI_Controller implements Initializable {
     }
 
     private void toggleDeadlineRow(String id, HBox anchor, Label chip, boolean isAssign) {
-        int     anchorIdx = addTaskPanel.getChildren().indexOf(anchor);
-        boolean exists    = addTaskPanel.getChildren().stream()
+        int anchorIdx = addTaskPanel.getChildren().indexOf(anchor);
+        boolean exists = addTaskPanel.getChildren().stream()
                 .anyMatch(n -> id.equals(n.getUserData()));
         if (exists) {
             addTaskPanel.getChildren().removeIf(n -> id.equals(n.getUserData()));
             chip.setText("📅  Set deadline");
             if (isAssign) viewModel.clearPendingAssignDeadline();
-            else          viewModel.clearPendingDraftDeadline();
+            else viewModel.clearPendingDraftDeadline();
         } else {
             addTaskPanel.getChildren().add(anchorIdx + 1,
                     buildInlineDateRow(id, chip, isAssign));
@@ -271,8 +293,8 @@ public class ProjectDetailUI_Controller implements Initializable {
 
         Button minus7 = quickAdjust("−7d", dp, -7);
         Button minus1 = quickAdjust("−1d", dp, -1);
-        Button plus1  = quickAdjust("+1d", dp,  1);
-        Button plus7  = quickAdjust("+7d", dp,  7);
+        Button plus1 = quickAdjust("+1d", dp, 1);
+        Button plus7 = quickAdjust("+7d", dp, 7);
 
         Button okBtn = new Button("✔  Set");
         okBtn.getStyleClass().add("btn-accept");
@@ -280,7 +302,7 @@ public class ProjectDetailUI_Controller implements Initializable {
         okBtn.setOnAction(ev -> {
             LocalDate chosen = dp.getValue();
             if (isAssign) viewModel.setPendingAssignDeadline(chosen);
-            else          viewModel.setPendingDraftDeadline(chosen);
+            else viewModel.setPendingDraftDeadline(chosen);
             chip.setText(chosen != null ? "📅  " + chosen.format(DATE_FMT) : "📅  Set deadline");
             addTaskPanel.getChildren().removeIf(n -> id.equals(n.getUserData()));
         });
@@ -290,19 +312,40 @@ public class ProjectDetailUI_Controller implements Initializable {
     }
 
 
-    @FXML private void filterMyTasks(ActionEvent e)    { setTaskFilter("👤  My Tasks",     "MY");        }
-    @FXML private void filterAllTasks(ActionEvent e)   { setTaskFilter("📋  All Tasks",    "ALL");       }
-    @FXML private void filterCompleted(ActionEvent e)  { setTaskFilter("✅  Completed",    "COMPLETED"); }
-    @FXML private void filterDue(ActionEvent e)        { setTaskFilter("⏳  Due / Overdue","DUE");       }
-    @FXML private void filterDrafts(ActionEvent e)     { setTaskFilter("✏  Drafts",        "DRAFTS");    }
-    @FXML private void filterByAssignee(ActionEvent e) {
+    @FXML
+    private void filterMyTasks(ActionEvent e) {
+        setTaskFilter("👤  My Tasks", "MY");
+    }
+
+    @FXML
+    private void filterAllTasks(ActionEvent e) {
+        setTaskFilter("📋  All Tasks", "ALL");
+    }
+
+    @FXML
+    private void filterCompleted(ActionEvent e) {
+        setTaskFilter("✅  Completed", "COMPLETED");
+    }
+
+    @FXML
+    private void filterDue(ActionEvent e) {
+        setTaskFilter("⏳  Due / Overdue", "DUE");
+    }
+
+    @FXML
+    private void filterDrafts(ActionEvent e) {
+        setTaskFilter("✏  Drafts", "DRAFTS");
+    }
+
+    @FXML
+    private void filterByAssignee(ActionEvent e) {
         filterMenuBtn.setText("👥  By Assignee");
         renderGroupedByAssignee();
     }
 
     private void setTaskFilter(String label, String mode) {
         filterMenuBtn.setText(label);
-        viewModel.setActiveTaskFilter(mode); // triggers listener → renderTasks()
+        viewModel.setActiveTaskFilter(mode);
     }
 
 
@@ -337,7 +380,6 @@ public class ProjectDetailUI_Controller implements Initializable {
         }
     }
 
-
     private VBox buildTaskCard(Task t) {
         boolean draft = viewModel.isDraft(t);
 
@@ -353,14 +395,12 @@ public class ProjectDetailUI_Controller implements Initializable {
         titleLbl.setTextFill(Color.web(draft ? "#FBB024" : "#EDE9F6"));
         titleLbl.getStyleClass().add("row-title");
         HBox.setHgrow(titleLbl, Priority.ALWAYS);
-
         titleRow.getChildren().add(titleLbl);
 
         if (!draft && t.getCreatedAt() != null && !t.getCreatedAt().isBlank()) {
             Label createdChip = new Label("🗓 " + t.getCreatedAt());
             createdChip.getStyleClass().add("created-at-chip");
             createdChip.setPadding(new Insets(3, 8, 3, 8));
-
             titleRow.getChildren().add(createdChip);
         }
 
@@ -370,7 +410,6 @@ public class ProjectDetailUI_Controller implements Initializable {
 
         HBox chips = new HBox(10);
         chips.setAlignment(Pos.CENTER_LEFT);
-
         HBox actions = new HBox(8);
         actions.setAlignment(Pos.CENTER_RIGHT);
         HBox.setHgrow(actions, Priority.ALWAYS);
@@ -400,26 +439,18 @@ public class ProjectDetailUI_Controller implements Initializable {
                 && t.getAssigneeId().equalsIgnoreCase(viewModel.getCurrentUserId());
 
         if (isAssignee && t.getStatus() != TaskStatus.DONE) {
-
             Button changeStatusBtn = new Button("⟳ Status");
             changeStatusBtn.getStyleClass().add("update-btn");
             changeStatusBtn.setPadding(new Insets(3, 8, 3, 8));
-
             changeStatusBtn.setOnAction(ev -> {
                 boolean open = expandPanel.isVisible();
                 expandPanel.getChildren().clear();
-
                 if (!open || !"cs".equals(expandPanel.getUserData())) {
-                    expandPanel.getChildren().add(
-                            buildChangeStatusRow(t, statusLbl, expandPanel)
-                    );
+                    expandPanel.getChildren().add(buildChangeStatusRow(t, statusLbl, expandPanel));
                     expandPanel.setUserData("cs");
                     expandPanel.setVisible(true);
                     expandPanel.setManaged(true);
-
-                    javafx.animation.FadeTransition ft =
-                            new javafx.animation.FadeTransition(
-                                    javafx.util.Duration.millis(200), expandPanel);
+                    FadeTransition ft = new FadeTransition(Duration.millis(200), expandPanel);
                     ft.setFromValue(0);
                     ft.setToValue(1);
                     ft.play();
@@ -428,38 +459,28 @@ public class ProjectDetailUI_Controller implements Initializable {
                     expandPanel.setManaged(false);
                 }
             });
-
             actions.getChildren().add(changeStatusBtn);
         }
 
         if (viewModel.isLeader()) {
-
             Button doneBtn = new Button("✔ Done");
             doneBtn.getStyleClass().add("btn-accept");
             doneBtn.setPadding(new Insets(3, 8, 3, 8));
-
             doneBtn.setOnAction(ev -> {
                 viewModel.markTaskDone(t);
-
                 statusLbl.setText(TaskStatus.DONE.name());
-                statusLbl.getStyleClass().removeAll(
-                        "status-todo", "status-progress", "status-review"
-                );
+                statusLbl.getStyleClass().removeAll("status-todo", "status-progress", "status-review");
                 statusLbl.getStyleClass().add("status-done");
             });
 
             Button editDlBtn = new Button("📅 Deadline");
             editDlBtn.getStyleClass().add("update-btn");
             editDlBtn.setPadding(new Insets(3, 8, 3, 8));
-
             editDlBtn.setOnAction(ev -> {
                 boolean open = expandPanel.isVisible();
                 expandPanel.getChildren().clear();
-
                 if (!open || !"dl".equals(expandPanel.getUserData())) {
-                    expandPanel.getChildren().add(
-                            buildDeadlineExpandRow(t, deadlineChip, expandPanel)
-                    );
+                    expandPanel.getChildren().add(buildDeadlineExpandRow(t, deadlineChip, expandPanel));
                     expandPanel.setUserData("dl");
                     expandPanel.setVisible(true);
                     expandPanel.setManaged(true);
@@ -472,15 +493,11 @@ public class ProjectDetailUI_Controller implements Initializable {
             Button reassignBtn = new Button("↺ Reassign");
             reassignBtn.getStyleClass().add("update-btn");
             reassignBtn.setPadding(new Insets(3, 8, 3, 8));
-
             reassignBtn.setOnAction(ev -> {
                 boolean open = expandPanel.isVisible();
                 expandPanel.getChildren().clear();
-
                 if (!open || !"ra".equals(expandPanel.getUserData())) {
-                    expandPanel.getChildren().add(
-                            buildReassignExpandRow(t, assigneeLbl, expandPanel)
-                    );
+                    expandPanel.getChildren().add(buildReassignExpandRow(t, assigneeLbl, expandPanel));
                     expandPanel.setUserData("ra");
                     expandPanel.setVisible(true);
                     expandPanel.setManaged(true);
@@ -494,9 +511,7 @@ public class ProjectDetailUI_Controller implements Initializable {
         }
 
         metaRow.getChildren().addAll(chips, actions);
-
         card.getChildren().addAll(titleRow, metaRow, expandPanel);
-
         return card;
     }
 
@@ -517,11 +532,6 @@ public class ProjectDetailUI_Controller implements Initializable {
         dp.setStyle("-fx-font-size: 12px;");
         dp.setConverter(dateConverter());
 
-        Button m7      = quickAdjust("−7d", dp, -7);
-        Button m1      = quickAdjust("−1d", dp, -1);
-        Button p1      = quickAdjust("+1d", dp,  1);
-        Button p7      = quickAdjust("+7d", dp,  7);
-
         Button saveBtn = new Button("✔ Save");
         saveBtn.getStyleClass().add("btn-accept");
         saveBtn.setPadding(new Insets(3, 10, 3, 10));
@@ -531,7 +541,6 @@ public class ProjectDetailUI_Controller implements Initializable {
             expandPanel.setVisible(false);
             expandPanel.setManaged(false);
         });
-
         Button cancelBtn = new Button("✕");
         cancelBtn.getStyleClass().add("slide-close-btn");
         cancelBtn.setPadding(new Insets(3, 8, 3, 8));
@@ -540,7 +549,8 @@ public class ProjectDetailUI_Controller implements Initializable {
             expandPanel.setManaged(false);
         });
 
-        row.getChildren().addAll(lbl, m7, m1, dp, p1, p7, saveBtn, cancelBtn);
+        row.getChildren().addAll(lbl, quickAdjust("−7d", dp, -7), quickAdjust("−1d", dp, -1),
+                dp, quickAdjust("+1d", dp, 1), quickAdjust("+7d", dp, 7), saveBtn, cancelBtn);
         return row;
     }
 
@@ -571,7 +581,6 @@ public class ProjectDetailUI_Controller implements Initializable {
             expandPanel.setVisible(false);
             expandPanel.setManaged(false);
         });
-
         Button cancelBtn = new Button("✕");
         cancelBtn.getStyleClass().add("slide-close-btn");
         cancelBtn.setPadding(new Insets(3, 8, 3, 8));
@@ -600,31 +609,22 @@ public class ProjectDetailUI_Controller implements Initializable {
             Button sb = new Button(statusLabel(s));
             sb.getStyleClass().add(statusStyleClass(s));
             sb.setPadding(new Insets(4, 10, 4, 10));
-            // Dim non-current statuses
-            if (s == t.getStatus()) {
-                sb.setStyle("-fx-cursor: hand; -fx-border-width: 2;");
-            } else {
-                sb.setStyle("-fx-cursor: hand; -fx-opacity: 0.50;");
-            }
+            if (s == t.getStatus()) sb.setStyle("-fx-cursor: hand; -fx-border-width: 2;");
+            else sb.setStyle("-fx-cursor: hand; -fx-opacity: 0.50;");
             sb.setOnAction(ev -> {
                 viewModel.updateTaskStatus(t, s);
-                // Update inline status label
                 statusLbl.setText(s.name());
-                statusLbl.getStyleClass().removeAll(
-                        "status-todo", "status-progress", "status-review", "status-done");
+                statusLbl.getStyleClass().removeAll("status-todo", "status-progress", "status-review", "status-done");
                 statusLbl.getStyleClass().add(statusStyleClass(s));
-                // Pop animation
-                javafx.animation.ScaleTransition pop =
-                        new javafx.animation.ScaleTransition(
-                                javafx.util.Duration.millis(200), statusLbl);
-                pop.setFromX(0.80); pop.setFromY(0.80);
-                pop.setToX(1.0);    pop.setToY(1.0);
+                ScaleTransition pop = new ScaleTransition(Duration.millis(200), statusLbl);
+                pop.setFromX(0.80);
+                pop.setFromY(0.80);
+                pop.setToX(1.0);
+                pop.setToY(1.0);
                 pop.play();
-                // Fade-out the panel
-                javafx.animation.FadeTransition ft =
-                        new javafx.animation.FadeTransition(
-                                javafx.util.Duration.millis(180), expandPanel);
-                ft.setFromValue(1); ft.setToValue(0);
+                FadeTransition ft = new FadeTransition(Duration.millis(180), expandPanel);
+                ft.setFromValue(1);
+                ft.setToValue(0);
                 ft.setOnFinished(e -> {
                     expandPanel.setVisible(false);
                     expandPanel.setManaged(false);
@@ -634,7 +634,6 @@ public class ProjectDetailUI_Controller implements Initializable {
             });
             statusBtns[i] = sb;
         }
-
         row.getChildren().add(lbl);
         row.getChildren().addAll(statusBtns);
         return row;
@@ -642,10 +641,10 @@ public class ProjectDetailUI_Controller implements Initializable {
 
     private String statusLabel(TaskStatus s) {
         return switch (s) {
-            case TODO        -> "📌 To Do";
+            case TODO -> "📌 To Do";
             case IN_PROGRESS -> "⚙ In Progress";
-            case IN_REVIEW   -> "👁 In Review";
-            case DONE        -> "✅ Done";
+            case IN_REVIEW -> "👁 In Review";
+            case DONE -> "✅ Done";
         };
     }
 
@@ -655,8 +654,7 @@ public class ProjectDetailUI_Controller implements Initializable {
         viewModel.assignTask(
                 taskTitleInput.getText().trim(),
                 taskAssigneeInput.getText().trim(),
-                viewModel.getPendingAssignDeadline()
-        );
+                viewModel.getPendingAssignDeadline());
         taskTitleInput.clear();
         taskAssigneeInput.clear();
         assignDeadlineChip.setText("📅  Set deadline");
@@ -665,18 +663,12 @@ public class ProjectDetailUI_Controller implements Initializable {
 
     @FXML
     private void saveDraftTask(ActionEvent event) {
-        viewModel.saveDraftTask(
-                draftTitleInput.getText().trim(),
-                viewModel.getPendingDraftDeadline()
-        );
+        viewModel.saveDraftTask(draftTitleInput.getText().trim(), viewModel.getPendingDraftDeadline());
         draftTitleInput.clear();
         draftDeadlineChip.setText("📅  Set deadline");
         addTaskPanel.getChildren().removeIf(n -> "draft-dl-row".equals(n.getUserData()));
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    //  Members
-    // ─────────────────────────────────────────────────────────────────────────
 
     @FXML
     private void sendInvite(ActionEvent event) {
@@ -686,8 +678,7 @@ public class ProjectDetailUI_Controller implements Initializable {
         inviteFeedback.getStyleClass().removeAll("feedback-ok", "feedback-err");
         inviteFeedback.getStyleClass().add(ok ? "feedback-ok" : "feedback-err");
         inviteSearchField.clear();
-        javafx.animation.PauseTransition w =
-                new javafx.animation.PauseTransition(Duration.seconds(2.5));
+        javafx.animation.PauseTransition w = new javafx.animation.PauseTransition(Duration.seconds(2.5));
         w.setOnFinished(e -> inviteFeedback.setText(""));
         w.play();
     }
@@ -730,28 +721,127 @@ public class ProjectDetailUI_Controller implements Initializable {
             removeBtn.setOnAction(e -> viewModel.removeMember(username));
             row.getChildren().add(removeBtn);
         }
-
         return row;
     }
 
 
     @FXML
-    private void reportBug(ActionEvent event) {
-        viewModel.reportBug(bugTitleInput.getText().trim());
-        bugTitleInput.clear();
+    private void toggleReportBugPanel(ActionEvent e) {
+        reportBugPanelOpen = !reportBugPanelOpen;
+        reportBugPanel.setVisible(reportBugPanelOpen);
+        reportBugPanel.setManaged(reportBugPanelOpen);
+
+        double filterTop = reportBugPanelOpen ? 190.0 : 52.0;
+        double scrollTop = reportBugPanelOpen ? 230.0 : 92.0;
+        AnchorPane.setTopAnchor(bugScroll, scrollTop);
+
+        if (reportBugPanelOpen) {
+            reportBugPanel.setOpacity(0);
+            reportBugPanel.setTranslateY(-12);
+            FadeTransition ft = new FadeTransition(Duration.millis(220), reportBugPanel);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.play();
+            javafx.animation.TranslateTransition tt =
+                    new javafx.animation.TranslateTransition(Duration.millis(220), reportBugPanel);
+            tt.setFromY(-12);
+            tt.setToY(0);
+            tt.play();
+            reportBugToggleBtn.setText("✕  Cancel");
+            reportBugToggleBtn.getStyleClass().removeAll("btn-decline");
+            reportBugToggleBtn.getStyleClass().add("slide-close-btn");
+
+            bugTitleInput.clear();
+            bugReporterInput.clear();
+            bugSeverityCombo.getSelectionModel().selectFirst();
+            bugReportFeedback.setText("");
+        } else {
+            reportBugToggleBtn.setText("🐛  Report Bug");
+            reportBugToggleBtn.getStyleClass().removeAll("slide-close-btn");
+            reportBugToggleBtn.getStyleClass().add("btn-decline");
+        }
     }
 
-    @FXML private void bugFilterAll(ActionEvent e)    { setBugFilter("ALL",    bugFilterAll);    }
-    @FXML private void bugFilterOpen(ActionEvent e)   { setBugFilter("OPEN",   bugFilterOpen);   }
-    @FXML private void bugFilterClosed(ActionEvent e) { setBugFilter("CLOSED", bugFilterClosed); }
+
+    @FXML
+    private void reportBug(ActionEvent event) {
+        String title = bugTitleInput.getText().trim();
+        String reporter = bugReporterInput.getText().trim();
+        String severityRaw = bugSeverityCombo.getValue();
+
+        if (title.isEmpty()) {
+            showBugFeedback("⚠  Please enter a bug title.", false);
+            return;
+        }
+        if (reporter.isEmpty()) {
+            showBugFeedback("⚠  Reporter username is required.", false);
+            return;
+        }
+        if (severityRaw == null) {
+            showBugFeedback("⚠  Please select a severity.", false);
+            return;
+        }
+
+        BugSeverity severity = parseSeverity(severityRaw);
+
+        viewModel.reportBug(title, reporter, severity);
+
+        showBugFeedback("✔  Bug reported successfully!", true);
+
+        bugTitleInput.clear();
+        bugReporterInput.clear();
+        bugSeverityCombo.getSelectionModel().selectFirst();
+
+        javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(Duration.seconds(1.4));
+        pause.setOnFinished(e -> {
+            if (reportBugPanelOpen) toggleReportBugPanel(null);
+        });
+        pause.play();
+    }
+
+    private void showBugFeedback(String msg, boolean ok) {
+        bugReportFeedback.setText(msg);
+        bugReportFeedback.setStyle("-fx-text-fill: " + (ok ? "#34D399" : "#F87171") + "; -fx-font-size:12px;");
+    }
+
+    private BugSeverity parseSeverity(String raw) {
+        if (raw == null) return BugSeverity.MEDIUM;
+        String upper = raw.toUpperCase();
+        if (upper.contains("CRITICAL")) return BugSeverity.CRITICAL;
+        if (upper.contains("HIGH")) return BugSeverity.HIGH;
+        if (upper.contains("LOW")) return BugSeverity.LOW;
+        return BugSeverity.MEDIUM;
+    }
+
+
+    @FXML
+    private void bugFilterAll(ActionEvent e) {
+        setBugFilter("ALL", bugFilterAll);
+    }
+
+    @FXML
+    private void bugFilterOpen(ActionEvent e) {
+        setBugFilter("OPEN", bugFilterOpen);
+    }
+
+    @FXML
+    private void bugFilterProgress(ActionEvent e) {
+        setBugFilter("IN_PROGRESS", bugFilterProgress);
+    }
+
+    @FXML
+    private void bugFilterClosed(ActionEvent e) {
+        setBugFilter("CLOSED", bugFilterClosed);
+    }
 
     private void setBugFilter(String filter, Button active) {
         viewModel.setActiveBugFilter(filter);
-        for (Button b : new Button[]{bugFilterAll, bugFilterOpen, bugFilterClosed}) {
+        for (Button b : new Button[]{bugFilterAll, bugFilterOpen, bugFilterProgress, bugFilterClosed}) {
             b.getStyleClass().removeAll("task-filter-btn-active", "task-filter-btn");
             b.getStyleClass().add(b == active ? "task-filter-btn-active" : "task-filter-btn");
         }
     }
+
 
     private void renderBugs() {
         bugList.getChildren().clear();
@@ -760,16 +850,33 @@ public class ProjectDetailUI_Controller implements Initializable {
             bugList.getChildren().add(emptyLabel("No bugs in this view."));
             return;
         }
-        for (Bug bug : list) bugList.getChildren().add(buildBugCard(bug));
+        int delay = 0;
+        for (Bug bug : list) {
+            VBox card = buildBugCard(bug);
+            bugList.getChildren().add(card);
+            staggerIn(card, delay);
+            delay += 40;
+        }
     }
+
 
     private VBox buildBugCard(Bug bug) {
         VBox card = new VBox(0);
         card.getStyleClass().add("detail-list-row");
+        card.setStyle(severityLeftBorder(bug.getSeverity()));
+
 
         HBox line1 = new HBox(10);
         line1.setPadding(new Insets(10, 14, 10, 14));
         line1.setAlignment(Pos.CENTER_LEFT);
+
+
+        if (bug.isUnclaimed() && !bug.isClosed()) {
+            Label dot = new Label("●");
+            dot.setStyle("-fx-text-fill: #F87171; -fx-font-size: 10px;"
+                    + "-fx-effect: dropshadow(gaussian, rgba(248,113,113,0.70), 6,0,0,0);");
+            line1.getChildren().add(dot);
+        }
 
         Label titleLbl = new Label("🐛  " + bug.getTitle());
         titleLbl.setTextFill(Color.web("#EDE9F6"));
@@ -777,81 +884,196 @@ public class ProjectDetailUI_Controller implements Initializable {
         titleLbl.getStyleClass().add("row-title");
         HBox.setHgrow(titleLbl, Priority.ALWAYS);
 
+
+        Label sevBadge = new Label(bug.getSeverity().displayName());
+        sevBadge.getStyleClass().add(severityBadgeClass(bug.getSeverity()));
+        sevBadge.setPadding(new Insets(3, 8, 3, 8));
+
+        Label reporterChip = new Label("👤 @" + bug.getReportedByUserId());
+        reporterChip.getStyleClass().add("unclaimed-chip");
+        reporterChip.setPadding(new Insets(3, 8, 3, 8));
+
         Label fixerLbl = new Label(bug.isUnclaimed() ? "Unclaimed" : "🔧 @" + bug.getFixingUserId());
         fixerLbl.getStyleClass().add(bug.isUnclaimed() ? "fixer-unclaimed" : "pill-label");
         fixerLbl.setPadding(new Insets(3, 8, 3, 8));
 
-        Label statusLbl = new Label(bug.getStatus().name());
+        Label statusLbl = new Label(bug.getStatus().displayName());
         statusLbl.getStyleClass().add(bugStatusStyleClass(bug.getStatus()));
         statusLbl.setPadding(new Insets(3, 8, 3, 8));
         statusLbl.setAlignment(Pos.CENTER);
 
-        line1.getChildren().addAll(titleLbl, fixerLbl, statusLbl);
+        line1.getChildren().addAll(titleLbl, reporterChip, sevBadge, fixerLbl, statusLbl);
 
-        VBox expandPanel = new VBox(0);
-        expandPanel.setPadding(new Insets(0, 14, 8, 14));
+        VBox expandPanel = new VBox(8);
+        expandPanel.setPadding(new Insets(4, 14, 10, 14));
         expandPanel.setStyle("-fx-border-color: #2D2845; -fx-border-width: 1 0 0 0;");
         expandPanel.setVisible(false);
         expandPanel.setManaged(false);
 
-        if (!bug.isClosed()
-                && !bug.isUnclaimed()
-                && bug.getFixingUserId().equals(viewModel.getCurrentUserId())) {
+        String currentUserId = viewModel.getCurrentUserId();
+        boolean isFixer = !bug.isUnclaimed() && currentUserId.equals(bug.getFixingUserId());
+        boolean isLeader = viewModel.isLeader();
 
-            Button fixedBtn = new Button("✅  Mark as Fixed");
-            fixedBtn.getStyleClass().add("btn-accept");
-            fixedBtn.setPadding(new Insets(4, 10, 4, 10));
-            fixedBtn.setOnAction(e -> viewModel.markBugFixed(bug));
-            line1.getChildren().add(fixedBtn);
-        }
+        if (!bug.isClosed()) {
 
-        if (!viewModel.isLeader() && bug.isUnclaimed() && !bug.isClosed()) {
-            Button claimBtn = new Button("🔧  I'll fix it");
-            claimBtn.getStyleClass().add("btn-accept");
-            claimBtn.setPadding(new Insets(4, 10, 4, 10));
-            claimBtn.setOnAction(e -> viewModel.claimBug(bug));
-            line1.getChildren().add(claimBtn);
-        }
+            HBox actionRow = new HBox(8);
+            actionRow.setAlignment(Pos.CENTER_LEFT);
+            actionRow.setPadding(new Insets(6, 0, 2, 0));
 
-        if (viewModel.isLeader() && bug.isUnclaimed() && !bug.isClosed()) {
-            Button assignBugBtn = new Button("Assign →");
-            assignBugBtn.getStyleClass().add("update-btn");
-            assignBugBtn.setPadding(new Insets(3, 10, 3, 10));
-            assignBugBtn.setOnAction(e -> {
-                boolean open = expandPanel.isVisible();
-                expandPanel.setVisible(!open);
-                expandPanel.setManaged(!open);
-                if (!open && expandPanel.getChildren().isEmpty()) {
-                    expandPanel.getChildren().add(buildBugAssignRow(bug, expandPanel));
-                }
-            });
-            line1.getChildren().add(assignBugBtn);
+            if (isFixer) {
+                Button markFixed = new Button("✅  Mark as Fixed");
+                markFixed.getStyleClass().add("btn-accept");
+                markFixed.setPadding(new Insets(4, 12, 4, 12));
+                markFixed.setOnAction(e -> {
+                    viewModel.markBugFixed(bug);
+                    // Animate card close
+                    FadeTransition ft = new FadeTransition(Duration.millis(300), card);
+                    ft.setFromValue(1);
+                    ft.setToValue(0);
+                    ft.setOnFinished(ev -> renderBugs());
+                    ft.play();
+                });
+                actionRow.getChildren().add(markFixed);
+
+                Button updateStatusBtn = new Button("⟳ Update Status");
+                updateStatusBtn.getStyleClass().add("update-btn");
+                updateStatusBtn.setPadding(new Insets(4, 12, 4, 12));
+                updateStatusBtn.setOnAction(e -> {
+                    BugStatus next = bug.getStatus() == BugStatus.IN_PROGRESS
+                            ? BugStatus.OPEN : BugStatus.IN_PROGRESS;
+                    viewModel.updateBugStatus(bug, next);
+                    statusLbl.setText(next.displayName());
+                    statusLbl.getStyleClass().removeAll("bug-status-open", "bug-status-progress", "bug-status-closed", "status-todo", "status-progress", "status-done");
+                    statusLbl.getStyleClass().add(bugStatusStyleClass(next));
+                    ScaleTransition pop = new ScaleTransition(Duration.millis(180), statusLbl);
+                    pop.setFromX(0.8);
+                    pop.setFromY(0.8);
+                    pop.setToX(1.0);
+                    pop.setToY(1.0);
+                    pop.play();
+                });
+                actionRow.getChildren().add(updateStatusBtn);
+            }
+
+            if (!isLeader && bug.isUnclaimed()) {
+                Button claimBtn = new Button("🔧  I'll fix it");
+                claimBtn.getStyleClass().add("btn-accept");
+                claimBtn.setPadding(new Insets(4, 12, 4, 12));
+                claimBtn.setOnAction(e -> {
+                    viewModel.claimBug(bug);
+                    fixerLbl.setText("🔧 @" + currentUserId);
+                    fixerLbl.getStyleClass().removeAll("fixer-unclaimed");
+                    fixerLbl.getStyleClass().add("pill-label");
+                    statusLbl.setText(BugStatus.IN_PROGRESS.displayName());
+                    statusLbl.getStyleClass().removeAll("bug-status-open", "status-todo");
+                    statusLbl.getStyleClass().add(bugStatusStyleClass(BugStatus.IN_PROGRESS));
+                    expandPanel.setVisible(false);
+                    expandPanel.setManaged(false);
+                    renderBugs();
+                });
+                actionRow.getChildren().add(claimBtn);
+            }
+
+            if (isLeader) {
+                String btnLabel = bug.isUnclaimed() ? "👤  Assign →" : "🔄  Re-assign →";
+                Button assignBugBtn = new Button(btnLabel);
+                assignBugBtn.getStyleClass().add("update-btn");
+                assignBugBtn.setPadding(new Insets(4, 12, 4, 12));
+                assignBugBtn.setOnAction(e -> {
+                    boolean open = expandPanel.getUserData() != null
+                            && "assign".equals(expandPanel.getUserData())
+                            && expandPanel.isVisible();
+                    expandPanel.getChildren().clear();
+                    if (!open) {
+                        expandPanel.getChildren().add(buildBugAssignRow(bug, expandPanel, fixerLbl, statusLbl));
+                        expandPanel.setUserData("assign");
+                        expandPanel.setVisible(true);
+                        expandPanel.setManaged(true);
+                        FadeTransition ft = new FadeTransition(Duration.millis(200), expandPanel);
+                        ft.setFromValue(0);
+                        ft.setToValue(1);
+                        ft.play();
+                    } else {
+                        expandPanel.setVisible(false);
+                        expandPanel.setManaged(false);
+                    }
+                });
+                actionRow.getChildren().add(assignBugBtn);
+            }
+
+            if (!actionRow.getChildren().isEmpty())
+                expandPanel.getChildren().add(actionRow);
         }
 
         card.getChildren().addAll(line1, expandPanel);
+
+        line1.setOnMouseClicked(e -> {
+            if (expandPanel.getChildren().isEmpty()) return;
+            boolean open = expandPanel.isVisible();
+            if (!open) {
+                expandPanel.setOpacity(0);
+                expandPanel.setVisible(true);
+                expandPanel.setManaged(true);
+                FadeTransition ft = new FadeTransition(Duration.millis(200), expandPanel);
+                ft.setFromValue(0);
+                ft.setToValue(1);
+                ft.play();
+            } else {
+                FadeTransition ft = new FadeTransition(Duration.millis(180), expandPanel);
+                ft.setFromValue(1);
+                ft.setToValue(0);
+                ft.setOnFinished(ev -> {
+                    expandPanel.setVisible(false);
+                    expandPanel.setManaged(false);
+                    expandPanel.setOpacity(1);
+                });
+                ft.play();
+            }
+            line1.setStyle("-fx-cursor: hand;");
+        });
+        line1.setStyle("-fx-cursor: hand;");
+
         return card;
     }
 
-    private HBox buildBugAssignRow(Bug bug, VBox expandPanel) {
+    private HBox buildBugAssignRow(Bug bug, VBox expandPanel, Label fixerLbl, Label statusLbl) {
         HBox aRow = new HBox(8);
         aRow.setAlignment(Pos.CENTER_LEFT);
-        aRow.setPadding(new Insets(8, 0, 2, 0));
+        aRow.setPadding(new Insets(2, 0, 2, 0));
 
-        Label lbl = new Label("Assign to:");
+        boolean isReassign = !bug.isUnclaimed();
+        Label lbl = new Label(isReassign ? "Re-assign to:" : "Assign to member:");
         lbl.setTextFill(Color.web("#9D8FBF"));
         lbl.setStyle("-fx-font-size:12px;");
 
-        TextField f = new TextField();
+        TextField f = new TextField(isReassign ? bug.getFixingUserId() : "");
         f.setPromptText("Username...");
-        f.setPrefWidth(190);
+        f.setPrefWidth(200);
         f.setPrefHeight(30);
         f.getStyleClass().add("modal-text-field");
 
-        Button ok = new Button("✔ Assign");
+        String okLabel = isReassign ? "✔ Re-assign" : "✔ Assign";
+        Button ok = new Button(okLabel);
         ok.getStyleClass().add("btn-accept");
         ok.setPadding(new Insets(3, 10, 3, 10));
         ok.setOnAction(ev -> {
-            viewModel.assignBug(bug, f.getText().trim());
+            String assignee = f.getText().trim();
+            if (!assignee.isEmpty()) {
+                viewModel.assignBug(bug, assignee);
+                fixerLbl.setText("🔧 @" + assignee);
+                fixerLbl.getStyleClass().removeAll("fixer-unclaimed");
+                fixerLbl.getStyleClass().add("pill-label");
+                statusLbl.setText(BugStatus.IN_PROGRESS.displayName());
+                statusLbl.getStyleClass().removeAll("bug-status-open", "status-todo");
+                statusLbl.getStyleClass().add(bugStatusStyleClass(BugStatus.IN_PROGRESS));
+                // Animate the fixer label so it's clear something changed
+                ScaleTransition pop = new ScaleTransition(Duration.millis(180), fixerLbl);
+                pop.setFromX(0.8);
+                pop.setFromY(0.8);
+                pop.setToX(1.0);
+                pop.setToY(1.0);
+                pop.play();
+            }
             expandPanel.setVisible(false);
             expandPanel.setManaged(false);
         });
@@ -891,17 +1113,35 @@ public class ProjectDetailUI_Controller implements Initializable {
     private void applyRoleVisibility(boolean leader) {
         addTaskToggleBtn.setVisible(leader);
         addTaskToggleBtn.setManaged(leader);
-        inviteRow.setVisible(leader);    inviteRow.setManaged(leader);
-        reportBugRow.setVisible(leader); reportBugRow.setManaged(leader);
+        inviteRow.setVisible(leader);
+        inviteRow.setManaged(leader);
+        reportBugRow.setVisible(true);
+        reportBugRow.setManaged(true); // all users can see bug row
+        reportBugToggleBtn.setVisible(true); // but form inside is gated by leader check in toggleReportBugPanel
 
         if (!leader) {
             filterMenuBtn.getItems().removeIf(item ->
                     item.getText() != null && item.getText().contains("Drafts"));
         }
-
         roleBadge.setText(leader ? "LEADER" : "MEMBER");
         roleBadge.getStyleClass().removeAll("role-badge-leader", "role-badge-member");
         roleBadge.getStyleClass().add(leader ? "role-badge-leader" : "role-badge-member");
+    }
+
+    private void staggerIn(VBox card, int delayMs) {
+        card.setOpacity(0);
+        card.setTranslateY(14);
+        FadeTransition ft = new FadeTransition(Duration.millis(260), card);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.setDelay(Duration.millis(delayMs));
+        ft.play();
+        javafx.animation.TranslateTransition tt =
+                new javafx.animation.TranslateTransition(Duration.millis(260), card);
+        tt.setFromY(14);
+        tt.setToY(0);
+        tt.setDelay(Duration.millis(delayMs));
+        tt.play();
     }
 
     private Label buildDeadlineChip(Task t) {
@@ -918,9 +1158,19 @@ public class ProjectDetailUI_Controller implements Initializable {
         } else {
             long days = java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), deadline);
             String col, bg, br;
-            if      (days < 0)  { col="#F87171"; bg="rgba(248,113,113,0.12)"; br="rgba(248,113,113,0.35)"; }
-            else if (days <= 3) { col="#FBB024"; bg="rgba(251,176,36,0.12)";  br="rgba(251,176,36,0.35)";  }
-            else                { col="#34D399"; bg="rgba(52,211,153,0.10)";  br="rgba(52,211,153,0.30)";  }
+            if (days < 0) {
+                col = "#F87171";
+                bg = "rgba(248,113,113,0.12)";
+                br = "rgba(248,113,113,0.35)";
+            } else if (days <= 3) {
+                col = "#FBB024";
+                bg = "rgba(251,176,36,0.12)";
+                br = "rgba(251,176,36,0.35)";
+            } else {
+                col = "#34D399";
+                bg = "rgba(52,211,153,0.10)";
+                br = "rgba(52,211,153,0.30)";
+            }
             chip.setText((days < 0 ? "⚠ " : "📅 ") + deadline.format(DATE_FMT));
             chip.setStyle(chipStyle(col, bg, br));
         }
@@ -941,20 +1191,42 @@ public class ProjectDetailUI_Controller implements Initializable {
     private String statusStyleClass(TaskStatus s) {
         if (s == null) return "status-todo";
         return switch (s) {
-            case DONE        -> "status-done";
+            case DONE -> "status-done";
             case IN_PROGRESS -> "status-progress";
-            case IN_REVIEW   -> "status-review";
-            default          -> "status-todo";
+            case IN_REVIEW -> "status-review";
+            default -> "status-todo";
         };
     }
 
     private String bugStatusStyleClass(BugStatus s) {
         if (s == null) return "status-todo";
         return switch (s) {
-            case CLOSED      -> "status-done";
+            case CLOSED -> "status-done";
             case IN_PROGRESS -> "status-progress";
-            default          -> "status-todo";
+            default -> "status-todo";
         };
+    }
+
+    private String severityBadgeClass(BugSeverity s) {
+        return switch (s) {
+            case CRITICAL -> "severity-critical";
+            case HIGH -> "severity-high";
+            case MEDIUM -> "severity-medium";
+            case LOW -> "severity-low";
+        };
+    }
+
+    private String severityLeftBorder(BugSeverity s) {
+        String color = switch (s) {
+            case CRITICAL -> "rgba(248,113,113,0.70)";
+            case HIGH -> "rgba(251,146,60,0.70)";
+            case MEDIUM -> "rgba(251,183,36,0.60)";
+            case LOW -> "rgba(52,211,153,0.50)";
+        };
+        return "-fx-border-color: " + color + " transparent transparent transparent;"
+                + "-fx-border-width: 0 0 0 3;"
+                + "-fx-background-radius: 12;"
+                + "-fx-border-radius: 12;";
     }
 
     private HBox buildAssigneeHeader(String assignee, int count) {
@@ -975,10 +1247,8 @@ public class ProjectDetailUI_Controller implements Initializable {
         cnt.getStyleClass().add("card-section-label");
         cnt.setPadding(new Insets(2, 8, 2, 8));
         cnt.setStyle("-fx-background-color: rgba(109,79,194,0.15);"
-                + "-fx-background-radius: 10;"
-                + "-fx-border-color: rgba(109,79,194,0.30);"
-                + "-fx-border-radius: 10;"
-                + "-fx-border-width: 1;");
+                + "-fx-background-radius: 10; -fx-border-color: rgba(109,79,194,0.30);"
+                + "-fx-border-radius: 10; -fx-border-width: 1;");
 
         h.getChildren().addAll(av, name, cnt);
         return h;
@@ -998,10 +1268,18 @@ public class ProjectDetailUI_Controller implements Initializable {
 
     private StringConverter<LocalDate> dateConverter() {
         return new StringConverter<>() {
-            @Override public String toString(LocalDate d)   { return d == null ? "" : d.format(DATE_FMT); }
-            @Override public LocalDate fromString(String s) {
-                try { return (s == null || s.isBlank()) ? null : LocalDate.parse(s, DATE_FMT); }
-                catch (Exception e) { return null; }
+            @Override
+            public String toString(LocalDate d) {
+                return d == null ? "" : d.format(DATE_FMT);
+            }
+
+            @Override
+            public LocalDate fromString(String s) {
+                try {
+                    return (s == null || s.isBlank()) ? null : LocalDate.parse(s, DATE_FMT);
+                } catch (Exception e) {
+                    return null;
+                }
             }
         };
     }
@@ -1016,12 +1294,14 @@ public class ProjectDetailUI_Controller implements Initializable {
 
     private void slideIn() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(420), projectDetailRoot);
-        tt.setToX(0); tt.play();
+        tt.setToX(0);
+        tt.play();
     }
 
     private void slideOut() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(380), projectDetailRoot);
-        tt.setToX(1102); tt.play();
+        tt.setToX(1102);
+        tt.play();
     }
 
     private void removeScrollBars(ScrollPane sp) {

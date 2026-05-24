@@ -1,6 +1,7 @@
 package com.example.flora.Features.Project.UI;
 
 import com.example.flora.Features.Project.UI.Card.ProjectCard_Controller;
+import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
 import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import com.example.flora.Features.Project.model.Project;
 import javafx.fxml.FXML;
@@ -35,15 +36,16 @@ public class ProjectUI_Controller implements Initializable {
     @FXML private AnchorPane rootPane; // fx:id="rootPane" — add this to ProjectUI.fxml root
 
     private final ProjectViewModel projectViewModel;
-
+    private final ProjectDetailViewModel projectDetailViewModel;
 
     private ProjectDetailUI_Controller detailController;
 
 
     private String currentUserId = "bushra"; // replace with real injection
 
-    public ProjectUI_Controller(ProjectViewModel projectViewModel) {
+    public ProjectUI_Controller(ProjectViewModel projectViewModel, ProjectDetailViewModel projectDetailViewModel) {
         this.projectViewModel = projectViewModel;
+        this.projectDetailViewModel = projectDetailViewModel;
     }
 
     @Override
@@ -69,6 +71,7 @@ public class ProjectUI_Controller implements Initializable {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/Project/UI/ProjectDetailUI.fxml")
         );
+        loader.setControllerFactory(type -> new ProjectDetailUI_Controller(projectDetailViewModel));
         AnchorPane detailPanel = loader.load();
         detailController = loader.getController();
 
@@ -86,8 +89,9 @@ public class ProjectUI_Controller implements Initializable {
         projectGrid.getChildren().clear();
 
         // TODO: replace with real data from viewModel
-        // List<Project> projects = projectViewModel.getProjects();
-        List<Project> projects = sampleProjects(); // placeholder
+         List<Project> projects = projectViewModel.getProjects();
+         projectViewModel.loadProject();
+        // List<Project> projects = sampleProjects(); // placeholder
 
         for (int i = 0; i < projects.size(); i++) {
             int col = i % 3;
