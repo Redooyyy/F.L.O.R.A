@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Circle?>
+
+
+<AnchorPane
+        maxHeight="-Infinity" maxWidth="-Infinity"
+        minHeight="-Infinity" minWidth="-Infinity"
+        prefHeight="580.0" prefWidth="1100.0"
+        styleClass="settings-root"
+        stylesheets="@SettingsStyle.css"
+        xmlns="http://javafx.com/javafx/23.0.1"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.example.flora.Features.Settings.UI.SettingsUI_Controller">
+
+    <VBox
+            styleClass="settings-nav"
+            AnchorPane.topAnchor="0.0"
+            AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0"
+            prefWidth="260.0">
+
+        <HBox styleClass="settings-nav-header" alignment="CENTER_LEFT" prefHeight="64.0">
+            <padding>
+                <Insets left="24.0" right="20.0"/>
+            </padding>
+            <Label text="⚙" styleClass="settings-icon-label"/>
+            <VBox spacing="1.0">
+                <padding>
+                    <Insets left="12.0"/>
+                </padding>
+                <Label text="Settings" styleClass="settings-nav-title">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Label>
+                <Label text="Manage your account" styleClass="settings-nav-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <Pane styleClass="nav-accent-line" prefHeight="1.0" maxHeight="1.0"/>
+
+        <VBox spacing="4.0" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets top="20.0" left="14.0" right="14.0" bottom="20.0"/>
+            </padding>
+
+            <Label text="ACCOUNT" styleClass="nav-section-label"/>
+            <VBox spacing="2.0">
+                <padding>
+                    <Insets top="6.0" bottom="10.0"/>
+                </padding>
+                <Button fx:id="navPersonal"
+                        text="  👤   Personal Info"
+                        styleClass="nav-btn-active"
+                        maxWidth="Infinity"
+                        onAction="#onNavPersonal"/>
+                <Button fx:id="navNotifications"
+                        text="  🔔   Notifications"
+                        styleClass="nav-btn"
+                        maxWidth="Infinity"
+                        onAction="#onNavNotifications"/>
+                <Button fx:id="navSecurity"
+                        text="  🔒   Security"
+                        styleClass="nav-btn"
+                        maxWidth="Infinity"
+                        onAction="#onNavSecurity"/>
+            </VBox>
+
+            <Label text="WORKSPACE" styleClass="nav-section-label"/>
+            <VBox spacing="2.0">
+                <padding>
+                    <Insets top="6.0"/>
+                </padding>
+                <Button fx:id="navProjects"
+                        text="  📁   My Projects"
+                        styleClass="nav-btn"
+                        maxWidth="Infinity"
+                        onAction="#onNavProjects"/>
+                <Button fx:id="navAppearance"
+                        text="  🎨   Appearance"
+                        styleClass="nav-btn"
+                        maxWidth="Infinity"
+                        onAction="#onNavAppearance"/>
+            </VBox>
+
+        </VBox>
+
+        <HBox alignment="CENTER" prefHeight="40.0">
+            <Label text="Flora v1.0.0" styleClass="nav-version-label"/>
+        </HBox>
+
+    </VBox>
+
+    <Pane styleClass="vertical-glow-sep"
+          AnchorPane.topAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="260.0"
+          prefWidth="1.0" maxWidth="1.0"/>
+
+    <StackPane
+            AnchorPane.topAnchor="0.0"
+            AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="261.0"
+            AnchorPane.rightAnchor="0.0">
+
+        <AnchorPane fx:id="panelPersonal" styleClass="settings-content-panel" visible="true">
+            <ScrollPane styleClass="settings-scroll"
+                        fitToWidth="true"
+                        AnchorPane.topAnchor="0.0"
+                        AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0">
+                <content>
+                    <VBox spacing="0.0">
+                        <padding>
+                            <Insets top="36.0" left="48.0" right="48.0" bottom="36.0"/>
+                        </padding>
+
+                        <Label text="Personal Info" styleClass="content-page-title">
+                            <font>
+                                <Font name="System Bold" size="22.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Update your profile and display preferences." styleClass="content-page-subtitle"/>
+
+                        <Pane styleClass="content-divider" prefHeight="1.0" maxHeight="1.0">
+                            <VBox.margin>
+                                <Insets top="20.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </Pane>
+
+                        <HBox alignment="CENTER_LEFT" spacing="24.0">
+                            <VBox.margin>
+                                <Insets bottom="28.0"/>
+                            </VBox.margin>
+                            <StackPane styleClass="avatar-circle-wrap">
+                                <Label fx:id="avatarInitials" text="B" styleClass="avatar-initials">
+                                    <font>
+                                        <Font name="System Bold" size="28.0"/>
+                                    </font>
+                                </Label>
+                                <Circle fx:id="avatarCircle" radius="44.0" styleClass="avatar-circle"/>
+                            </StackPane>
+                            <VBox spacing="8.0">
+                                <Label text="Profile Avatar" styleClass="field-label"/>
+                                <Label text="Your avatar uses your initials. Pick an accent colour below."
+                                       styleClass="field-hint"/>
+                                <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                    <Pane fx:id="colorSwatch1" styleClass="color-swatch"
+                                          style="-fx-background-color:#7C6AF7;" onMouseClicked="#onColorSwatch"/>
+                                    <Pane fx:id="colorSwatch2" styleClass="color-swatch"
+                                          style="-fx-background-color:#34D399;" onMouseClicked="#onColorSwatch"/>
+                                    <Pane fx:id="colorSwatch3" styleClass="color-swatch"
+                                          style="-fx-background-color:#F5A623;" onMouseClicked="#onColorSwatch"/>
+                                    <Pane fx:id="colorSwatch4" styleClass="color-swatch"
+                                          style="-fx-background-color:#E05252;" onMouseClicked="#onColorSwatch"/>
+                                    <Pane fx:id="colorSwatch5" styleClass="color-swatch"
+                                          style="-fx-background-color:#60A5FA;" onMouseClicked="#onColorSwatch"/>
+                                    <Pane fx:id="colorSwatch6" styleClass="color-swatch"
+                                          style="-fx-background-color:#F472B6;" onMouseClicked="#onColorSwatch"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+
+                        <Label text="DISPLAY NAME" styleClass="field-label"/>
+                        <TextField fx:id="fieldDisplayName"
+                                   styleClass="settings-field"
+                                   promptText="Your name…">
+                            <VBox.margin>
+                                <Insets top="8.0" bottom="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+
+                        <Label text="EMAIL ADDRESS" styleClass="field-label"/>
+                        <TextField fx:id="fieldEmail"
+                                   styleClass="settings-field"
+                                   promptText="you@example.com">
+                            <VBox.margin>
+                                <Insets top="8.0" bottom="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+
+                        <!-- Bio -->
+                        <Label text="BIO" styleClass="field-label"/>
+                        <TextArea fx:id="fieldBio"
+                                  styleClass="settings-textarea"
+                                  promptText="A short line about yourself…"
+                                  prefHeight="80.0"
+                                  wrapText="true">
+                            <VBox.margin>
+                                <Insets top="8.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </TextArea>
+
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                            <Button text="Save Changes"
+                                    styleClass="save-btn"
+                                    onAction="#onSavePersonal"/>
+                            <Label fx:id="personalStatusLabel" styleClass="status-idle" text=""/>
+                        </HBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </AnchorPane>
+
+        <AnchorPane fx:id="panelNotifications" styleClass="settings-content-panel" visible="false">
+            <ScrollPane styleClass="settings-scroll"
+                        fitToWidth="true"
+                        AnchorPane.topAnchor="0.0"
+                        AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0">
+                <content>
+                    <VBox spacing="0.0">
+                        <padding>
+                            <Insets top="36.0" left="48.0" right="48.0" bottom="36.0"/>
+                        </padding>
+
+                        <Label text="Notifications" styleClass="content-page-title">
+                            <font>
+                                <Font name="System Bold" size="22.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Choose what you want to be notified about." styleClass="content-page-subtitle"/>
+
+                        <Pane styleClass="content-divider" prefHeight="1.0" maxHeight="1.0">
+                            <VBox.margin>
+                                <Insets top="20.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </Pane>
+
+                        <VBox spacing="12.0">
+                            <HBox styleClass="toggle-row" alignment="CENTER_LEFT">
+                                <VBox HBox.hgrow="ALWAYS" spacing="3.0">
+                                    <Label text="Task Assigned to Me" styleClass="toggle-title">
+                                        <font>
+                                            <Font name="System Bold" size="13.0"/>
+                                        </font>
+                                    </Label>
+                                    <Label text="Get notified whenever a task is assigned to your account."
+                                           styleClass="toggle-hint"/>
+                                </VBox>
+                                <CheckBox fx:id="toggleTaskAssign" styleClass="settings-toggle"
+                                          onAction="#onToggleChanged"/>
+                            </HBox>
+
+                            <HBox styleClass="toggle-row" alignment="CENTER_LEFT">
+                                <VBox HBox.hgrow="ALWAYS" spacing="3.0">
+                                    <Label text="Bug Reported in My Project" styleClass="toggle-title">
+                                        <font>
+                                            <Font name="System Bold" size="13.0"/>
+                                        </font>
+                                    </Label>
+                                    <Label text="Receive alerts when a new bug is filed against a project you lead."
+                                           styleClass="toggle-hint"/>
+                                </VBox>
+                                <CheckBox fx:id="toggleBugReport" styleClass="settings-toggle"
+                                          onAction="#onToggleChanged"/>
+                            </HBox>
+
+                            <HBox styleClass="toggle-row" alignment="CENTER_LEFT">
+                                <VBox HBox.hgrow="ALWAYS" spacing="3.0">
+                                    <Label text="Mentions &amp; Comments" styleClass="toggle-title">
+                                        <font>
+                                            <Font name="System Bold" size="13.0"/>
+                                        </font>
+                                    </Label>
+                                    <Label text="Alert me when someone @mentions me in a comment or note."
+                                           styleClass="toggle-hint"/>
+                                </VBox>
+                                <CheckBox fx:id="toggleMention" styleClass="settings-toggle"
+                                          onAction="#onToggleChanged"/>
+                            </HBox>
+                        </VBox>
+
+                        <Pane styleClass="content-divider" prefHeight="1.0" maxHeight="1.0">
+                            <VBox.margin>
+                                <Insets top="28.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </Pane>
+
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                            <Button text="Save Changes"
+                                    styleClass="save-btn"
+                                    onAction="#onSavePersonal"/>
+                            <Label fx:id="notifStatusLabel" styleClass="status-idle" text=""/>
+                        </HBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </AnchorPane>
+
+        <AnchorPane fx:id="panelSecurity" styleClass="settings-content-panel" visible="false">
+            <ScrollPane styleClass="settings-scroll"
+                        fitToWidth="true"
+                        AnchorPane.topAnchor="0.0"
+                        AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0">
+                <content>
+                    <VBox spacing="0.0">
+                        <padding>
+                            <Insets top="36.0" left="48.0" right="48.0" bottom="36.0"/>
+                        </padding>
+
+                        <Label text="Security" styleClass="content-page-title">
+                            <font>
+                                <Font name="System Bold" size="22.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Update your password to keep your account safe."
+                               styleClass="content-page-subtitle"/>
+
+                        <Pane styleClass="content-divider" prefHeight="1.0" maxHeight="1.0">
+                            <VBox.margin>
+                                <Insets top="20.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </Pane>
+
+                        <Label text="CURRENT PASSWORD" styleClass="field-label"/>
+                        <PasswordField fx:id="fieldCurrentPwd"
+                                       styleClass="settings-field"
+                                       promptText="Enter current password…">
+                            <VBox.margin>
+                                <Insets top="8.0" bottom="20.0"/>
+                            </VBox.margin>
+                        </PasswordField>
+
+                        <Label text="NEW PASSWORD" styleClass="field-label"/>
+                        <PasswordField fx:id="fieldNewPwd"
+                                       styleClass="settings-field"
+                                       promptText="New password…">
+                            <VBox.margin>
+                                <Insets top="8.0" bottom="20.0"/>
+                            </VBox.margin>
+                        </PasswordField>
+
+                        <Label text="CONFIRM NEW PASSWORD" styleClass="field-label"/>
+                        <PasswordField fx:id="fieldConfirmPwd"
+                                       styleClass="settings-field"
+                                       promptText="Confirm new password…">
+                            <VBox.margin>
+                                <Insets top="8.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </PasswordField>
+
+                        <HBox alignment="CENTER_LEFT" spacing="16.0">
+                            <Button text="Update Password"
+                                    styleClass="save-btn"
+                                    onAction="#onChangePassword"/>
+                            <Label fx:id="securityStatusLabel" styleClass="status-idle" text=""/>
+                        </HBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </AnchorPane>
+
+        <AnchorPane fx:id="panelProjects" styleClass="settings-content-panel" visible="false">
+            <VBox AnchorPane.topAnchor="0.0"
+                  AnchorPane.bottomAnchor="0.0"
+                  AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0"
+                  spacing="0.0">
+
+                <HBox styleClass="projects-header-bar" alignment="CENTER_LEFT" prefHeight="64.0">
+                    <padding>
+                        <Insets left="48.0" right="48.0"/>
+                    </padding>
+                    <VBox spacing="2.0" HBox.hgrow="ALWAYS">
+                        <Label text="My Projects" styleClass="content-page-title">
+                            <font>
+                                <Font name="System Bold" size="22.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Projects you lead — only you can rename or delete them."
+                               styleClass="content-page-subtitle"/>
+                    </VBox>
+                    <Label fx:id="projectCountChip" text="0 projects" styleClass="project-count-chip"/>
+                </HBox>
+
+                <Pane styleClass="content-divider" prefHeight="1.0" maxHeight="1.0"/>
+
+                <ScrollPane styleClass="settings-scroll"
+                            fitToWidth="true"
+                            VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="projectListVBox" spacing="12.0">
+                            <padding>
+                                <Insets top="24.0" left="40.0" right="40.0" bottom="24.0"/>
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <HBox styleClass="projects-status-bar" alignment="CENTER_LEFT" prefHeight="40.0">
+                    <padding>
+                        <Insets left="40.0"/>
+                    </padding>
+                    <Label fx:id="projectsStatusLabel" styleClass="status-idle" text=""/>
+                </HBox>
+
+            </VBox>
+        </AnchorPane>
+
+        <AnchorPane fx:id="panelAppearance" styleClass="settings-content-panel" visible="false">
+            <ScrollPane styleClass="settings-scroll"
+                        fitToWidth="true"
+                        AnchorPane.topAnchor="0.0"
+                        AnchorPane.bottomAnchor="0.0"
+                        AnchorPane.leftAnchor="0.0"
+                        AnchorPane.rightAnchor="0.0">
+                <content>
+                    <VBox spacing="0.0">
+                        <padding>
+                            <Insets top="36.0" left="48.0" right="48.0" bottom="36.0"/>
+                        </padding>
+
+                        <Label text="Appearance" styleClass="content-page-title">
+                            <font>
+                                <Font name="System Bold" size="22.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Choose your Flora theme." styleClass="content-page-subtitle"/>
+
+                        <Pane styleClass="content-divider" prefHeight="1.0" maxHeight="1.0">
+                            <VBox.margin>
+                                <Insets top="20.0" bottom="28.0"/>
+                            </VBox.margin>
+                        </Pane>
+
+                        <HBox spacing="16.0">
+                            <VBox fx:id="themeCardDark" styleClass="theme-card theme-card-active"
+                                  spacing="10.0" alignment="CENTER"
+                                  prefWidth="180.0" prefHeight="120.0"
+                                  onMouseClicked="#onSelectDark">
+                                <Label text="🌙" styleClass="theme-icon"/>
+                                <Label text="Dark" styleClass="theme-label">
+                                    <font>
+                                        <Font name="System Bold" size="13.0"/>
+                                    </font>
+                                </Label>
+                                <Label fx:id="darkCheckmark" text="✓ Active" styleClass="theme-active-badge"/>
+                            </VBox>
+
+                            <VBox fx:id="themeCardLight" styleClass="theme-card theme-card-soon"
+                                  spacing="10.0" alignment="CENTER"
+                                  prefWidth="180.0" prefHeight="120.0">
+                                <Label text="☀" styleClass="theme-icon"/>
+                                <Label text="Light" styleClass="theme-label">
+                                    <font>
+                                        <Font name="System Bold" size="13.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="Coming Soon" styleClass="theme-soon-badge"/>
+                            </VBox>
+                        </HBox>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </AnchorPane>
+
+    </StackPane>
+
+    <AnchorPane fx:id="renameOverlay" visible="false" styleClass="modal-overlay"
+                AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+        <Pane styleClass="modal-scrim"
+              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              onMouseClicked="#onCancelRename"/>
+
+        <VBox fx:id="renameDialog" styleClass="rename-dialog"
+              spacing="16.0"
+              AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="330.0"
+              AnchorPane.topAnchor="180.0">
+            <padding>
+                <Insets top="28.0" left="28.0" right="28.0" bottom="24.0"/>
+            </padding>
+
+            <Label text="Rename Project" styleClass="dialog-title">
+                <font>
+                    <Font name="System Bold" size="16.0"/>
+                </font>
+            </Label>
+            <Label text="NEW PROJECT NAME" styleClass="field-label"/>
+            <TextField fx:id="renameField" styleClass="settings-field" promptText="Enter new name…"/>
+
+            <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                <Button text="Cancel" styleClass="cancel-btn" onAction="#onCancelRename"/>
+                <Button text="Rename" styleClass="save-btn" onAction="#onConfirmRename"/>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+
+    <AnchorPane fx:id="deleteOverlay" visible="false" styleClass="modal-overlay"
+                AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+        <Pane styleClass="modal-scrim"
+              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              onMouseClicked="#onCancelDelete"/>
+
+        <VBox fx:id="deleteDialog" styleClass="rename-dialog"
+              spacing="16.0"
+              AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="330.0"
+              AnchorPane.topAnchor="180.0">
+            <padding>
+                <Insets top="28.0" left="28.0" right="28.0" bottom="24.0"/>
+            </padding>
+
+            <Label text="Delete Project?" styleClass="dialog-title-danger">
+                <font>
+                    <Font name="System Bold" size="16.0"/>
+                </font>
+            </Label>
+            <Label fx:id="deleteConfirmLabel"
+                   text="This will permanently delete the project and all its tasks and bugs."
+                   styleClass="dialog-body" wrapText="true"/>
+
+            <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                <Button text="Cancel" styleClass="cancel-btn" onAction="#onCancelDelete"/>
+                <Button text="Yes, Delete" styleClass="danger-btn" onAction="#onConfirmDelete"/>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+
+</AnchorPane>

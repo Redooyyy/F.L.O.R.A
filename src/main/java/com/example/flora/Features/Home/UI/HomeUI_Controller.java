@@ -11,11 +11,9 @@ import com.example.flora.Features.Home.model.Notification;
 import com.example.flora.Features.Overview.UI.Overview_Controller;
 import com.example.flora.Features.Project.UI.AddProjectModal_Controller;
 import com.example.flora.Features.Project.UI.ProjectUI_Controller;
+import com.example.flora.Features.Settings.UI.SettingsUI_Controller;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
-import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.TaskStatus;
-import com.example.flora.Features.Task.repository.TaskRepositoryFake;
-import com.example.flora.Features.Task.service.TaskServices;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
@@ -284,7 +282,10 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
 
 
     @FXML
-    private void settingPage(){}
+    private void settingPage() throws IOException {
+    loadPage(Path.SETTINGS,e->new SettingsUI_Controller(appContainer.getSettingsViewModel()));
+    toggle();
+    }
 
     @FXML
     private void logout() throws IOException {
