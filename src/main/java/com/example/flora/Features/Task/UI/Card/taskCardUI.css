@@ -1,88 +1,96 @@
-/* ── TaskCardUI.css ── */
+/* ═══════════════════════════════════════════════════════════════
+   taskCardUI.css  —  Individual Task Card
+   ═══════════════════════════════════════════════════════════════ */
 
-/* ── Task Card root ── */
+/* ── Card shell ─────────────────────────────────────────────────── */
 .task-card {
-    -fx-background-color: #1E1A2E;
-    -fx-background-radius: 16;
-    -fx-border-color: #2D2845;
-    -fx-border-radius: 16;
-    -fx-border-width: 1;
+    -fx-background-color: #1E1C2E;
+    -fx-background-radius: 14px;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000066, 8, 0, 0, 3);
 }
 
 .task-card:hover {
-    -fx-background-color: #231E38;
-    -fx-border-color: #6D4FC2;
-    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 20, 0, 0, 5);
-    -fx-translate-y: -2;
+    -fx-background-color: #252340;
+    -fx-border-color: #7C6AF755;
+    -fx-effect: dropshadow(gaussian, #7C6AF733, 14, 0.3, 0, 4);
 }
 
-/* Task title text */
+/* ── Title ──────────────────────────────────────────────────────── */
 .task-card-title {
-    -fx-text-fill: #EDE9F6;
-    -fx-font-size: 17px;
-    -fx-font-weight: bold;
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 14px;
+    -fx-font-family: "System Bold";
 }
 
-/* Task subtitle text */
+/* ── Subtitle / description ─────────────────────────────────────── */
 .task-card-sub {
-    -fx-text-fill: #6B5F8A;
-    -fx-font-size: 13px;
+    -fx-text-fill: #7A778F;
+    -fx-font-size: 12px;
 }
 
-/* Due date badge */
+/* ── Due date badge ─────────────────────────────────────────────── */
 .due-badge {
-    -fx-background-color: #1A1528;
-    -fx-background-radius: 20;
-    -fx-border-color: #2D2845;
-    -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-text-fill: #9D8FBF;
+    -fx-background-color: #252333;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #9B97BC;
     -fx-font-size: 10px;
-    -fx-font-weight: bold;
+    -fx-font-family: "System Bold";
 }
 
-/* ── Status badges ── */
-.status-progress {
-    -fx-background-color: rgba(251,183,36,0.12);
-    -fx-background-radius: 20;
-    -fx-border-color: rgba(251,183,36,0.3);
-    -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-text-fill: #FBB724;
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
-}
-
-.status-done {
-    -fx-background-color: rgba(52,211,153,0.12);
-    -fx-background-radius: 20;
-    -fx-border-color: rgba(52,211,153,0.3);
-    -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-text-fill: #34D399;
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
-}
-
+/* ── Status chips (also used in TaskStyle.css; repeated for card scope) */
 .status-todo {
-    -fx-background-color: rgba(99,179,237,0.12);
-    -fx-background-radius: 20;
-    -fx-border-color: rgba(99,179,237,0.3);
-    -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-text-fill: #63B3ED;
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
+    -fx-background-color: #252B3B;
+    -fx-text-fill: #8BA3CC;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+.status-progress {
+    -fx-background-color: #2A2040;
+    -fx-text-fill: #A78BFA;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
 }
 
 .status-late {
-    -fx-background-color: rgba(248,113,113,0.12);
-    -fx-background-radius: 20;
-    -fx-border-color: rgba(248,113,113,0.3);
-    -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-text-fill: #F87171;
-    -fx-font-size: 10px;
-    -fx-font-weight: bold;
+    -fx-background-color: #2E2010;
+    -fx-text-fill: #F5A623;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+.status-done {
+    -fx-background-color: #122A1E;
+    -fx-text-fill: #34D399;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+/* ── Divider line inside card ───────────────────────────────────── */
+.card-divider {
+    -fx-background-color: #2C2A40;
+    -fx-pref-height: 1px;
+    -fx-max-height: 1px;
+}
+
+/* ── Assignee dot / avatar placeholder ──────────────────────────── */
+.avatar-dot {
+    -fx-background-color: #7C6AF7;
+    -fx-background-radius: 50%;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-max-width: 24px;
+    -fx-max-height: 24px;
 }

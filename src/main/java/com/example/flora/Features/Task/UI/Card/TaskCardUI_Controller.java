@@ -1,12 +1,15 @@
 package com.example.flora.Features.Task.UI.Card;
 
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
+import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 
 public class TaskCardUI_Controller {
+
+    private final TaskUI_Controller parentController;
+
     @FXML
     private Label taskTitle;
     @FXML
@@ -15,27 +18,41 @@ public class TaskCardUI_Controller {
     private Label taskStatus;
     @FXML
     private Label subTitle;
-    private TaskUI_Controller controller;
 
-    public void setController(TaskUI_Controller controller){
-        this.controller = controller;
+    private Task boundTask;
+
+
+    public TaskCardUI_Controller(TaskUI_Controller parentController) {
+        this.parentController = parentController;
     }
 
-    public void setValue(String taskTitle, String dueDate, String taskStatus, String subTitle){
-        this.taskTitle.setText(taskTitle);
-        this.dueDate.setText(dueDate);
-        this.taskStatus.setText(taskStatus);
-        this.subTitle.setText(subTitle);
-        applyStatus(this.taskStatus, this.taskStatus.getText());
+    public void bind(Task task) {
+        this.boundTask = task;
+
+        taskTitle.setText(task.getTitle() != null ? task.getTitle() : "");
+        subTitle.setText(task.getDescription() != null ? task.getDescription() : "");
+        dueDate.setText(task.getDueDate() != null ? task.getDueDate() : "No due date");
+
+        applyStatus(taskStatus, task.getStatus());
+    }
+
+
+    @FXML
+    private void selectedTaskCard() {
+        if (boundTask != null) {
+            parentController.onTaskSelected(boundTask);
+        }
     }
 
     @FXML
-    private void selectedTaskCard(){
-        controller.selectedTask(taskTitle.getText(),subTitle.getText(), TaskStatus.TODO);
+    private void toggleStatus() {
+        if (boundTask != null) {
+            parentController.onStatusToggled(boundTask);
+        }
     }
 
-    private void applyStatus(Label label, String status) {
-        // Clear any previous status class first
+
+    private void applyStatus(Label label, TaskStatus status) {
         label.getStyleClass().removeAll(
                 "status-progress",
                 "status-done",
@@ -43,26 +60,27 @@ public class TaskCardUI_Controller {
                 "status-late"
         );
 
-        // Apply the right one based on value
+        if (status == null) {
+            label.setText("To Do");
+            label.getStyleClass().add("status-todo");
+            return;
+        }
+
         switch (status) {
-            case "IN_PROGRESS" -> {
+            case IN_PROGRESS -> {
                 label.setText("In Progress");
                 label.getStyleClass().add("status-progress");
             }
-            case "DONE" -> {
+            case DONE -> {
                 label.setText("Done");
                 label.getStyleClass().add("status-done");
             }
-            case "TODO" -> {
-                label.setText("To Do");
-                label.getStyleClass().add("status-todo");
-            }
-            case "IN_REVIEW" -> {
-                label.setText("Overdue");
+            case IN_REVIEW -> {
+                label.setText("In Review");
                 label.getStyleClass().add("status-late");
             }
             default -> {
-                label.setText(status);
+                label.setText("To Do");
                 label.getStyleClass().add("status-todo");
             }
         }
