@@ -1,120 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane
-fx:id="addProjectPanel"
-xmlns="http://javafx.com/javafx/23.0.1"
-xmlns:fx="http://javafx.com/fxml/1"
-fx:controller="com.example.flora.Features.Project.UI.AddProjectModal_Controller"
-prefHeight="588.0"
-prefWidth="500.0"
-styleClass="slide-panel"
-stylesheets="@style.css"
-translateX="620.0">
+        fx:id="addProjectPanel"
+        xmlns="http://javafx.com/javafx/23.0.1"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.example.flora.Features.Project.UI.AddProjectModal_Controller"
+        prefHeight="640.0" prefWidth="500.0"
+        styleClass="slide-panel"
+        stylesheets="@style.css"
+        translateX="620.0">
 
-<children>
+    <children>
 
-    <HBox layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="472.0" alignment="CENTER_LEFT" spacing="10.0">
-        <children>
-            <Button
-                    fx:id="closeBtn"
-                    mnemonicParsing="false"
-                    onAction="#closePanel"
-                    prefHeight="28.0" prefWidth="62.0"
-                    styleClass="slide-close-btn"
-                    text="Close">
-                <font><Font name="System Bold" size="13.0"/></font>
-            </Button>
-
-            <Label
-                    text="New Project"
-                    prefHeight="36.0" prefWidth="296.0"
-                    alignment="CENTER"
-                    styleClass="slide-task-title">
-                <font><Font name="System Bold" size="17.0"/></font>
-            </Label>
-
-            <Button
-                    fx:id="createBtn"
-                    mnemonicParsing="false"
-                    onAction="#createProject"
-                    prefHeight="28.0" prefWidth="90.0"
-                    styleClass="btn-accept"
-                    text="✦  Create">
-                <font><Font name="System Bold" size="13.0"/></font>
-            </Button>
-        </children>
-    </HBox>
-
-    <AnchorPane
-            layoutX="14.0" layoutY="58.0"
-            prefHeight="1.0" prefWidth="472.0"
-            styleClass="slide-divider"/>
-
-    <VBox
-            layoutX="14.0" layoutY="72.0"
-            prefWidth="472.0"
-            spacing="18.0">
-
-        <VBox spacing="6.0">
-            <Label text="Project Name" styleClass="modal-field-label">
-                <font><Font name="System Bold" size="13.0"/></font>
-            </Label>
-            <TextField
-                    fx:id="nameField"
-                    promptText="e.g. Flora – Task Manager"
-                    prefHeight="42.0" prefWidth="472.0"
-                    styleClass="modal-text-field"/>
-        </VBox>
-
-        <VBox spacing="6.0">
-            <Label text="Description" styleClass="modal-field-label">
-                <font><Font name="System Bold" size="13.0"/></font>
-            </Label>
-            <TextArea
-                    fx:id="descriptionField"
-                    promptText="What is this project about?"
-                    prefHeight="120.0" prefWidth="472.0"
-                    wrapText="true"
-                    styleClass="modal-text-area"/>
-        </VBox>
-
-        <AnchorPane prefHeight="1.0" prefWidth="472.0" styleClass="slide-divider"/>
-
-        <HBox spacing="10.0" alignment="CENTER_LEFT">
-            <Label text="Status" styleClass="modal-field-label">
-                <font><Font name="System Bold" size="13.0"/></font>
-            </Label>
-            <Button
-                    fx:id="statusBadge"
-                    mnemonicParsing="false"
-                    onAction="#cycleStatus"
-                    prefHeight="32.0" prefWidth="120.0"
-                    styleClass="status-todo"
-                    text="PLANNING">
-                <font><Font name="System Bold" size="12.0"/></font>
-            </Button>
-            <Label text="← tap to change" styleClass="modal-hint-label"/>
+        <!-- Header -->
+        <HBox layoutX="14.0" layoutY="12.0" prefHeight="40.0" prefWidth="472.0"
+              alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+                <Button mnemonicParsing="false" onAction="#closePanel"
+                        prefHeight="28.0" prefWidth="62.0"
+                        styleClass="slide-close-btn" text="Close">
+                    <font><Font name="System Bold" size="13.0"/></font>
+                </Button>
+                <Label text="New Project" prefHeight="36.0" prefWidth="296.0"
+                       alignment="CENTER" styleClass="slide-task-title">
+                    <font><Font name="System Bold" size="17.0"/></font>
+                </Label>
+                <Button mnemonicParsing="false" onAction="#createProject"
+                        prefHeight="28.0" prefWidth="90.0"
+                        styleClass="btn-accept" text="✦  Create">
+                    <font><Font name="System Bold" size="13.0"/></font>
+                </Button>
+            </children>
         </HBox>
 
-        <Label
-                fx:id="feedbackLabel"
-                text=""
-                prefWidth="472.0"
-                styleClass="modal-feedback-label"
-                wrapText="true"
-                visible="false"/>
+        <AnchorPane layoutX="14.0" layoutY="58.0" prefHeight="1.0" prefWidth="472.0" styleClass="slide-divider"/>
 
-    </VBox>
+        <!-- Scrollable body -->
+        <ScrollPane layoutX="14.0" layoutY="66.0"
+                    fitToWidth="true" fitToHeight="false"
+                    hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                    styleClass="modal-scroll-pane"
+                    AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="6.0"
+                    AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+            <content>
+                <VBox prefWidth="452.0" spacing="20.0">
+                    <padding><Insets top="8.0" right="6.0" bottom="16.0" left="0.0"/></padding>
 
-</children>
+                    <!-- Project Name -->
+                    <VBox spacing="6.0">
+                        <Label text="Project Name" styleClass="modal-field-label">
+                            <font><Font name="System Bold" size="13.0"/></font>
+                        </Label>
+                        <TextField fx:id="nameField" promptText="e.g. Flora – Task Manager"
+                                   prefHeight="42.0" styleClass="modal-text-field"/>
+                    </VBox>
+
+                    <!-- Description -->
+                    <VBox spacing="6.0">
+                        <Label text="Description" styleClass="modal-field-label">
+                            <font><Font name="System Bold" size="13.0"/></font>
+                        </Label>
+                        <TextArea fx:id="descriptionField" promptText="What is this project about?"
+                                  prefHeight="90.0" wrapText="true" styleClass="modal-text-area"/>
+                    </VBox>
+
+                    <AnchorPane prefHeight="1.0" prefWidth="452.0" styleClass="slide-divider"/>
+
+                    <!-- Status -->
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Label text="Status" styleClass="modal-field-label">
+                            <font><Font name="System Bold" size="13.0"/></font>
+                        </Label>
+                        <Button fx:id="statusBadge" mnemonicParsing="false" onAction="#cycleStatus"
+                                prefHeight="32.0" prefWidth="120.0"
+                                styleClass="status-todo" text="PLANNING">
+                            <font><Font name="System Bold" size="12.0"/></font>
+                        </Button>
+                        <Label text="← tap to change" styleClass="modal-hint-label"/>
+                    </HBox>
+
+                    <AnchorPane prefHeight="1.0" prefWidth="452.0" styleClass="slide-divider"/>
+
+                    <!-- ══ Platforms ════════════════════════════════════════════════ -->
+                    <VBox spacing="0.0">
+                        <Label text="Platforms" styleClass="modal-field-label">
+                            <font><Font name="System Bold" size="13.0"/></font>
+                            <VBox.margin><Insets bottom="8.0"/></VBox.margin>
+                        </Label>
+
+                        <!-- Outer card wrapping both zones -->
+                        <VBox styleClass="chip-section-card" spacing="0.0">
+
+                            <!-- SELECTED zone -->
+                            <VBox styleClass="chip-zone-selected" spacing="6.0">
+                                <padding><Insets top="10.0" right="12.0" bottom="10.0" left="12.0"/></padding>
+                                <Label text="SELECTED" styleClass="chip-zone-label-active"/>
+                                <!-- empty hint + selected chips both live here; controller shows/hides label -->
+                                <Label fx:id="devEmptyLabel" text="None selected yet" styleClass="chip-empty-hint"/>
+                                <FlowPane fx:id="devSelectedPane" hgap="7.0" vgap="7.0" prefWidth="428.0"/>
+                            </VBox>
+
+                            <AnchorPane prefHeight="1.0" styleClass="chip-zone-divider"/>
+
+                            <!-- AVAILABLE zone -->
+                            <VBox styleClass="chip-zone-available" spacing="6.0">
+                                <padding><Insets top="10.0" right="12.0" bottom="10.0" left="12.0"/></padding>
+                                <Label text="AVAILABLE — tap to select" styleClass="chip-zone-label-muted"/>
+                                <FlowPane fx:id="devAvailablePane" hgap="7.0" vgap="7.0" prefWidth="428.0"/>
+                            </VBox>
+
+                        </VBox>
+                    </VBox>
+
+                    <AnchorPane prefHeight="1.0" prefWidth="452.0" styleClass="slide-divider"/>
+
+                    <!-- ══ Tech Stack ═══════════════════════════════════════════════ -->
+                    <VBox spacing="0.0">
+                        <Label text="Tech Stack" styleClass="modal-field-label">
+                            <font><Font name="System Bold" size="13.0"/></font>
+                            <VBox.margin><Insets bottom="8.0"/></VBox.margin>
+                        </Label>
+
+                        <VBox styleClass="chip-section-card" spacing="0.0">
+
+                            <!-- SELECTED zone -->
+                            <VBox styleClass="chip-zone-selected" spacing="6.0">
+                                <padding><Insets top="10.0" right="12.0" bottom="10.0" left="12.0"/></padding>
+                                <Label text="SELECTED" styleClass="chip-zone-label-active"/>
+                                <Label fx:id="techEmptyLabel" text="None selected yet" styleClass="chip-empty-hint"/>
+                                <FlowPane fx:id="techSelectedPane" hgap="7.0" vgap="7.0" prefWidth="428.0"/>
+                            </VBox>
+
+                            <AnchorPane prefHeight="1.0" styleClass="chip-zone-divider"/>
+
+                            <!-- AVAILABLE zone -->
+                            <VBox styleClass="chip-zone-available" spacing="6.0">
+                                <padding><Insets top="10.0" right="12.0" bottom="10.0" left="12.0"/></padding>
+                                <Label text="AVAILABLE — tap to select" styleClass="chip-zone-label-muted"/>
+                                <FlowPane fx:id="techAvailablePane" hgap="7.0" vgap="7.0" prefWidth="428.0"/>
+                            </VBox>
+
+                        </VBox>
+
+                        <!-- Custom tech input row (only for Tech Stack) -->
+                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                            <VBox.margin><Insets top="10.0"/></VBox.margin>
+                            <TextField fx:id="techCustomField"
+                                       promptText="Can't find your tech? Type it here..."
+                                       prefHeight="36.0"
+                                       styleClass="modal-text-field"
+                                       HBox.hgrow="ALWAYS"/>
+                            <Button mnemonicParsing="false" onAction="#addCustomTech"
+                                    prefHeight="36.0" prefWidth="70.0"
+                                    styleClass="btn-accept" text="+ Add">
+                                <font><Font name="System Bold" size="12.0"/></font>
+                            </Button>
+                        </HBox>
+                        <Label text="Press Enter or click Add  ·  Click a selected chip to remove it"
+                               styleClass="modal-hint-label">
+                            <VBox.margin><Insets top="4.0"/></VBox.margin>
+                        </Label>
+
+                    </VBox>
+
+                    <!-- Feedback -->
+                    <Label fx:id="feedbackLabel" text="" prefWidth="452.0"
+                           styleClass="modal-feedback-label" wrapText="true" visible="false"/>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+
+    </children>
 </AnchorPane>
