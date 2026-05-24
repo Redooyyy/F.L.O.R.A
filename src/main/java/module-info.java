@@ -16,6 +16,7 @@ module com.example.flora {
     opens com.example.flora.Features.Task.UI.Card to  javafx.fxml;
     opens com.example.flora.Features.Bug.UI to javafx.fxml;
     opens com.example.flora.Features.Task.UI.Detail to javafx.fxml;
+    opens com.example.flora.Features.Settings.UI to javafx.fxml;
 
     // Export only what’s needed
     exports com.example.flora.App;
