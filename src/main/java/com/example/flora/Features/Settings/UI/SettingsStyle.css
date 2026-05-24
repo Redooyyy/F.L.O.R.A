@@ -1,0 +1,493 @@
+/* ═══════════════════════════════════════════════════════════════
+   SettingsStyle.css  —  Flora Project Manager · Settings View
+   Dark glassmorphism  ·  accent #7C6AF7
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Root ───────────────────────────────────────────────────────── */
+.settings-root {
+    -fx-background-color: #12111A;
+}
+
+/* ── Left Navigation Sidebar ─────────────────────────────────────── */
+.settings-nav {
+    -fx-background-color: #1A1927;
+    -fx-border-color: #2C2A3E;
+    -fx-border-width: 0 1 0 0;
+}
+
+.settings-nav-header {
+    -fx-background-color: #1A1927;
+}
+
+.settings-icon-label {
+    -fx-font-size: 22px;
+}
+
+.settings-nav-title {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 18px;
+    -fx-font-family: "System Bold";
+}
+
+.settings-nav-subtitle {
+    -fx-text-fill: #5C5875;
+    -fx-font-size: 11px;
+}
+
+.nav-accent-line {
+    -fx-background-color: linear-gradient(to right, #7C6AF7, transparent);
+    -fx-opacity: 0.5;
+}
+
+.nav-section-label {
+    -fx-text-fill: #4A475E;
+    -fx-font-size: 10px;
+    -fx-font-family: "System Bold";
+    -fx-letter-spacing: 1.4px;
+    -fx-padding: 6 8 2 8;
+}
+
+/* Nav buttons */
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7A778F;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+.nav-btn:hover {
+    -fx-background-color: #252333;
+    -fx-text-fill: #C4BFEA;
+}
+.nav-btn-active {
+    -fx-background-color: #252333;
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 13px;
+    -fx-font-family: "System Bold";
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-border-color: #7C6AF744;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, #7C6AF733, 8, 0, 0, 0);
+}
+
+/* Active left accent strip on active button — simulated via left border */
+.nav-btn-active {
+    -fx-border-color: #7C6AF7 transparent transparent transparent;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-radius: 0 10 10 0;
+    -fx-background-insets: 0 0 0 3;
+}
+
+.nav-version-label {
+    -fx-text-fill: #3D3B55;
+    -fx-font-size: 11px;
+}
+
+/* Glow vertical separator */
+.vertical-glow-sep {
+    -fx-background-color: linear-gradient(to bottom, transparent, #7C6AF7 30%, #7C6AF7 70%, transparent);
+    -fx-opacity: 0.35;
+}
+
+/* ── Content panel ───────────────────────────────────────────────── */
+.settings-content-panel {
+    -fx-background-color: #12111A;
+}
+
+.settings-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+.settings-scroll .viewport {
+    -fx-background-color: transparent;
+}
+.settings-scroll .scroll-bar {
+    -fx-opacity: 0;
+}
+
+.content-page-title {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 22px;
+    -fx-font-family: "System Bold";
+}
+
+.content-page-subtitle {
+    -fx-text-fill: #5C5875;
+    -fx-font-size: 13px;
+    -fx-padding: 4 0 0 0;
+}
+
+.content-divider {
+    -fx-background-color: #2C2A3E;
+}
+
+/* ── Form Fields ─────────────────────────────────────────────────── */
+.field-label {
+    -fx-text-fill: #6B6882;
+    -fx-font-size: 10px;
+    -fx-font-family: "System Bold";
+    -fx-letter-spacing: 1px;
+}
+
+.field-hint {
+    -fx-text-fill: #4A475E;
+    -fx-font-size: 11px;
+}
+
+.settings-field {
+    -fx-background-color: #1E1C2E;
+    -fx-text-fill: #EEEAF8;
+    -fx-prompt-text-fill: #4A475E;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 10 14 10 14;
+    -fx-font-size: 13px;
+    -fx-pref-height: 42px;
+}
+.settings-field:focused {
+    -fx-border-color: #7C6AF7;
+    -fx-background-color: #211F34;
+    -fx-effect: dropshadow(gaussian, #7C6AF733, 10, 0.4, 0, 0);
+}
+
+.settings-textarea {
+    -fx-background-color: #1E1C2E;
+    -fx-text-fill: #EEEAF8;
+    -fx-prompt-text-fill: #4A475E;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 10 14 10 14;
+    -fx-font-size: 13px;
+}
+.settings-textarea:focused {
+    -fx-border-color: #7C6AF7;
+    -fx-background-color: #211F34;
+}
+.settings-textarea .content {
+    -fx-background-color: transparent;
+}
+
+/* ── Avatar ──────────────────────────────────────────────────────── */
+.avatar-circle-wrap {
+    -fx-pref-width: 88px;
+    -fx-pref-height: 88px;
+    -fx-min-width: 88px;
+    -fx-min-height: 88px;
+}
+
+.avatar-circle {
+    -fx-fill: #7C6AF7;
+    -fx-effect: dropshadow(gaussian, #7C6AF755, 16, 0.4, 0, 4);
+}
+
+.avatar-initials {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 28px;
+    -fx-font-family: "System Bold";
+}
+
+.color-swatch {
+    -fx-pref-width: 26px;
+    -fx-pref-height: 26px;
+    -fx-min-width: 26px;
+    -fx-min-height: 26px;
+    -fx-background-radius: 50%;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000055, 4, 0, 0, 1);
+}
+.color-swatch:hover {
+    -fx-effect: dropshadow(gaussian, #FFFFFF55, 8, 0.4, 0, 0);
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+/* ── Save / Action Buttons ───────────────────────────────────────── */
+.save-btn {
+    -fx-background-color: #7C6AF7;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #7C6AF755, 10, 0.4, 0, 3);
+}
+.save-btn:hover {
+    -fx-background-color: #6A58E0;
+}
+
+.cancel-btn {
+    -fx-background-color: #252333;
+    -fx-text-fill: #9B97BC;
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+}
+.cancel-btn:hover {
+    -fx-background-color: #2E2C45;
+    -fx-text-fill: #C4BFEA;
+}
+
+.danger-btn {
+    -fx-background-color: #2E1010;
+    -fx-text-fill: #E05252;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-border-color: #4A1A1A;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+}
+.danger-btn:hover {
+    -fx-background-color: #3D1515;
+}
+
+/* ── Status messages ─────────────────────────────────────────────── */
+.status-idle {
+    -fx-text-fill: transparent;
+    -fx-font-size: 12px;
+}
+
+.status-ok {
+    -fx-text-fill: #34D399;
+    -fx-font-size: 12px;
+    -fx-font-family: "System Bold";
+}
+
+.status-error {
+    -fx-text-fill: #E05252;
+    -fx-font-size: 12px;
+    -fx-font-family: "System Bold";
+}
+
+/* ── Notification toggles ────────────────────────────────────────── */
+.toggle-row {
+    -fx-background-color: #1E1C2E;
+    -fx-background-radius: 12px;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 16 20 16 20;
+    -fx-cursor: hand;
+}
+.toggle-row:hover {
+    -fx-background-color: #252340;
+    -fx-border-color: #7C6AF744;
+}
+
+.toggle-title {
+    -fx-text-fill: #DDDAF5;
+    -fx-font-size: 13px;
+    -fx-font-family: "System Bold";
+}
+
+.toggle-hint {
+    -fx-text-fill: #5C5875;
+    -fx-font-size: 11px;
+}
+
+.settings-toggle {
+    -fx-background-color: transparent;
+    -fx-mark-color: #7C6AF7;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+.settings-toggle .box {
+    -fx-background-color: #2C2A40;
+    -fx-border-color: #3D3B55;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+.settings-toggle:selected .box {
+    -fx-background-color: #7C6AF7;
+    -fx-border-color: #7C6AF7;
+}
+
+/* ── Project list panel ──────────────────────────────────────────── */
+.projects-header-bar {
+    -fx-background-color: #1A1927;
+    -fx-border-color: transparent;
+}
+
+.project-count-chip {
+    -fx-background-color: #252333;
+    -fx-text-fill: #7C6AF7;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-background-radius: 20px;
+    -fx-padding: 4 12 4 12;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+}
+
+.projects-status-bar {
+    -fx-background-color: #1A1927;
+    -fx-border-color: #2C2A3E;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* Project row card */
+.project-row-card {
+    -fx-background-color: #1E1C2E;
+    -fx-background-radius: 12px;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-cursor: default;
+}
+.project-row-card:hover {
+    -fx-background-color: #232136;
+    -fx-border-color: #7C6AF744;
+    -fx-effect: dropshadow(gaussian, #7C6AF722, 12, 0, 0, 2);
+}
+
+.project-row-name {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 14px;
+    -fx-font-family: "System Bold";
+}
+
+.project-row-meta {
+    -fx-text-fill: #5C5875;
+    -fx-font-size: 11px;
+}
+
+.project-row-dot {
+    -fx-background-color: #7C6AF7;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 8px;
+    -fx-pref-height: 8px;
+    -fx-min-width: 8px;
+    -fx-min-height: 8px;
+}
+
+.project-action-btn {
+    -fx-background-color: #252333;
+    -fx-text-fill: #7A778F;
+    -fx-font-size: 11px;
+    -fx-background-radius: 8px;
+    -fx-padding: 5 12 5 12;
+    -fx-cursor: hand;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+.project-action-btn:hover {
+    -fx-background-color: #7C6AF722;
+    -fx-text-fill: #C4BFEA;
+    -fx-border-color: #7C6AF766;
+}
+
+.project-delete-btn {
+    -fx-background-color: #2E1010;
+    -fx-text-fill: #E05252;
+    -fx-font-size: 11px;
+    -fx-background-radius: 8px;
+    -fx-padding: 5 12 5 12;
+    -fx-cursor: hand;
+    -fx-border-color: #4A1A1A;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+.project-delete-btn:hover {
+    -fx-background-color: #3D1515;
+    -fx-text-fill: #FF6B6B;
+}
+
+/* ── Appearance / theme cards ────────────────────────────────────── */
+.theme-card {
+    -fx-background-color: #1E1C2E;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+    -fx-padding: 20 0 20 0;
+}
+
+.theme-card-active {
+    -fx-border-color: #7C6AF7;
+    -fx-effect: dropshadow(gaussian, #7C6AF744, 16, 0.4, 0, 4);
+}
+
+.theme-card-soon {
+    -fx-border-color: #2C2A40;
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+.theme-icon {
+    -fx-font-size: 28px;
+}
+
+.theme-label {
+    -fx-text-fill: #DDDAF5;
+    -fx-font-size: 13px;
+    -fx-font-family: "System Bold";
+}
+
+.theme-active-badge {
+    -fx-text-fill: #7C6AF7;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+}
+
+.theme-soon-badge {
+    -fx-text-fill: #4A475E;
+    -fx-font-size: 11px;
+}
+
+/* ── Modal overlays ──────────────────────────────────────────────── */
+.modal-overlay {
+    -fx-background-color: transparent;
+}
+
+.modal-scrim {
+    -fx-background-color: rgba(0, 0, 0, 0.60);
+}
+
+.rename-dialog {
+    -fx-background-color: #1E1C2E;
+    -fx-background-radius: 16px;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 16px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, #00000088, 32, 0, 0, 8);
+}
+
+.dialog-title {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 16px;
+    -fx-font-family: "System Bold";
+}
+
+.dialog-title-danger {
+    -fx-text-fill: #E05252;
+    -fx-font-size: 16px;
+    -fx-font-family: "System Bold";
+}
+
+.dialog-body {
+    -fx-text-fill: #9B97BC;
+    -fx-font-size: 13px;
+    -fx-line-spacing: 3px;
+}
