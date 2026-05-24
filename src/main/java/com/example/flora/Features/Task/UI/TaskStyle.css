@@ -1,137 +1,346 @@
+/* ═══════════════════════════════════════════════════════════════
+   TaskStyle.css  —  Flora Project Manager · Task View
+   Dark glassmorphism theme with accent colour #7C6AF7 (purple)
+   ═══════════════════════════════════════════════════════════════ */
 
-
-/* ── TaskUI.css ── */
-
-/* ── Root ── */
+/* ── Root / Canvas ─────────────────────────────────────────────── */
 .task-root {
-    -fx-background-color: #13111A;
-    -fx-background-radius: 19;
+    -fx-background-color: #12111A;
 }
 
-/* ── Left project list panel ── */
-.project-list-panel {
-    -fx-background-color: #0E0C18;
-    -fx-border-color: #2D2845;
+/* ── Left sidebar panel ─────────────────────────────────────────── */
+.task-sidebar {
+    -fx-background-color: #1A1927;
+    -fx-border-color: #2C2A3E;
     -fx-border-width: 0 1 0 0;
 }
 
-.project-list-header-label {
-    -fx-text-fill: #9D8FBF;
+.sidebar-header {
+    -fx-background-color: #1A1927;
+}
+
+.sidebar-title {
+    -fx-text-fill: #A09CC0;
     -fx-font-size: 11px;
-    -fx-font-weight: bold;
+    -fx-font-family: "System Bold";
+    -fx-letter-spacing: 1.5px;
 }
 
-/* Project row buttons in the left panel */
-.proj-row {
-    -fx-background-color: #1A1528;
-    -fx-background-radius: 14;
-    -fx-border-color: #2D2845;
-    -fx-border-radius: 14;
-    -fx-border-width: 1;
-    -fx-text-fill: #EDE9F6;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-alignment: CENTER_LEFT;
-    -fx-cursor: hand;
-}
-
-.proj-row:hover {
-    -fx-border-color: #6D4FC2;
-    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.2), 12, 0, 0, 3);
-    -fx-translate-x: 3;
-}
-
-.proj-row-active {
-    -fx-background-color: #231E38;
-    -fx-background-radius: 14;
-    -fx-border-color: #6D4FC2;
-    -fx-border-radius: 14;
-    -fx-border-width: 1;
-    -fx-text-fill: #EDE9F6;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-alignment: CENTER_LEFT;
-    -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 14, 0, 0, 3);
-}
-
-.proj-row-meta {
-    -fx-text-fill: #6B5F8A;
-    -fx-font-size: 11px;
-}
-
-/* ── Main task area ── */
-.task-main-panel {
-    -fx-background-color: #13111A;
-}
-
-.task-area-header {
-    -fx-background-color: #1A1528;
-    -fx-border-color: #2D2845;
-    -fx-border-width: 0 0 1 0;
-}
-
-.task-area-title {
-    -fx-text-fill: #EDE9F6;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
-
-.task-count-badge {
-    -fx-background-color: rgba(109,79,194,0.15);
-    -fx-background-radius: 20;
-    -fx-border-color: #6D4FC2;
-    -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-text-fill: #C4B5F5;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-}
-
-/* ScrollPane cleanup */
-.scroll-pane {
+/* Scroll panes — remove chrome */
+.task-sidebar-scroll,
+.task-main-scroll {
     -fx-background-color: transparent;
     -fx-background: transparent;
     -fx-border-color: transparent;
+    -fx-padding: 0;
 }
-
-.scroll-pane > .viewport {
+.task-sidebar-scroll .viewport,
+.task-main-scroll .viewport {
     -fx-background-color: transparent;
 }
-
-.scroll-pane .scroll-bar:vertical {
-    -fx-background-color: #2D2845;
-    -fx-background-radius: 4;
-    -fx-pref-width: 4px;
+.task-sidebar-scroll .scroll-bar,
+.task-main-scroll .scroll-bar {
+    -fx-opacity: 0;
 }
 
-.scroll-pane .scroll-bar:vertical .thumb {
-    -fx-background-color: #6D4FC2;
-    -fx-background-radius: 4;
-}
-
-.scroll-pane .scroll-bar:vertical .increment-button,
-.scroll-pane .scroll-bar:vertical .decrement-button {
-    -fx-background-color: transparent;
-    -fx-pref-height: 0;
-}
-
-/* Separator */
-.separator {
-    -fx-background-color: #2D2845;
-}
-
+/* ── Vertical glow separator ────────────────────────────────────── */
 .vertical-separator-glow {
-    -fx-background-color: linear-gradient(
-        to bottom,
-        transparent,
-        #6D4FC2,
-        #A855F7,
-        #6D4FC2,
-        transparent
-    );
-    -fx-pref-width: 1.5;
-    -fx-min-width: 1.5;
-    -fx-max-width: 1.5;
-    -fx-effect: dropshadow(gaussian, rgba(168,85,247,0.6), 8, 0, 0, 0);
-    -fx-opacity: 0.8;
+    -fx-background-color: linear-gradient(to bottom, transparent, #7C6AF7 30%, #7C6AF7 70%, transparent);
+    -fx-pref-width: 1px;
+    -fx-max-width: 1px;
+    -fx-opacity: 0.45;
+}
+
+/* ── Main content panel ─────────────────────────────────────────── */
+.task-main-panel {
+    -fx-background-color: #12111A;
+}
+
+/* ── Project header ─────────────────────────────────────────────── */
+.project-header-bar {
+    -fx-background-color: #1A1927;
+    -fx-border-color: #2C2A3E;
+    -fx-border-width: 0 0 1 0;
+}
+
+.project-name-label {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 20px;
+    -fx-font-family: "System Bold";
+}
+
+/* ── Filter / tab bar ───────────────────────────────────────────── */
+.filter-bar {
+    -fx-background-color: transparent;
+}
+
+.filter-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7A778F;
+    -fx-font-size: 12px;
+    -fx-font-family: "System Bold";
+    -fx-padding: 6 16 6 16;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.filter-btn:hover {
+    -fx-text-fill: #C4BFEA;
+    -fx-background-color: #252333;
+}
+
+.filter-btn-active {
+    -fx-background-color: #7C6AF7;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 12px;
+    -fx-padding: 6 16 6 16;
+}
+
+/* ── Add Task button ────────────────────────────────────────────── */
+.add-task-btn {
+    -fx-background-color: #7C6AF7;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-padding: 8 20 8 20;
+    -fx-effect: dropshadow(gaussian, #7C6AF766, 10, 0.4, 0, 3);
+}
+
+.add-task-btn:hover {
+    -fx-background-color: #6A58E0;
+}
+
+/* ── Section label inside main panel ───────────────────────────── */
+.section-label {
+    -fx-text-fill: #6B6882;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+}
+
+/* ── Status badge chips ─────────────────────────────────────────── */
+.status-todo {
+    -fx-background-color: #252B3B;
+    -fx-text-fill: #8BA3CC;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+.status-progress {
+    -fx-background-color: #2A2040;
+    -fx-text-fill: #A78BFA;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+.status-late {
+    -fx-background-color: #2E2010;
+    -fx-text-fill: #F5A623;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+.status-done {
+    -fx-background-color: #122A1E;
+    -fx-text-fill: #34D399;
+    -fx-background-radius: 20px;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+    -fx-cursor: hand;
+}
+
+/* ── Notify / project sidebar cards ────────────────────────────── */
+.notify-card {
+    -fx-background-color: #1E1C2E;
+    -fx-background-radius: 12px;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #00000055, 6, 0, 0, 2);
+}
+
+.notify-card:hover {
+    -fx-background-color: #252340;
+    -fx-border-color: #7C6AF744;
+}
+
+.notify-card-title {
+    -fx-text-fill: #DDDAF5;
+    -fx-font-size: 13px;
+    -fx-font-family: "System Bold";
+}
+
+.notify-card-count {
+    -fx-text-fill: #7C6AF7;
+    -fx-font-size: 11px;
+    -fx-font-family: "System Bold";
+}
+
+/* ── Empty-state label ──────────────────────────────────────────── */
+.empty-state {
+    -fx-text-fill: #3D3B55;
+    -fx-font-size: 13px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Detail Panel Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Overlay AnchorPane — fills the entire StackPane */
+.detail-overlay {
+    -fx-background-color: transparent;
+}
+
+/* Dark scrim behind the panel */
+.detail-scrim {
+    -fx-background-color: rgba(0, 0, 0, 0.55);
+    -fx-cursor: hand;
+}
+
+/* The white (dark) panel itself */
+.detail-panel {
+    -fx-background-color: #1A1927;
+    -fx-border-color: #2C2A3E;
+    -fx-border-width: 0 0 0 1;
+    -fx-effect: dropshadow(gaussian, #00000099, 24, 0, -6, 0);
+}
+
+/* Detail header bar */
+.detail-header {
+    -fx-background-color: #1E1C2E;
+    -fx-border-color: #2C2A3E;
+    -fx-border-width: 0 0 1 0;
+}
+
+.detail-header-label {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 14px;
+    -fx-font-family: "System Bold";
+}
+
+/* Close button */
+.detail-close-btn {
+    -fx-background-color: #252333;
+    -fx-text-fill: #7A778F;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+.detail-close-btn:hover {
+    -fx-background-color: #C0392B22;
+    -fx-text-fill: #E05252;
+}
+
+/* Thin horizontal divider */
+.detail-divider {
+    -fx-background-color: #2C2A3E;
+}
+
+/* Field label (e.g. "TITLE", "STATUS") */
+.detail-field-label {
+    -fx-text-fill: #6B6882;
+    -fx-font-size: 10px;
+    -fx-font-family: "System Bold";
+    -fx-letter-spacing: 1px;
+}
+
+/* Task title value */
+.detail-title-value {
+    -fx-text-fill: #EEEAF8;
+    -fx-font-size: 17px;
+    -fx-font-family: "System Bold";
+}
+
+/* Description value */
+.detail-desc-value {
+    -fx-text-fill: #9B97BC;
+    -fx-font-size: 13px;
+    -fx-line-spacing: 3px;
+}
+
+/* Meta values (due date, created at, assignee) */
+.detail-meta-value {
+    -fx-text-fill: #C4BFEA;
+    -fx-font-size: 13px;
+}
+
+/* Cycle Status button */
+.cycle-status-btn {
+    -fx-background-color: #252333;
+    -fx-text-fill: #A09CC0;
+    -fx-font-size: 12px;
+    -fx-font-family: "System Bold";
+    -fx-background-radius: 8px;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+    -fx-border-color: #2C2A40;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+.cycle-status-btn:hover {
+    -fx-background-color: #7C6AF722;
+    -fx-text-fill: #C4BFEA;
+    -fx-border-color: #7C6AF766;
+}
+
+/* Progress step dots */
+.step-dot {
+    -fx-background-color: #2C2A40;
+    -fx-background-radius: 3px;
+}
+
+.step-label {
+    -fx-text-fill: #4A475E;
+    -fx-font-size: 9px;
+    -fx-font-family: "System Bold";
+}
+
+/* Mark as Done button */
+.detail-done-btn {
+    -fx-background-color: #122A1E;
+    -fx-text-fill: #34D399;
+    -fx-font-family: "System Bold";
+    -fx-font-size: 13px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 0 10 0;
+    -fx-cursor: hand;
+    -fx-border-color: #1A4A33;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+}
+.detail-done-btn:hover {
+    -fx-background-color: #1A3D2A;
+}
+.detail-done-btn:disabled {
+    -fx-opacity: 0.4;
+}
+
+/* Delete button */
+.detail-delete-btn {
+    -fx-background-color: #2E1010;
+    -fx-text-fill: #E05252;
+    -fx-font-size: 12px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10 14 10 14;
+    -fx-cursor: hand;
+    -fx-border-color: #4A1A1A;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+}
+.detail-delete-btn:hover {
+    -fx-background-color: #3D1515;
 }
