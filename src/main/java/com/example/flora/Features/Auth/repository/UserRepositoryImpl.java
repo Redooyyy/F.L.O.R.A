@@ -3,35 +3,71 @@ package com.example.flora.Features.Auth.repository;
 import com.example.flora.Features.Auth.model.User;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class UserRepositoryImpl implements UserRepository{
+public class UserRepositoryImpl implements UserRepository {
 
-    private Connection connection;
-    //For dependency injection
-    public UserRepositoryImpl(Connection connection){
+    private final Connection connection;
+
+    public UserRepositoryImpl(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public void saveUser(User user) {
-        //TODO: save to db via mysql query
+        String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getPassword());
+            ps.executeUpdate();
+
+            // Set the generated ID back on the user object
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) user.setId(keys.getInt(1));
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to save user: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public User findByID(Integer id) {
-        //TODO: find id via mysql query
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapRow(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user by id: " + e.getMessage(), e);
+        }
         return null;
     }
 
     @Override
     public User findByEmail(String email) {
-        //TODO: find email via mysql query
+        String sql = "SELECT * FROM users WHERE email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapRow(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user by email: " + e.getMessage(), e);
+        }
         return null;
     }
 
     @Override
     public boolean userExist(String email) {
-        //TODO: find user exist or not [ you can find with query or if you have enough IQ then you'll use existing function daahhhhh -_- ]
-        return false;
+        return findByEmail(email) != null;
+    }
+
+    private User mapRow(ResultSet rs) throws SQLException {
+        return new User(
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getInt("id")
+        );
     }
 }
