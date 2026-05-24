@@ -4,6 +4,7 @@ import com.example.flora.Core.Constants.Path;
 import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Features.Auth.UI.LoginUI_Controller;
+import com.example.flora.Features.Bug.UI.BugUI_Controller;
 import com.example.flora.Features.Home.UI.Cards.NotificationCardController;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.model.Notification;
@@ -11,7 +12,10 @@ import com.example.flora.Features.Overview.UI.Overview_Controller;
 import com.example.flora.Features.Project.UI.AddProjectModal_Controller;
 import com.example.flora.Features.Project.UI.ProjectUI_Controller;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
+import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.TaskStatus;
+import com.example.flora.Features.Task.repository.TaskRepositoryFake;
+import com.example.flora.Features.Task.service.TaskServices;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
@@ -262,7 +266,7 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
 
     @FXML
     private void projectPage() throws IOException {
-        loadPage(Path.PROJECT, e->new ProjectUI_Controller(appContainer.getProjectViewModel()));
+        loadPage(Path.PROJECT, e->new ProjectUI_Controller(appContainer.getProjectViewModel(), appContainer.getProjectDetailViewModel()));
         toggle();
     }
 
@@ -273,8 +277,9 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     }
 
     @FXML
-    private void bugPage(){
-
+    private void bugPage() throws IOException {
+        loadPage(Path.BUG, e -> new BugUI_Controller(appContainer.getBugViewModel(),this));
+        toggle();
     }
 
 
