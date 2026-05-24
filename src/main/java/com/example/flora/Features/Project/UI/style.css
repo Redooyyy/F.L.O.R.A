@@ -1107,3 +1107,165 @@
     -fx-pref-height: 1;
     -fx-padding: 2 8 2 8;
 }
+
+/* ── Tag FlowPane container ───────────────────────────────────────── */
+.modal-tag-pane {
+    -fx-background-color: transparent;
+    -fx-min-height: 0;
+}
+
+/* ── Compact tag input ────────────────────────────────────────────── */
+.modal-tag-input {
+    -fx-pref-height: 36px;
+    -fx-font-size: 12px;
+}
+
+/* ── Tag pill ─────────────────────────────────────────────────────── */
+.modal-tag-pill {
+    -fx-background-color: rgba(109, 79, 194, 0.18);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(109, 79, 194, 0.55);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #C4B5F5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.modal-tag-pill:hover {
+    -fx-background-color: rgba(109, 79, 194, 0.35);
+    -fx-border-color: #6D4FC2;
+    -fx-text-fill: #EDE9F6;
+}
+
+/* ── Modal scroll pane — keep it transparent ──────────────────────── */
+.modal-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+.modal-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.modal-scroll-pane > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6px;
+}
+.modal-scroll-pane > .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(109, 79, 194, 0.35);
+    -fx-background-radius: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ADD-PROJECT MODAL — Chip selector with separated zones
+   Paste these into your modal's style.css
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Outer card that wraps both zones ─────────────────────────────── */
+.chip-section-card {
+    -fx-background-color: #13101f;
+    -fx-background-radius: 12;
+    -fx-border-color: #2a2245;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+/* ── Selected zone (top) ──────────────────────────────────────────── */
+.chip-zone-selected {
+    -fx-background-color: #16112a;
+    -fx-background-radius: 12 12 0 0;
+}
+
+/* ── Divider between zones ────────────────────────────────────────── */
+.chip-zone-divider {
+    -fx-background-color: #2a2245;
+}
+
+/* ── Available zone (bottom) ──────────────────────────────────────── */
+.chip-zone-available {
+    -fx-background-color: #0e0b1a;
+    -fx-background-radius: 0 0 12 12;
+}
+
+/* ── Zone header labels ───────────────────────────────────────────── */
+.chip-zone-label-active {
+    -fx-text-fill: #6d4fc2;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+.chip-zone-label-muted {
+    -fx-text-fill: #3d3060;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+/* ── Empty placeholder text ───────────────────────────────────────── */
+.chip-empty-hint {
+    -fx-text-fill: #3a3060;
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+}
+
+/* ── Available chip (unselected) ──────────────────────────────────── */
+.select-chip {
+    -fx-background-color: #1a1530;
+    -fx-background-radius: 20;
+    -fx-border-color: #3d3060;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-text-fill: #9d8fbf;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.select-chip:hover {
+    -fx-background-color: #201840;
+    -fx-border-color: #6d4fc2;
+    -fx-text-fill: #c4b5f5;
+}
+
+/* ── Selected chip (active, with ✕) ──────────────────────────────── */
+.select-chip-active {
+    -fx-background-color: rgba(109,79,194,0.20);
+    -fx-background-radius: 20;
+    -fx-border-color: #6d4fc2;
+    -fx-border-radius: 20;
+    -fx-border-width: 1.5;
+    -fx-text-fill: #d4c8ff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.select-chip-active:hover {
+    -fx-background-color: rgba(109,79,194,0.35);
+    -fx-text-fill: #ede9f6;
+}
+
+/* ── Compact tag input (custom tech field) ────────────────────────── */
+.modal-tag-input {
+    -fx-font-size: 12px;
+}
+
+/* ── Scroll pane — keep transparent ──────────────────────────────── */
+.modal-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+.modal-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.modal-scroll-pane > .scroll-bar:vertical {
+    -fx-pref-width: 5px;
+    -fx-background-color: transparent;
+}
+.modal-scroll-pane > .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(109,79,194,0.30);
+    -fx-background-radius: 3px;
+}
+.modal-scroll-pane > .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
