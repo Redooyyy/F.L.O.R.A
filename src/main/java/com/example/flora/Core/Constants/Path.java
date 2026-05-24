@@ -7,4 +7,5 @@ public class Path {
     public static String OVERVIEW = "/Overview/UI/Overview.fxml";
     public static String TASK = "/Task/UI/TaskUI.fxml";
     public static String BUG = "/Bug/UI/BugUI.fxml";
+    public static String SETTINGS = "/Settings/UI/SettingsUI.fxml";
 }
