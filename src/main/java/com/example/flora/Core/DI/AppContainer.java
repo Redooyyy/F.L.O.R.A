@@ -4,13 +4,19 @@ import com.example.flora.Core.DataBase.DatabaseManager;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import com.example.flora.Features.Auth.repository.UserRepositoryImpl;
 import com.example.flora.Features.Auth.service.AuthService;
+import com.example.flora.Features.Bug.repository.BugRepositoryImpl;
+import com.example.flora.Features.Bug.service.BugService;
+import com.example.flora.Features.Bug.service.BugServiceImpl;
+import com.example.flora.Features.Bug.viewmodel.BugViewModel;
 import com.example.flora.Features.Home.ViewModel.NotificationViewModel;
 import com.example.flora.Features.Home.repository.NotificationRepositoryImpl;
 import com.example.flora.Features.Home.services.NotificationService;
+import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
 import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import com.example.flora.Features.Project.repository.ProjectRepositoryImpl;
 import com.example.flora.Features.Project.service.ProjectService;
 import com.example.flora.Features.Task.ViewModel.TaskViewModel;
+import com.example.flora.Features.Task.repository.TaskRepositoryFake;
 import com.example.flora.Features.Task.repository.TaskRepositoryImpl;
 import com.example.flora.Features.Task.service.TaskServices;
 
@@ -32,6 +38,15 @@ public class AppContainer {
  private  final TaskServices taskServices;
  private final TaskViewModel taskViewModel;
 
+ private final ProjectDetailViewModel projectDetailViewModel;
+
+ private final BugServiceImpl bugServiceImpl;
+ private final BugViewModel bugViewModel;
+
+ //fake Zone
+ //   private final TaskServices taskServicesFake;
+ //    private final TaskViewModel taskViewModelFake;
+
  public AppContainer() throws SQLException {
      databaseManager = DatabaseManager.getDatabaseManager();
 
@@ -51,6 +66,17 @@ public class AppContainer {
      taskServices = new TaskServices(taskRepository);
      taskViewModel = new TaskViewModel(taskServices);
 
+     BugRepositoryImpl bugRepository = new BugRepositoryImpl(databaseManager.getConnection());
+     bugServiceImpl = new BugServiceImpl(bugRepository);
+     bugViewModel = new BugViewModel(bugServiceImpl); // need to work
+
+     projectDetailViewModel = new ProjectDetailViewModel(taskViewModel,bugViewModel);
+
+     //fake zone for testing
+//     TaskRepositoryFake repositoryFake = new TaskRepositoryFake();
+//     taskServicesFake = new TaskServices(repositoryFake);
+//     taskViewModelFake = new TaskViewModel(taskServicesFake);
+
 
  }
 
@@ -68,7 +94,13 @@ public class AppContainer {
      return projectViewModel;
     }
 
+    public ProjectDetailViewModel getProjectDetailViewModel(){return projectDetailViewModel;}
+
     public TaskViewModel getTaskViewModel() {
         return taskViewModel;
     }
+
+    public BugViewModel getBugViewModel(){return bugViewModel;}
+
+  //  public TaskViewModel getTaskViewModelFake(){return taskViewModelFake;}
 }
