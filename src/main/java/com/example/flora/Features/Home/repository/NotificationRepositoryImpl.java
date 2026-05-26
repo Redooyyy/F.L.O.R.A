@@ -1,11 +1,28 @@
 package com.example.flora.Features.Home.repository;
 
 import com.example.flora.Features.Home.model.Notification;
+import com.example.flora.Features.Home.model.NotificationType;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Expected DB schema:
+ *
+ * CREATE TABLE notifications (
+ *     id           INT          PRIMARY KEY AUTO_INCREMENT,
+ *     user_id      INT          NOT NULL,
+ *     title        VARCHAR(255) NOT NULL,
+ *     description  TEXT,
+ *     type         VARCHAR(50)  NOT NULL DEFAULT 'GENERAL',
+ *     sender_name  VARCHAR(255),
+ *     project_name VARCHAR(255),
+ *     role         VARCHAR(100),
+ *     is_read      BOOLEAN      NOT NULL DEFAULT FALSE,
+ *     created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+ * );
+ */
 public class NotificationRepositoryImpl implements NotificationRepository {
 
     private final Connection connection;
@@ -14,13 +31,32 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         this.connection = connection;
     }
 
+
     @Override
     public void createNotification(int userId, String title, String description) {
-        String sql = "INSERT INTO notifications (user_id, title, description) VALUES (?, ?, ?)";
+        createNotification(userId, title, description, NotificationType.GENERAL, null, null, null);
+    }
+
+    public void createNotification(int userId,
+                                   String title,
+                                   String description,
+                                   NotificationType type,
+                                   String senderName,
+                                   String projectName,
+                                   String role) {
+        String sql = """
+                INSERT INTO notifications
+                    (user_id, title, description, type, sender_name, project_name, role)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userId);
+            ps.setInt   (1, userId);
             ps.setString(2, title);
             ps.setString(3, description);
+            ps.setString(4, type.name());
+            ps.setString(5, senderName);
+            ps.setString(6, projectName);
+            ps.setString(7, role);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create notification: " + e.getMessage(), e);
@@ -52,6 +88,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         }
     }
 
+
     @Override
     public void deleteNotification(int notificationId, int userId) {
         String sql = "DELETE FROM notifications WHERE id = ? AND user_id = ?";
@@ -64,13 +101,36 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         }
     }
 
+    @Override
+    public void deleteAllNotifications(int userId) {
+        String sql = "DELETE FROM notifications WHERE user_id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete all notifications: " + e.getMessage(), e);
+        }
+    }
+
+
     private Notification mapRow(ResultSet rs) throws SQLException {
+        NotificationType type;
+        try {
+            type = NotificationType.valueOf(rs.getString("type"));
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            type = NotificationType.GENERAL;
+        }
+
         return new Notification(
-                rs.getInt("id"),
+                rs.getInt   ("id"),
                 rs.getString("title"),
                 rs.getString("description"),
                 rs.getTimestamp("created_at").toLocalDateTime(),
-                rs.getBoolean("is_read")
+                rs.getBoolean("is_read"),
+                type,
+                rs.getString("sender_name"),
+                rs.getString("project_name"),
+                rs.getString("role")
         );
     }
 }
