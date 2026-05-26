@@ -12,5 +12,7 @@ public interface NotificationRepository {
 
     void markAsRead(int notificationId);
 
+    public void deleteAllNotifications(int userId);
+
     void deleteNotification(int notificationId, int userId);
 }

@@ -1,6 +1,5 @@
 package com.example.flora.Features.Task.ViewModel;
 
-import com.example.flora.Core.session.UserSession;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
 import com.example.flora.Features.Task.service.TaskServices;

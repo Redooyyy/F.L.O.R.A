@@ -1,7 +1,8 @@
 package com.example.flora.Core.DI;
 
 import com.example.flora.Core.DataBase.DatabaseManager;
-import com.example.flora.Core.session.UserSession;
+import com.example.flora.Core.Session.NotifySession;
+import com.example.flora.Core.Session.UserSession;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import com.example.flora.Features.Auth.model.User;
 import com.example.flora.Features.Auth.repository.UserRepositoryImpl;
@@ -77,8 +78,11 @@ public class AppContainer {
         BugServiceImpl bugService = new BugServiceImpl(bugRepository);
         SettingsService settingsService = new SettingsService(settingsRepository);
 
+        //notification session
+        NotifySession.setNotificationService(notificationService);
 
-        notificationViewModel = new NotificationViewModel(notificationService, userId);
+
+        notificationViewModel = new NotificationViewModel(notificationService,projectService, userId, userIdStr);
         projectViewModel = new ProjectViewModel(projectService, userIdStr);
         taskViewModel = new TaskViewModel(taskServices, userIdStr);
         bugViewModel = new BugViewModel(bugService, userIdStr);
@@ -130,6 +134,7 @@ public class AppContainer {
         projectDetailViewModel = null;
         settingsViewModel = null;
         UserSession.clear();
+        NotifySession.clear();
     }
 
     private void requireSession() {
