@@ -78,7 +78,7 @@ public class AppContainer {
         SettingsService settingsService = new SettingsService(settingsRepository);
 
 
-        notificationViewModel = new NotificationViewModel(notificationService, userId);
+        notificationViewModel = new NotificationViewModel(notificationService,projectService, userId, userIdStr);
         projectViewModel = new ProjectViewModel(projectService, userIdStr);
         taskViewModel = new TaskViewModel(taskServices, userIdStr);
         bugViewModel = new BugViewModel(bugService, userIdStr);
