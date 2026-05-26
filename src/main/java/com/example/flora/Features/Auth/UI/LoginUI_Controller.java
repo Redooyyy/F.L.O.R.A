@@ -4,7 +4,7 @@ import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Core.Transition.ErrorTransition;
 import com.example.flora.Core.Transition.SceneTransition;
 import com.example.flora.Core.Validation.ValidationHelper;
-import com.example.flora.Core.session.UserSession;
+import com.example.flora.Core.Session.UserSession;
 import com.example.flora.Features.Auth.exception.AuthException;
 import com.example.flora.Features.Auth.model.User;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
