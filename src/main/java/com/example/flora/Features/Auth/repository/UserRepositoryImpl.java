@@ -2,10 +2,7 @@ package com.example.flora.Features.Auth.repository;
 
 import com.example.flora.Features.Auth.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -17,18 +14,29 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void saveUser(User user) {
-        String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        String sql = "INSERT INTO users (email, password, username) VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps =
+                     connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
+            ps.setString(3, user.getUsername());
+
             ps.executeUpdate();
 
-            // Set the generated ID back on the user object
             ResultSet keys = ps.getGeneratedKeys();
-            if (keys.next()) user.setId(keys.getInt(1));
+
+            if (keys.next()) {
+                user.setId(keys.getInt(1));
+            }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to save user: " + e.getMessage(), e);
+            e.printStackTrace();
+
+            throw new RuntimeException(
+                    "Failed to save user: " + e.getMessage(), e
+            );
         }
     }
 
