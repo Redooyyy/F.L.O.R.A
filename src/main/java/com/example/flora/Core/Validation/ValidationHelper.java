@@ -61,7 +61,7 @@ public final class ValidationHelper {
     }
 
 
-    
+
     public static final class Msg {
         public static final String FULLNAME_EMPTY       = "Full name is required.";
         public static final String EMAIL_EMPTY          = "Email address is required.";
