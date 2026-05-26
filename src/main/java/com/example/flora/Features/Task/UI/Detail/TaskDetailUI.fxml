@@ -2,22 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--
-  TaskDetailUI.fxml — Slide-in detail panel (right side)
-  Shows full task info + lets user cycle status
--->
 <AnchorPane
-        prefWidth="370.0" prefHeight="580.0"
+        prefWidth="390.0" prefHeight="600.0"
         styleClass="detail-panel"
         stylesheets="@../TaskStyle.css"
         xmlns="http://javafx.com/javafx/23.0.1"
@@ -26,148 +22,290 @@
 
     <children>
 
-        <VBox
-                spacing="0.0"
-                AnchorPane.topAnchor="0.0"
-                AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0">
+        <VBox spacing="0.0"
+              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 
-            <!-- ── Header bar: title + close button ── -->
-            <HBox
-                    styleClass="detail-header"
-                    alignment="CENTER_LEFT"
-                    prefHeight="56.0">
-                <padding><Insets left="22.0" right="16.0"/></padding>
+            <HBox styleClass="detail-header" alignment="CENTER_LEFT" prefHeight="72.0">
+                <padding>
+                    <Insets left="22.0" right="18.0" top="4.0" bottom="4.0"/>
+                </padding>
 
-                <Label text="Task Detail" styleClass="detail-header-label">
-                    <font><Font name="System Bold" size="14.0"/></font>
-                </Label>
+                <Pane fx:id="headerAccentBar"
+                      style="-fx-background-color:linear-gradient(to bottom,#9D8FFB,#6C5ECC); -fx-background-radius:3px;"
+                      prefWidth="3.0" prefHeight="32.0">
+                    <HBox.margin>
+                        <Insets right="14.0"/>
+                    </HBox.margin>
+                </Pane>
 
-                <Region HBox.hgrow="ALWAYS"/>
+                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                    <Label text="TASK DETAIL"
+                           style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.5;"/>
+                    <Label fx:id="detailTitle" text="—"
+                           style="-fx-text-fill:#F0ECF9; -fx-font-size:16px; -fx-font-family:'System Bold';"
+                           wrapText="false" maxWidth="210.0">
+                        <font>
+                            <Font name="System Bold" size="16.0"/>
+                        </font>
+                    </Label>
+                    <HBox spacing="6.0" alignment="CENTER_LEFT">
+                        <Label fx:id="roleBadgeDetail" text=""
+                               style="-fx-background-color:#1E1C30;
+                                      -fx-text-fill:#7C6AF7;
+                                      -fx-font-size:10px;
+                                      -fx-font-family:'System Bold';
+                                      -fx-background-radius:20;
+                                      -fx-border-color:#2E2B48;
+                                      -fx-border-radius:20;
+                                      -fx-border-width:1;
+                                      -fx-padding:3 12 3 12;"/>
+                    </HBox>
+                </VBox>
 
-                <!-- Close "×" button -->
-                <Button
-                        fx:id="closeBtn"
-                        text="✕"
-                        styleClass="detail-close-btn"
-                        onAction="#onClose"/>
+                <Button fx:id="closeBtn" text="✕"
+                        styleClass="detail-close-btn" onAction="#onClose">
+                    <HBox.margin>
+                        <Insets left="8.0"/>
+                    </HBox.margin>
+                </Button>
             </HBox>
 
-            <!-- thin separator -->
             <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
 
-            <!-- ── Scrollable body ── -->
-            <ScrollPane
-                    styleClass="task-main-scroll"
-                    fitToWidth="true"
-                    VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="detailScroll"
+                        styleClass="task-main-scroll"
+                        fitToWidth="true" VBox.vgrow="ALWAYS">
                 <content>
-                    <VBox spacing="20.0">
-                        <padding><Insets top="22.0" bottom="22.0" left="22.0" right="22.0"/></padding>
+                    <VBox spacing="0.0">
 
-                        <!-- Task Title -->
-                        <VBox spacing="6.0">
-                            <Label text="TITLE" styleClass="detail-field-label"/>
-                            <Label fx:id="detailTitle" styleClass="detail-title-value" text="—" wrapText="true">
-                                <font><Font name="System Bold" size="17.0"/></font>
-                            </Label>
-                        </VBox>
-
-                        <!-- Status row: current chip + cycle button -->
-                        <VBox spacing="8.0">
-                            <Label text="STATUS" styleClass="detail-field-label"/>
-                            <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <VBox spacing="12.0"
+                              style="-fx-background-color:#100E1C; -fx-padding:22 22 20 22;">
+                            <Label text="STATUS"
+                                   style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"/>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
                                 <Label fx:id="detailStatus" styleClass="status-todo" text="To Do"
                                        alignment="CENTER">
-                                    <padding><Insets top="6.0" bottom="6.0" left="14.0" right="14.0"/></padding>
-                                    <font><Font name="System Bold" size="12.0"/></font>
+                                    <padding>
+                                        <Insets top="7.0" bottom="7.0" left="16.0" right="16.0"/>
+                                    </padding>
+                                    <font>
+                                        <Font name="System Bold" size="12.0"/>
+                                    </font>
                                 </Label>
-                                <Button
-                                        fx:id="cycleStatusBtn"
-                                        text="Change →"
+                                <Button fx:id="cycleStatusBtn" text="Advance →"
                                         styleClass="cycle-status-btn"
                                         onAction="#onCycleStatus"/>
                             </HBox>
-
-                            <!-- Four status steps indicator -->
-                            <HBox spacing="6.0" alignment="CENTER_LEFT">
-                                <Pane fx:id="stepTodo"       styleClass="step-dot"          prefWidth="48.0" prefHeight="4.0"/>
-                                <Pane fx:id="stepInProgress" styleClass="step-dot"          prefWidth="48.0" prefHeight="4.0"/>
-                                <Pane fx:id="stepInReview"   styleClass="step-dot"          prefWidth="48.0" prefHeight="4.0"/>
-                                <Pane fx:id="stepDone"       styleClass="step-dot"          prefWidth="48.0" prefHeight="4.0"/>
-                            </HBox>
-                            <HBox spacing="6.0" alignment="CENTER_LEFT">
-                                <Label text="To Do"      styleClass="step-label" prefWidth="48.0"/>
-                                <Label text="In Progress" styleClass="step-label" prefWidth="48.0"/>
-                                <Label text="In Review"  styleClass="step-label" prefWidth="48.0"/>
-                                <Label text="Done"       styleClass="step-label" prefWidth="48.0"/>
-                            </HBox>
-                        </VBox>
-
-                        <!-- thin divider -->
-                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
-
-                        <!-- Description -->
-                        <VBox spacing="6.0">
-                            <Label text="DESCRIPTION" styleClass="detail-field-label"/>
-                            <Label fx:id="detailDescription" styleClass="detail-desc-value"
-                                   text="—" wrapText="true"/>
-                        </VBox>
-
-                        <!-- thin divider -->
-                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
-
-                        <!-- Meta row: Due date + Assignee -->
-                        <HBox spacing="16.0">
-
-                            <!-- Due Date -->
-                            <VBox spacing="6.0" HBox.hgrow="ALWAYS">
-                                <Label text="DUE DATE" styleClass="detail-field-label"/>
-                                <HBox alignment="CENTER_LEFT" spacing="8.0">
-                                    <Label text="📅" style="-fx-font-size:14px;"/>
-                                    <Label fx:id="detailDueDate" styleClass="detail-meta-value" text="—"/>
+                            <VBox spacing="5.0">
+                                <HBox spacing="5.0" alignment="CENTER_LEFT">
+                                    <Pane fx:id="stepTodo"
+                                          style="-fx-background-color:#1E1C30; -fx-background-radius:4px;"
+                                          prefWidth="56.0" prefHeight="5.0"/>
+                                    <Pane fx:id="stepInProgress"
+                                          style="-fx-background-color:#1E1C30; -fx-background-radius:4px;"
+                                          prefWidth="56.0" prefHeight="5.0"/>
+                                    <Pane fx:id="stepInReview"
+                                          style="-fx-background-color:#1E1C30; -fx-background-radius:4px;"
+                                          prefWidth="56.0" prefHeight="5.0"/>
+                                    <Pane fx:id="stepDone"
+                                          style="-fx-background-color:#1E1C30; -fx-background-radius:4px;"
+                                          prefWidth="56.0" prefHeight="5.0"/>
+                                </HBox>
+                                <HBox spacing="0.0" alignment="CENTER_LEFT">
+                                    <Label text="To Do" prefWidth="61.0"
+                                           style="-fx-text-fill:#3A3756; -fx-font-size:9px;"/>
+                                    <Label text="Progress" prefWidth="61.0"
+                                           style="-fx-text-fill:#3A3756; -fx-font-size:9px;"/>
+                                    <Label text="Review" prefWidth="61.0"
+                                           style="-fx-text-fill:#3A3756; -fx-font-size:9px;"/>
+                                    <Label text="Done" prefWidth="61.0"
+                                           style="-fx-text-fill:#3A3756; -fx-font-size:9px;"/>
                                 </HBox>
                             </VBox>
-
-                            <!-- Assignee -->
-                            <VBox spacing="6.0" HBox.hgrow="ALWAYS">
-                                <Label text="ASSIGNEE" styleClass="detail-field-label"/>
-                                <HBox alignment="CENTER_LEFT" spacing="8.0">
-                                    <Pane fx:id="detailAvatarDot" styleClass="avatar-dot"/>
-                                    <Label fx:id="detailAssignee" styleClass="detail-meta-value" text="Unassigned"/>
-                                </HBox>
-                            </VBox>
-                        </HBox>
-
-                        <!-- thin divider -->
-                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
-
-                        <!-- Created At -->
-                        <VBox spacing="6.0">
-                            <Label text="CREATED" styleClass="detail-field-label"/>
-                            <Label fx:id="detailCreatedAt" styleClass="detail-meta-value" text="—"/>
                         </VBox>
 
-                        <!-- Action buttons -->
-                        <HBox spacing="10.0">
-                            <Button
-                                    fx:id="markDoneBtn"
-                                    text="✔  Mark as Done"
+                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
+
+                        <VBox spacing="10.0" style="-fx-padding:20 22 20 22;">
+                            <Label text="DESCRIPTION"
+                                   style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"/>
+                            <Label fx:id="detailDescription" text="—"
+                                   style="-fx-text-fill:#7A778F; -fx-font-size:12.5px; -fx-line-spacing:3;"
+                                   wrapText="true"/>
+                        </VBox>
+
+                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
+
+                        <VBox spacing="10.0" style="-fx-padding:20 22 16 22;">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="DUE DATE"
+                                       style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"
+                                       HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="editDeadlineBtn" text="✎  Edit"
+                                        styleClass="detail-leader-action-btn"
+                                        onAction="#onToggleDeadlineEdit"
+                                        visible="false" managed="false"/>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0"
+                                  style="-fx-background-color:#14121F;
+                                         -fx-background-radius:12px;
+                                         -fx-border-color:#222038;
+                                         -fx-border-radius:12px;
+                                         -fx-border-width:1px;
+                                         -fx-padding:10 14 10 14;">
+                                <Label text="📅" style="-fx-font-size:15px;"/>
+                                <Label fx:id="detailDueDate"
+                                       style="-fx-text-fill:#9B97BC; -fx-font-size:13px; -fx-font-family:'System Bold';"
+                                       text="No due date"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="10.0" style="-fx-padding:4 22 20 22;">
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="ASSIGNEE"
+                                       style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"
+                                       HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="reassignBtn" text="↺  Reassign"
+                                        styleClass="detail-leader-action-btn"
+                                        onAction="#onToggleReassign"
+                                        visible="false" managed="false"/>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0"
+                                  style="-fx-background-color:#14121F;
+                                         -fx-background-radius:12px;
+                                         -fx-border-color:#222038;
+                                         -fx-border-radius:12px;
+                                         -fx-border-width:1px;
+                                         -fx-padding:8 14 8 14;">
+                                <Pane fx:id="detailAvatarDot"
+                                      style="-fx-background-color:radial-gradient(center 40% 40%, radius 60%, #9D8FFB, #6C5ECC);
+                                             -fx-background-radius:50%;
+                                             -fx-effect:dropshadow(gaussian,#7C6AF766,6,0.3,0,0);"
+                                      prefWidth="28.0" prefHeight="28.0"/>
+                                <Label fx:id="detailAssignee"
+                                       style="-fx-text-fill:#9B97BC; -fx-font-size:13px; -fx-font-family:'System Bold';"
+                                       text="Unassigned"/>
+                            </HBox>
+
+                        </VBox>
+
+                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
+
+                        <VBox spacing="6.0" style="-fx-padding:16 22 16 22;">
+                            <Label text="CREATED"
+                                   style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"/>
+                            <Label fx:id="detailCreatedAt"
+                                   style="-fx-text-fill:#3A3756; -fx-font-size:11.5px;"
+                                   text="—"/>
+                        </VBox>
+
+                        <Pane styleClass="detail-divider" prefHeight="1.0" maxHeight="1.0"/>
+
+                        <VBox spacing="10.0" style="-fx-padding:20 22 26 22;">
+                            <Button fx:id="markDoneBtn"
+                                    text="✔   Mark as Done"
                                     styleClass="detail-done-btn"
                                     onAction="#onMarkDone"
-                                    HBox.hgrow="ALWAYS"
-                                    maxWidth="Infinity"/>
-                            <Button
-                                    fx:id="deleteBtn"
-                                    text="🗑"
-                                    styleClass="detail-delete-btn"
-                                    onAction="#onDelete"/>
-                        </HBox>
+                                    maxWidth="Infinity" prefHeight="42.0"/>
+                            <HBox fx:id="leaderActionRow" spacing="8.0"
+                                  visible="false" managed="false">
+                                <Button fx:id="addTaskShortcutBtn"
+                                        text="＋  New Task"
+                                        styleClass="add-task-pill-btn"
+                                        onAction="#onAddTaskShortcut"
+                                        HBox.hgrow="ALWAYS" maxWidth="Infinity" prefHeight="42.0"/>
+                                <Button fx:id="deleteBtn"
+                                        text="🗑"
+                                        styleClass="detail-delete-btn"
+                                        onAction="#onDelete"
+                                        prefHeight="42.0"/>
+                            </HBox>
+                        </VBox>
 
                     </VBox>
                 </content>
             </ScrollPane>
+        </VBox>
+
+
+        <VBox fx:id="reassignBox" spacing="12.0"
+              visible="false" managed="false"
+              AnchorPane.topAnchor="260.0"
+              AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0"
+              style="-fx-background-color:#13111F;
+                     -fx-background-radius:16;
+                     -fx-border-color:#252238;
+                     -fx-border-radius:16;
+                     -fx-border-width:1;
+                     -fx-padding:18 18 16 18;
+                     -fx-effect:dropshadow(gaussian,#000000BB,22,0,0,8);">
+
+            <Label text="ASSIGN TO NEW MEMBER"
+                   style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"/>
+
+            <TextField fx:id="reassignField"
+                       promptText="Username or ID..."
+                       prefHeight="38.0"
+                       style="-fx-background-color:#0C0B18;
+                              -fx-text-fill:#EDE9F6;
+                              -fx-prompt-text-fill:#3A3756;
+                              -fx-background-radius:10px;
+                              -fx-border-color:#252238;
+                              -fx-border-radius:10px;
+                              -fx-border-width:1px;
+                              -fx-font-size:12px;
+                              -fx-padding:8 14 8 14;"/>
+
+            <HBox spacing="8.0">
+                <Button text="✔  Reassign"
+                        styleClass="add-task-submit-btn"
+                        onAction="#onSaveReassign"
+                        prefHeight="36.0"/>
+                <Button text="Cancel"
+                        styleClass="panel-close-btn"
+                        onAction="#onCancelReassign"
+                        prefHeight="36.0"/>
+            </HBox>
+        </VBox>
+
+        <VBox fx:id="deadlineEditBox" spacing="12.0"
+              visible="false" managed="false"
+              AnchorPane.topAnchor="200.0"
+              AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0"
+              style="-fx-background-color:#13111F;
+                     -fx-background-radius:16;
+                     -fx-border-color:#252238;
+                     -fx-border-radius:16;
+                     -fx-border-width:1;
+                     -fx-padding:18 18 16 18;
+                     -fx-effect:dropshadow(gaussian,#000000BB,22,0,0,8);">
+
+            <Label text="PICK NEW DEADLINE"
+                   style="-fx-text-fill:#3A3756; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-letter-spacing:1.2;"/>
+
+            <HBox spacing="7.0" alignment="CENTER_LEFT">
+                <Button text="−7d" styleClass="nudge-btn" onAction="#onDlNudgeMinus7" style="-fx-font-size:10px;"/>
+                <Button text="−1d" styleClass="nudge-btn" onAction="#onDlNudgeMinus1" style="-fx-font-size:10px;"/>
+
+                <DatePicker fx:id="deadlinePicker"
+                            prefWidth="148.0" prefHeight="36.0"
+                            HBox.hgrow="ALWAYS"/>
+
+                <Button text="+1d" styleClass="nudge-btn" onAction="#onDlNudgePlus1" style="-fx-font-size:10px;"/>
+                <Button text="+7d" styleClass="nudge-btn" onAction="#onDlNudgePlus7" style="-fx-font-size:10px;"/>
+            </HBox>
+
+            <HBox spacing="8.0">
+                <Button text="✔  Save Deadline"
+                        styleClass="add-task-submit-btn"
+                        onAction="#onSaveDeadline"
+                        prefHeight="36.0"/>
+                <Button text="Cancel"
+                        styleClass="panel-close-btn"
+                        onAction="#onCancelDeadlineEdit"
+                        prefHeight="36.0"/>
+            </HBox>
         </VBox>
 
     </children>

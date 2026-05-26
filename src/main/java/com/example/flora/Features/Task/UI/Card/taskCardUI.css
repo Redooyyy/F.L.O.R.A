@@ -1,96 +1,112 @@
 /* ═══════════════════════════════════════════════════════════════
-   taskCardUI.css  —  Individual Task Card
+   taskCardUI.css  —  Individual Task Card  (REDESIGNED)
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── Card shell ─────────────────────────────────────────────────── */
 .task-card {
-    -fx-background-color: #1E1C2E;
-    -fx-background-radius: 14px;
-    -fx-border-color: #2C2A40;
-    -fx-border-radius: 14px;
+    -fx-background-color: linear-gradient(to bottom, #1F1D30, #19172A);
+    -fx-background-radius: 16px;
+    -fx-border-color: #2E2B45;
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #00000066, 8, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, #00000077, 10, 0, 0, 4);
 }
 
 .task-card:hover {
-    -fx-background-color: #252340;
-    -fx-border-color: #7C6AF755;
-    -fx-effect: dropshadow(gaussian, #7C6AF733, 14, 0.3, 0, 4);
+    -fx-background-color: linear-gradient(to bottom, #262340, #1E1B32);
+    -fx-border-color: #7C6AF766;
+    -fx-effect: dropshadow(gaussian, #7C6AF744, 18, 0.25, 0, 6);
 }
 
 /* ── Title ──────────────────────────────────────────────────────── */
 .task-card-title {
-    -fx-text-fill: #EEEAF8;
-    -fx-font-size: 14px;
+    -fx-text-fill: #F0ECF9;
+    -fx-font-size: 13.5px;
     -fx-font-family: "System Bold";
 }
 
 /* ── Subtitle / description ─────────────────────────────────────── */
 .task-card-sub {
-    -fx-text-fill: #7A778F;
-    -fx-font-size: 12px;
+    -fx-text-fill: #6A6780;
+    -fx-font-size: 11.5px;
 }
 
 /* ── Due date badge ─────────────────────────────────────────────── */
 .due-badge {
-    -fx-background-color: #252333;
-    -fx-background-radius: 8px;
-    -fx-text-fill: #9B97BC;
+    -fx-background-color: #1A1827;
+    -fx-background-radius: 20px;
+    -fx-border-color: #2E2B45;
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #7A778F;
     -fx-font-size: 10px;
     -fx-font-family: "System Bold";
 }
 
-/* ── Status chips (also used in TaskStyle.css; repeated for card scope) */
+/* ── Status chips ───────────────────────────────────────────────── */
 .status-todo {
-    -fx-background-color: #252B3B;
-    -fx-text-fill: #8BA3CC;
+    -fx-background-color: #1E2535;
+    -fx-border-color: #2D3A52;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-size: 11px;
+    -fx-text-fill: #7A9CC8;
+    -fx-font-size: 10.5px;
     -fx-font-family: "System Bold";
     -fx-cursor: hand;
 }
 
 .status-progress {
-    -fx-background-color: #2A2040;
-    -fx-text-fill: #A78BFA;
+    -fx-background-color: #221B3A;
+    -fx-border-color: #4A3D7A;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-size: 11px;
+    -fx-text-fill: #A78BFA;
+    -fx-font-size: 10.5px;
     -fx-font-family: "System Bold";
     -fx-cursor: hand;
 }
 
 .status-late {
-    -fx-background-color: #2E2010;
-    -fx-text-fill: #F5A623;
+    -fx-background-color: #28200F;
+    -fx-border-color: #5A420D;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-size: 11px;
+    -fx-text-fill: #F5A623;
+    -fx-font-size: 10.5px;
     -fx-font-family: "System Bold";
     -fx-cursor: hand;
 }
 
 .status-done {
-    -fx-background-color: #122A1E;
-    -fx-text-fill: #34D399;
+    -fx-background-color: #0D2218;
+    -fx-border-color: #1A4A30;
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-size: 11px;
+    -fx-text-fill: #34D399;
+    -fx-font-size: 10.5px;
     -fx-font-family: "System Bold";
     -fx-cursor: hand;
 }
 
 /* ── Divider line inside card ───────────────────────────────────── */
 .card-divider {
-    -fx-background-color: #2C2A40;
+    -fx-background-color: #22203280;
     -fx-pref-height: 1px;
     -fx-max-height: 1px;
 }
 
 /* ── Assignee dot / avatar placeholder ──────────────────────────── */
 .avatar-dot {
-    -fx-background-color: #7C6AF7;
+    -fx-background-color: radial-gradient(center 40% 40%, radius 60%, #9D8FFB, #6C5ECC);
     -fx-background-radius: 50%;
-    -fx-min-width: 24px;
-    -fx-min-height: 24px;
-    -fx-max-width: 24px;
-    -fx-max-height: 24px;
+    -fx-min-width: 26px;
+    -fx-min-height: 26px;
+    -fx-max-width: 26px;
+    -fx-max-height: 26px;
+    -fx-effect: dropshadow(gaussian, #7C6AF766, 6, 0.3, 0, 0);
 }

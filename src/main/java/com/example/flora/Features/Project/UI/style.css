@@ -917,7 +917,7 @@
     -fx-alignment: CENTER;
 }
 
-/* ── DatePicker dark styling ── */
+/* ── DatePicker Main Control ── */
 .date-picker {
     -fx-background-color: #1A1528;
     -fx-background-radius: 12;
@@ -926,63 +926,116 @@
     -fx-border-width: 1;
     -fx-text-fill: #EDE9F6;
 }
+
 .date-picker .text-field {
     -fx-background-color: transparent;
     -fx-text-fill: #EDE9F6;
     -fx-prompt-text-fill: #4A4060;
     -fx-font-size: 13px;
 }
+
 .date-picker:focused,
 .date-picker .text-field:focused {
     -fx-border-color: #6D4FC2;
     -fx-effect: dropshadow(gaussian, rgba(109,79,194,0.25), 12, 0, 0, 0);
 }
+
 .date-picker .arrow-button {
     -fx-background-color: transparent;
     -fx-cursor: hand;
 }
+
 .date-picker .arrow-button .arrow {
     -fx-background-color: #9D8FBF;
 }
+
+/* ── DatePicker Popup Window ── */
 .date-picker-popup {
     -fx-background-color: #1A1528;
     -fx-border-color: #2D2845;
     -fx-border-width: 1;
     -fx-border-radius: 12;
     -fx-background-radius: 12;
+    -fx-padding: 0; /* Prevents background clipping */
 }
+
+/* Top header area containing Month and Year */
 .date-picker-popup .month-year-pane {
     -fx-background-color: #1E1A2E;
+    -fx-background-radius: 11 11 0 0; /* Matches parent corner radius */
 }
+
+/* Month/Year Navigation Controls */
+.date-picker-popup .spinner .button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: #9D8FBF;
+}
+
+.date-picker-popup .spinner Label {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-weight: bold;
+}
+
+/* ── Calendar Grid & Date Cells ── */
 .date-picker-popup .calendar-grid {
     -fx-background-color: #1A1528;
+    -fx-padding: 8;
 }
+
+/* FIX: Weekday Header Names (Mon, Tue, Wed...) */
+.date-picker-popup .calendar-grid .day-name-cell {
+    -fx-text-fill: #EDE9F6;
+    -fx-font-weight: bold;
+}
+
+/* OPTIONAL FIX: Week Numbers Column (If enabled) */
+.date-picker-popup .calendar-grid .week-number-cell {
+    -fx-text-fill: #4A4060;
+}
+
+/* Active Month Day Cells */
 .date-picker-popup .day-cell {
     -fx-background-color: transparent;
     -fx-text-fill: #EDE9F6;
 }
+
 .date-picker-popup .day-cell:hover {
     -fx-background-color: rgba(109,79,194,0.22);
     -fx-background-radius: 6;
 }
+
+/* Selected Date */
 .date-picker-popup .selected {
     -fx-background-color: #6D4FC2;
     -fx-background-radius: 6;
     -fx-text-fill: #EDE9F6;
 }
+
+/* UPDATED: Glowing Reddish Today Date Styling */
 .date-picker-popup .today {
-    -fx-border-color: #6D4FC2;
+    -fx-background-color: rgba(224, 68, 109, 0.22); /* Vibrant crimson tint */
+    -fx-border-color: #FF7B92; /* Light neon pinkish-red edge for illumination */
     -fx-border-radius: 6;
-    -fx-border-width: 1;
-}
-.date-picker-popup .spinner .button {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-}
-.date-picker-popup .spinner Label {
-    -fx-text-fill: #EDE9F6;
+    -fx-background-radius: 6;
+    -fx-border-width: 1.5;
     -fx-font-weight: bold;
+    /* Outer reddish neon glow effect */
+    -fx-effect: dropshadow(three-pass-box, rgba(224, 68, 109, 0.7), 10, 0.3, 0, 0);
 }
+
+
+
+/* Faded Out Days from Adjacent Months */
+.date-picker-popup .day-cell.previous-month,
+.date-picker-popup .day-cell.next-month {
+    -fx-text-fill: #4A4060;
+}
+
 
 /* ── Created-At chip (shown on task cards) ── */
 .created-at-chip {
