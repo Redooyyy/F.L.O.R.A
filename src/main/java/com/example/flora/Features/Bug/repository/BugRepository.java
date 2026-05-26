@@ -16,13 +16,15 @@ public interface BugRepository {
 
     List<Bug> findByProject(String projectName);
 
-    Optional<Bug> findById(String id);
+    Optional<Bug> findById(int id);
 
-    Optional<Bug> updateStatus(String bugId, BugStatus newStatus);
+    Optional<Bug> updateStatus(int bugId, BugStatus newStatus);
 
-    Optional<Bug> assignFixer(String bugId, String fixerUserId);
+    Optional<Bug> assignFixer(int bugId, String fixerUserId);
 
     List<String> findDistinctProjectNames();
 
     List<Bug> findFiltered(String projectName, BugSeverity severity, BugStatus status);
+
+    String findProjectLeader(String projectName);
 }

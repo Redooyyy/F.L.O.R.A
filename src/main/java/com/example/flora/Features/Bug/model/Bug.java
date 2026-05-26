@@ -3,7 +3,7 @@ package com.example.flora.Features.Bug.model;
 
 public class Bug {
 
-    private final String id;
+    private int id;
     private final String projectName;
     private final String title;
     private final String description;
@@ -13,7 +13,7 @@ public class Bug {
     private final String reportedByUserId;
     private final String reportedDate;
 
-    public Bug(String id, String projectName, String title, String description,
+    public Bug(int id, String projectName, String title, String description,
                BugSeverity severity, BugStatus status,
                String fixingUserId, String reportedByUserId, String reportedDate) {
         this.id = id;
@@ -35,8 +35,12 @@ public class Bug {
         return status == BugStatus.CLOSED;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getProjectName() {

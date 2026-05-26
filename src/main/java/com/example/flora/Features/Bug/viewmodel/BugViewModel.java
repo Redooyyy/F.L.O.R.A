@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class BugViewModel {
@@ -48,14 +49,12 @@ public class BugViewModel {
     private final ObservableList<ProjectSummary> projectSummaries =
             FXCollections.observableArrayList();
 
-    public BugViewModel(BugService service) {
+    public BugViewModel(BugService service,String currentUserId) {
         this.service = service;
+        this.currentUserId = currentUserId;
         refresh();
     }
 
-    public void setCurrentUser(String currentUserId) {
-        this.currentUserId = currentUserId;
-    }
 
     public void selectProject(String projectName) {
         activeProject.set(projectName);
@@ -102,11 +101,13 @@ public class BugViewModel {
         });
     }
 
-    public void assignBug(Bug bug, String assigneeUserId) {
-        service.assignBug(bug.getId(), assigneeUserId, currentUserId).ifPresent(updated -> {
+    public boolean assignBug(Bug bug, String assigneeUserId) {
+        Optional<Bug> result = service.assignBug(bug.getId(), assigneeUserId, currentUserId);
+        result.ifPresent(updated -> {
             selectedBug.set(updated);
             refresh();
         });
+        return result.isPresent();
     }
 
 

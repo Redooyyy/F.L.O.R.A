@@ -15,13 +15,6 @@ public class BugServiceImpl implements BugService {
 
     private final BugRepository repository;
 
-    private static final Map<String, String> PROJECT_LEADERS = Map.of(
-            "HMS",   "bushra",
-            "Flora", "rafi",
-            "EComm", "mehedi",
-            "LMS",   "bushra"
-    );
-
     public BugServiceImpl(BugRepository repository) {
         this.repository = repository;
     }
@@ -58,12 +51,12 @@ public class BugServiceImpl implements BugService {
 
     @Override
     public String getProjectLeader(String projectName) {
-        return PROJECT_LEADERS.getOrDefault(projectName, "");
+        return repository.findProjectLeader(projectName);
     }
 
 
     @Override
-    public Optional<Bug> claimBug(String bugId, String currentUserId) {
+    public Optional<Bug> claimBug(int bugId, String currentUserId) {
         return repository.findById(bugId)
                 .filter(b -> !b.isClosed())
                 .filter(Bug::isUnclaimed)
@@ -71,7 +64,7 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
-    public Optional<Bug> markFixed(String bugId, String currentUserId) {
+    public Optional<Bug> markFixed(int bugId, String currentUserId) {
         return repository.findById(bugId)
                 .filter(b -> !b.isClosed())
                 .filter(b -> currentUserId.equals(b.getFixingUserId()))
@@ -79,7 +72,7 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
-    public Optional<Bug> toggleProgress(String bugId, String currentUserId) {
+    public Optional<Bug> toggleProgress(int bugId, String currentUserId) {
         return repository.findById(bugId)
                 .filter(b -> !b.isClosed())
                 .filter(b -> currentUserId.equals(b.getFixingUserId()))
@@ -91,10 +84,10 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
-    public Optional<Bug> assignBug(String bugId, String assigneeUserId, String leaderUserId) {
+    public Optional<Bug> assignBug(int bugId, String assigneeUserId, String leaderUserId) {
         return repository.findById(bugId)
                 .filter(b -> !b.isClosed())
-                .filter(b -> leaderUserId.equals(PROJECT_LEADERS.get(b.getProjectName())))
+                .filter(b -> leaderUserId.equals(repository.findProjectLeader(b.getProjectName())))
                 .flatMap(b -> repository.assignFixer(bugId, assigneeUserId));
     }
 
@@ -104,7 +97,7 @@ public class BugServiceImpl implements BugService {
         String today = java.time.LocalDate.now()
                 .format(java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy"));
         Bug bug = new Bug(
-                java.util.UUID.randomUUID().toString(),
+                0,
                 projectName, title, "",
                 severity, BugStatus.OPEN, null, reportedByUserId, today
         );
@@ -112,7 +105,7 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
-    public Optional<Bug> updateBugStatus(String bugId, BugStatus newStatus) {
+    public Optional<Bug> updateBugStatus(int bugId, BugStatus newStatus) {
         return repository.updateStatus(bugId, newStatus);
     }
 
@@ -123,7 +116,7 @@ public class BugServiceImpl implements BugService {
         long high = countOpenBySeverity(bugs, BugSeverity.HIGH);
         long med  = countOpenBySeverity(bugs, BugSeverity.MEDIUM);
         long low  = countOpenBySeverity(bugs, BugSeverity.LOW);
-        String leader = projectName == null ? "" : PROJECT_LEADERS.getOrDefault(projectName, "—");
+        String leader = projectName == null ? "" : repository.findProjectLeader(projectName);
         return new ProjectSummary(projectName, leader, open, crit, high, med, low);
     }
 

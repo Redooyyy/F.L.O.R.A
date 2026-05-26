@@ -20,17 +20,17 @@ public interface BugService {
 
     String getProjectLeader(String projectName);
 
-    Optional<Bug> claimBug(String bugId, String currentUserId);
+    Optional<Bug> claimBug(int bugId, String currentUserId);
 
-    Optional<Bug> markFixed(String bugId, String currentUserId);
+    Optional<Bug> markFixed(int bugId, String currentUserId);
 
-    Optional<Bug> toggleProgress(String bugId, String currentUserId);
+    Optional<Bug> toggleProgress(int bugId, String currentUserId);
 
-    Optional<Bug> assignBug(String bugId, String assigneeUserId, String leaderUserId);
+    Optional<Bug> assignBug(int bugId, String assigneeUserId, String leaderUserId);
 
     void reportBug(String title, String reportedByUserId, BugSeverity severity, String projectName);
 
-    Optional<Bug> updateBugStatus(String bugId, BugStatus newStatus);
+    Optional<Bug> updateBugStatus(int bugId, BugStatus newStatus);
 
     record ProjectSummary(
             String projectName,
