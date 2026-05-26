@@ -3,10 +3,14 @@ package com.example.flora.Features.Auth.UI;
 import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Core.Transition.ErrorTransition;
 import com.example.flora.Core.Transition.SceneTransition;
+import com.example.flora.Core.Validation.ValidationHelper;
+import com.example.flora.Core.session.UserSession;
+import com.example.flora.Features.Auth.exception.AuthException;
+import com.example.flora.Features.Auth.model.User;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import com.example.flora.Features.Home.UI.HomeUI_Controller;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -19,17 +23,40 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Objects;
 
-public class LoginUI_Controller{
+public class LoginUI_Controller {
 
     private final AuthViewModel authViewModel;
-    private  final AppContainer appContainer;
-    boolean slideToggle = true;
-    @FXML
-    private AnchorPane slidePane;
+    private final AppContainer appContainer;
+
+    private boolean showingLogin = true; // true = login panel visible
+
     @FXML
     private AnchorPane mainPane;
+    @FXML
+    private AnchorPane slidePane;
+
+    @FXML
+    private TextField username;   // email on login side
+    @FXML
+    private TextField password;
+
+    @FXML
+    private TextField fullname;
+    @FXML
+    private TextField email;
+    @FXML
+    private TextField pass;
+    @FXML
+    private TextField rePass;
+
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button signupButton;
+    @FXML
+    private Button signRegButton;
+
     @FXML
     private ImageView work;
     @FXML
@@ -39,118 +66,177 @@ public class LoginUI_Controller{
     @FXML
     private ImageView welcomeTxt;
     @FXML
-    private Button loginButton;
-    @FXML
-    private Button signupButton;
-    @FXML
-    private Button signRegButton;
-    @FXML
     private Circle disCir;
     @FXML
     private Circle cirU;
     @FXML
     private Circle cirD;
-    @FXML
-    private TextField password; //sign in password
-    @FXML
-    private TextField username;
-    @FXML
-    private TextField rePass;
-    @FXML
-    private TextField pass; //signUp password
-    @FXML
-    private TextField email;
-    @FXML
-    private TextField fullname;
 
-    public LoginUI_Controller(AuthViewModel authViewModel, AppContainer appContainer){
+
+    public LoginUI_Controller(AuthViewModel authViewModel, AppContainer appContainer) {
         this.authViewModel = authViewModel;
         this.appContainer = appContainer;
     }
 
+
     @FXML
-    void register(ActionEvent event){
-    if (slideToggle) {
-        signRegButton.setText("LOGIN");
-        } else {
-        signRegButton.setText("SIGNUP");
+    void register(ActionEvent event) {
+        signRegButton.setText(showingLogin ? "LOGIN" : "SIGNUP");
+        applyPanelVisibility();
+        animateSlide();
+    }
+
+    private void animateSlide() {
+        int dir = showingLogin ? 1 : -1;  // positive = slide right
+
+        slide(slidePane, dir * 629, 500);
+        slide(robo, dir * -950, 500);
+        slide(cirD, dir * -268, 900, dir * 35);
+        slide(cirU, dir * 85, 900, dir * 386);
+        slide(disCir, dir * 78, 900, dir * -499);
+
+        showingLogin = !showingLogin;
+    }
+
+    private void applyPanelVisibility() {
+
+        boolean goingToSignup = showingLogin;
+
+        username.setVisible(!goingToSignup);
+        password.setVisible(!goingToSignup);
+        loginButton.setVisible(!goingToSignup);
+        collabImg.setVisible(!goingToSignup);
+        welcomeTxt.setVisible(!goingToSignup);
+
+        fullname.setVisible(goingToSignup);
+        email.setVisible(goingToSignup);
+        pass.setVisible(goingToSignup);
+        rePass.setVisible(goingToSignup);
+        signupButton.setVisible(goingToSignup);
+    }
+
+
+    @FXML
+    private void login(ActionEvent event) throws IOException {
+       ErrorTransition.clearAllErrors(username, password);
+
+        String emailVal = username.getText().trim();
+        String passwordVal = password.getText();
+
+
+        String validationError = ValidationHelper.validateLoginFields(emailVal, passwordVal);
+        if (validationError != null) {
+            handleValidationError(validationError, emailVal, passwordVal);
+            return;
         }
-    visibilityControl();
-    slider();
-    }
-    void slider(){
-        //bar
-        TranslateTransition regBlockTransition = new TranslateTransition();
-        regBlockTransition.setNode(slidePane);
-        regBlockTransition.setDuration(Duration.millis(500));
-        regBlockTransition.setByX(slideToggle?629:-629);
-        regBlockTransition.play();
 
-        //robo
-        TranslateTransition roboTransition = new TranslateTransition();
-        roboTransition.setNode(robo);
-        roboTransition.setDuration(Duration.millis(500));
-        roboTransition.setByX(slideToggle?-950:950);
-        roboTransition.play();
 
-        //circles
-        TranslateTransition cirTransition1 = new TranslateTransition();
-        cirTransition1.setNode(cirD);
-        cirTransition1.setDuration(Duration.millis(900));
-        cirTransition1.setByX(slideToggle?-268:268);
-        cirTransition1.setByY(slideToggle?35:-35);
-        cirTransition1.play();
+        try {
+            User user = authViewModel.login(emailVal, passwordVal);
+            UserSession.setUser(user);
+            appContainer.initUserSession();
 
-        TranslateTransition cirTransition2 = new TranslateTransition();
-        cirTransition2.setNode(cirU);
-        cirTransition2.setDuration(Duration.millis(900));
-        cirTransition2.setByX(slideToggle?85:-85);
-        cirTransition2.setByY(slideToggle?386:-386);
-        cirTransition2.play();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            new SceneTransition(stage).switchFromLogin(
+                    "/Home/UI/HomeUI.fxml",
+                    c -> new HomeUI_Controller(appContainer, appContainer.getNotificationViewModel())
+            );
 
-        TranslateTransition cirTransition3 = new TranslateTransition();
-        cirTransition3.setNode(disCir);
-        cirTransition3.setDuration(Duration.millis(900));
-        cirTransition3.setByX(slideToggle?78:-78);
-        cirTransition3.setByY(slideToggle?-499:499);
-        cirTransition3.play();
-
-        slideToggle=!slideToggle;
+        } catch (AuthException ex) {
+            handleAuthException(ex);
+        }
     }
 
 
-    void visibilityControl(){
-       username.setVisible(!slideToggle);
-       password.setVisible(!slideToggle);
-       loginButton.setVisible(!slideToggle);
-       collabImg.setVisible(!slideToggle);
-       welcomeTxt.setVisible(!slideToggle);
-
-       fullname.setVisible(slideToggle);
-       email.setVisible(slideToggle);
-       pass.setVisible(slideToggle);
-       rePass.setVisible(slideToggle);
-       signupButton.setVisible(slideToggle);
+    private void handleValidationError(String message, String emailVal, String passwordVal) {
+        if (message.equals(ValidationHelper.Msg.EMAIL_EMPTY) ||
+                message.equals(ValidationHelper.Msg.EMAIL_INVALID)) {
+            ErrorTransition.failField(username, message, mainPane);
+        } else {
+            ErrorTransition.failField(password, message, mainPane);
+        }
     }
 
-    //TODO: email validity check
-    //TODO: password validity check
 
     @FXML
     private void signup(ActionEvent event) {
-        if(pass == rePass) authViewModel.signup(email.getText().trim(),pass.getText());
-        else System.out.println("Password didn't matched"); //TODO: a warning text in UI
-    }
-    @FXML
-    private void login(ActionEvent event) throws IOException {
-        Stage stage = (Stage) (((Node) event.getSource()).getScene().getWindow());
-        SceneTransition sceneTransition = new SceneTransition(stage);
-        if (Objects.equals(password.getText(), "reo")) {
-            //  authViewModel.login(email.getText().trim(),password.getText());
-            sceneTransition.switchFromLogin("/Home/UI/HomeUI.fxml", e -> new HomeUI_Controller(appContainer, appContainer.getNotificationViewModel()));
-        } else {
-            sceneTransition.shakeAndHighlight(password);
-            ErrorTransition.showToast("Invalid Username/Password",mainPane,true);
+        ErrorTransition.clearAllErrors(fullname, email, pass, rePass);
+
+        String fullnameVal = fullname.getText().trim();
+        String emailVal = email.getText().trim();
+        String passVal = pass.getText();
+        String rePassVal = rePass.getText();
+
+
+        String validationError = ValidationHelper.validateSignupFields(emailVal, passVal, rePassVal, fullnameVal);
+        if (validationError != null) {
+            routeSignupError(validationError);
+            return;
         }
+
+        try {
+            User user = authViewModel.signup(emailVal, passVal);
+            System.out.println("Called 1");
+            UserSession.setUser(user);
+            System.out.println("Called 2 -_-");
+            ErrorTransition.showSuccess("Account created! Please log in.", mainPane);
+            System.out.println("Called -_-");
+            clearSignupFields();
+            PauseTransition pause =
+                    new javafx.animation.PauseTransition(Duration.seconds(1.8));
+            pause.setOnFinished(this::register);
+            pause.play();
+
+        } catch (AuthException ex) {
+            handleAuthException(ex);
+            System.out.println("Called -_-");
+        }
+    }
+
+    private void routeSignupError(String message) {
+        if (message.equals(ValidationHelper.Msg.FULLNAME_EMPTY)) {
+            ErrorTransition.failField(fullname, message, mainPane);
+        } else if (message.equals(ValidationHelper.Msg.EMAIL_EMPTY) ||
+                message.equals(ValidationHelper.Msg.EMAIL_INVALID)) {
+            ErrorTransition.failField(email, message, mainPane);
+        } else if (message.equals(ValidationHelper.Msg.PASSWORD_EMPTY) ||
+                message.equals(ValidationHelper.Msg.PASSWORD_TOO_SHORT)) {
+            ErrorTransition.failField(pass, message, mainPane);
+        } else if (message.equals(ValidationHelper.Msg.CONFIRM_EMPTY) ||
+                message.equals(ValidationHelper.Msg.PASSWORDS_MISMATCH)) {
+            ErrorTransition.failFields(message, mainPane, pass, rePass);
+        } else {
+            ErrorTransition.showError(message, mainPane);
+        }
+    }
+
+    private void handleAuthException(AuthException ex) {
+        switch (ex.getReason()) {
+            case INVALID_CREDENTIALS -> ErrorTransition.failFields(
+                    ValidationHelper.Msg.WRONG_CREDENTIALS, mainPane, username, password);
+            case USER_ALREADY_EXISTS -> ErrorTransition.failField(
+                    email, ValidationHelper.Msg.USER_EXISTS, mainPane);
+            case SERVER_ERROR -> ErrorTransition.showError(
+                    ValidationHelper.Msg.SERVER_ERROR, mainPane);
+        }
+    }
+
+
+    private void clearSignupFields() {
+        fullname.clear();
+        email.clear();
+        pass.clear();
+        rePass.clear();
+    }
+
+    private void slide(Node node, double byX, double durationMs) {
+        slide(node, byX, durationMs, 0);
+    }
+
+    private void slide(Node node, double byX, double durationMs, double byY) {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(durationMs), node);
+        tt.setByX(byX);
+        if (byY != 0) tt.setByY(byY);
+        tt.play();
     }
 }
