@@ -36,319 +36,57 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class HomeUI_Controller implements Initializable {
+
     @FXML
     private AnchorPane contentPane;
     @FXML
     private VBox sidebar;
 
-    //NOTE:Notification variables
     @FXML
-    private AnchorPane notificationShow;
-    @FXML
-    private Button clearAllButton;
+    private AnchorPane notificationPane;
     @FXML
     private VBox notificationBar;
     @FXML
     private ScrollPane notificationScroll;
     @FXML
-    private  AnchorPane notificationPane;
+    private Button clearAllButton;
+
     @FXML
-    private Label sendTime;
-    @FXML
-    private Label role;
-    @FXML
-    private Label project;
-    @FXML
-    private Label sender;
+    private AnchorPane notificationShow;
     @FXML
     private Label emailBody;
     @FXML
-    private Label sendTimeInvite;
+    private Label sendTime;
     @FXML
-    private Label roleInvite;
+    private Label sender;
     @FXML
-    private Label projectInvite;
+    private Label project;
     @FXML
-    private Label senderInvite;
+    private Label role;
+
+    @FXML
+    private AnchorPane invitationPane;
     @FXML
     private Label emailBodyInvite;
     @FXML
-    private AnchorPane invitationPane;
+    private Label sendTimeInvite;
+    @FXML
+    private Label senderInvite;
+    @FXML
+    private Label projectInvite;
+    @FXML
+    private Label roleInvite;
 
-    //NOTE:Project variables
     @FXML
     private AnchorPane addProjectPanel;
     private AddProjectModal_Controller projectModalController;
     private boolean openAddProjectSlide = false;
 
-
-    private final AppContainer appContainer;
-    private final NotificationViewModel notificationViewModel;
-
-private boolean toogleBar=false;
-
-public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notificationViewModel){
-    this.appContainer = appContainer;
-    this.notificationViewModel = notificationViewModel;
-}
-
-    //NOTE: Init zone
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    loadStatus();
-        removeScrollBar(this.notificationScroll);
-        notificationScroll.setFitToWidth(true); // for disabling horizontal scroll
-
-        //call homePage so after login it'll appear
-        try {
-            overviewPage();
-            loadProjectModal();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        setNotification("Invitation","Hey I am here to invite you to my project", "9:30");
-
-    }
-
-
-
-
-    //NOTE:sidebar open close
-    @FXML
-    private void sideBarButton(ActionEvent event) {
-        slideEffect(sidebar,Duration.millis(300),-230);
-    }
-
-    @FXML
-    private void menuBar(MouseEvent mouseEvent) {
-        slideEffect(sidebar,Duration.millis(300),230);
-        toogleBar = true;
-    }
-
-
-
-
-    //NOTE: Notification Zone//
-    //notification activate
-    public void activateNotification(int userId) throws IOException {
-        notificationViewModel.getNotifications().addListener((ListChangeListener< Notification>) a ->{
-            //refresh
-            try {
-                loadNotificationCard();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        notificationViewModel.load();
-        loadNotificationCard();
-    }
-    //TODO: update notification model for sender, project lead, project name
-    //notification set in tiles
-    public void setNotification(String title, String description, String time){
-        this.emailBody.setText(description);
-        this.sendTime.setText(": "+time);
-        //static sender for testing
-        this.sender.setText(": Mim Akter Bushra");
-        this.project.setText(": Project Management System");
-        this.role.setText(": Project Lead");
-        showNotification();
-    }
-    //notification card
-    void loadNotificationCard() throws IOException {
-        notificationBar.getChildren().clear();
-        for(Notification notification : notificationViewModel.getNotifications()){
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Home/UI/Cards/NotificationCard.fxml"));
-                AnchorPane card = loader.load();
-                NotificationCardController controller = loader.getController();
-                //passing current instance
-                 controller.setData(this,notificationViewModel,notification);
-
-                notificationBar.getChildren().add(card);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
-    //notification pulse animation
-    void showNotification(){
-        if(notificationShow.getTranslateX() == 818.0){
-            slideEffect(notificationShow,Duration.millis(400),-818);
-            //for pulse effect
-            PauseTransition wait = new PauseTransition(Duration.millis(400));
-            wait.setOnFinished(e ->
-                    slideEffect(notificationShow, Duration.millis(400), 818)
-            );
-            wait.play();
-        } else {
-            slideEffect(notificationShow,Duration.millis(400),818);
-        }
-    }
-
-    //notification back text
-    @FXML
-    private void notificationBackText(MouseEvent mouseEvent) {
-        slideEffect(notificationPane,Duration.millis(400),554);
-        if(notificationShow.getTranslateX() == 818.0){
-            closeNotificationDesc();
-            closeNotificationInviteDesc();
-        }
-    }
-    //notification clear all
-    @FXML
-    private void clearAll(){
-        notificationBar.getChildren().clear();
-        clearAllButton.setVisible(false);
-    }
-    //notification back icon
-    @FXML
-    private void notificationBackIcon(MouseEvent mouseEvent) {
-        notificationBackText(mouseEvent);
-    }
-    //notification circle
-    @FXML
-    private void notificationCircle(MouseEvent mouseEvent) {
-        slideEffect(notificationPane,Duration.millis(400),-554);
-    }
-    //notification icon
-    @FXML
-    private void noificationIcon(MouseEvent mouseEvent) {
-        notificationCircle(mouseEvent);
-    }
-    //notification close description
-    @FXML
-    private void closeNotificationDesc(){
-        slideEffect(notificationShow,Duration.millis(400),-818);
-    }
-    //notification invite section description close
-    @FXML
-    private void closeNotificationInviteDesc(){}
-
-
-
-
-    //NOTE: Project Zone
-    //accept project invitation
-    @FXML
-    private void acceptInvite(){}
-    //decline project invitation
-    @FXML
-    private void declineInvite(){}
-    //add new project
-    @FXML
-    private void newProjectAdd(MouseEvent event) throws IOException {
-    projectModalController.openPanel();
-    }
-
-    private void loadProjectModal() throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Project/UI/AddProjectModal.fxml"));
-        AnchorPane panel = loader.load();
-        projectModalController = loader.getController();
-        //TODO: pass current user
-        projectModalController.setValue(this,appContainer.getProjectViewModel()," ");
-        ((AnchorPane) addProjectPanel).getChildren().add(panel);
-    }
-
-
-
-    //NOTE: navigation Zone
-    @FXML
-    private void overviewPage() throws IOException {
-        loadPage(Path.OVERVIEW,e-> new Overview_Controller());
-        toggle();
-    }
-
-    @FXML
-    private void projectPage() throws IOException {
-        loadPage(Path.PROJECT, e->new ProjectUI_Controller(appContainer.getProjectViewModel(), appContainer.getProjectDetailViewModel()));
-        toggle();
-    }
-
-    @FXML
-    private void taskPage() throws IOException {
-        // Auto-select the first project the user belongs to
-        ProjectViewModel projectVM = appContainer.getProjectViewModel();
-
-        if (projectVM.getProjects().isEmpty()) {
-            projectVM.loadProject(); // ensure projects are loaded
-        }
-
-        if (!projectVM.getProjects().isEmpty()) {
-            Project firstProject = projectVM.getProjects().get(0);
-            boolean isLeader = projectVM.isLeaderOf(firstProject);
-            appContainer.getTaskViewModel().init(firstProject.getId(), isLeader);
-        }
-        loadPage(Path.TASK, e -> new TaskUI_Controller(
-                appContainer.getTaskViewModel(),
-                appContainer.getProjectViewModel(),
-                this
-        ));
-        toggle();
-    }
-
-    @FXML
-    private void bugPage() throws IOException {
-        loadPage(Path.BUG, e -> new BugUI_Controller(appContainer.getBugViewModel(),this));
-        toggle();
-    }
-
-
-    @FXML
-    private void settingPage() throws IOException {
-    loadPage(Path.SETTINGS,e->new SettingsUI_Controller(appContainer.getSettingsViewModel()));
-    toggle();
-    }
-
-    @FXML
-    private void logout() throws IOException {
-        Stage stage = (Stage) contentPane.getScene().getWindow();
-        SceneTransition transition = new SceneTransition(stage);
-        transition.switchToLogin(
-                Path.LOGIN,
-                e -> new LoginUI_Controller(
-                        appContainer.getAuthViewModel(),
-                        appContainer
-                )
-        );
-
-    }
-
-    //NOTE: Helper functions
-    void removeScrollBar(ScrollPane scrollPane){
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    }
-    //slide effect for nodess
-    void slideEffect(Node node, Duration duration, double x){
-        TranslateTransition moveSlide = new TranslateTransition();
-        moveSlide.setNode(node);
-        moveSlide.setDuration(duration);
-        moveSlide.setToX(x);
-        moveSlide.play();
-    }
-
-    private FXMLLoader loadPage(String path, Callback<Class<?>, Object> controllerFactory) throws IOException {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
-        loader.setControllerFactory(controllerFactory);
-        AnchorPane pane = loader.load();
-        SceneTransition sceneTransition = new SceneTransition(null); // no stage needed for content swap
-        sceneTransition.loadingContent(contentPane, pane);
-        return  loader;
-    }
-
-    void toggle(){
-        if(toogleBar) sideBarButton(null);
-    }
-
-
-
-    //NOTE: TASK part
     @FXML
     private AnchorPane slideTaskInfo;
     @FXML
@@ -357,20 +95,287 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     private Label taskDetail;
     @FXML
     private Button currStatus;
-    private static int buttonPressed =0;
-    private final String[] option= {
+
+    private static int buttonPressed = 0;
+    private final String[] option = {
             TaskStatus.TODO.toString(),
             TaskStatus.IN_PROGRESS.toString(),
             TaskStatus.IN_REVIEW.toString(),
             TaskStatus.DONE.toString()
     };
 
+    private boolean toogleBar = false;
+
+    private boolean isNotificationDescOpen = false;
+    private boolean isInvitePaneOpen = false;
+
+    private Notification currentInviteNotification;
+
+    private final AppContainer appContainer;
+    private final NotificationViewModel notificationViewModel;
+
+    private static final DateTimeFormatter TIME_FMT =
+            DateTimeFormatter.ofPattern("HH:mm, dd MMM");
+
+    public HomeUI_Controller(AppContainer appContainer,
+                             NotificationViewModel notificationViewModel) {
+        this.appContainer = appContainer;
+        this.notificationViewModel = notificationViewModel;
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loadStatus();
+        removeScrollBar(notificationScroll);
+        notificationScroll.setFitToWidth(true);
+
+        try {
+            overviewPage();
+            loadProjectModal();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        notificationViewModel.getNotifications().addListener(
+                (ListChangeListener<Notification>) c -> {
+                    try {
+                        loadNotificationCard();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+        notificationViewModel.load();
+        try {
+            loadNotificationCard();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void activateNotification(int userId) throws IOException {
+        notificationViewModel.getNotifications().addListener(
+                (ListChangeListener<Notification>) c -> {
+                    try {
+                        loadNotificationCard();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        notificationViewModel.load();
+        loadNotificationCard();
+    }
+
+
+    @FXML
+    private void notificationCircle(MouseEvent mouseEvent) {
+        slideEffect(notificationPane, Duration.millis(400), -554);
+    }
+
+    @FXML
+    private void noificationIcon(MouseEvent mouseEvent) {
+        notificationCircle(mouseEvent);
+    }
+
+    @FXML
+    private void notificationBackText(MouseEvent mouseEvent) {
+        slideEffect(notificationPane, Duration.millis(400), 554);
+        closeNotificationDesc();
+        closeInvitePane();
+    }
+
+    @FXML
+    private void notificationBackIcon(MouseEvent mouseEvent) {
+        notificationBackText(mouseEvent);
+    }
+
+    @FXML
+    private void clearAll() {
+        notificationBar.getChildren().clear();
+        clearAllButton.setVisible(false);
+        notificationViewModel.deleteAll();
+    }
+
+    void loadNotificationCard() throws IOException {
+        notificationBar.getChildren().clear();
+        clearAllButton.setVisible(!notificationViewModel.getNotifications().isEmpty());
+
+        for (Notification notification : notificationViewModel.getNotifications()) {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Home/UI/Cards/NotificationCard.fxml"));
+            AnchorPane card = loader.load();
+            NotificationCardController controller = loader.getController();
+            controller.setData(this, notificationViewModel, notification);
+            notificationBar.getChildren().add(card);
+        }
+    }
+
+
+    public void setNotification(Notification n) {
+        closeInvitePane();
+
+        emailBody.setText(n.getDescription() != null ? n.getDescription() : "—");
+        sendTime.setText(": " + n.getTime().format(TIME_FMT));
+        sender.setText(": " + (n.getSenderName() != null && !n.getSenderName().isEmpty() ? n.getSenderName() : "—"));
+        project.setText(": " + (n.getProjectName() != null && !n.getProjectName().isEmpty() ? n.getProjectName() : "—"));
+        role.setText(": " + (n.getRole() != null && !n.getRole().isEmpty() ? n.getRole() : "—"));
+    }
+
+    public void openNotificationDesc() {
+        if (isNotificationDescOpen) return;
+        isNotificationDescOpen = true;
+        slideEffect(notificationShow, Duration.millis(400), 818);
+    }
+
+    @FXML
+    private void closeNotificationDesc() {
+        if (!isNotificationDescOpen) return;
+        isNotificationDescOpen = false;
+        slideEffect(notificationShow, Duration.millis(400), -818);
+    }
+
+    public void pulseNotification() {
+        if (isNotificationDescOpen) return;
+        slideEffect(notificationShow, Duration.millis(400), -818);
+        PauseTransition wait = new PauseTransition(Duration.millis(1200));
+        wait.setOnFinished(e -> slideEffect(notificationShow, Duration.millis(400), 818));
+        wait.play();
+    }
+
+
+    public void setInviteNotification(Notification n) {
+        currentInviteNotification = n;
+        closeNotificationDesc();
+
+        emailBodyInvite.setText(n.getDescription() != null ? n.getDescription() : "—");
+        sendTimeInvite.setText(": " + n.getTime().format(TIME_FMT));
+        senderInvite.setText(": " + (n.getSenderName() != null && !n.getSenderName().isEmpty() ? n.getSenderName() : "—"));
+        projectInvite.setText(": " + (n.getProjectName() != null && !n.getProjectName().isEmpty() ? n.getProjectName() : "—"));
+        roleInvite.setText(": " + (n.getRole() != null && !n.getRole().isEmpty() ? n.getRole() : "—"));
+
+    }
+
+    public void openInvitePane() {
+        if (isInvitePaneOpen) return;
+        isInvitePaneOpen = true;
+        slideEffect(invitationPane, Duration.millis(400), 818);
+    }
+
+    @FXML
+    private void closeNotificationInviteDesc() {
+        closeInvitePane();
+    }
+
+    private void closeInvitePane() {
+        if (!isInvitePaneOpen) return;
+        isInvitePaneOpen = false;
+        currentInviteNotification = null;
+        slideEffect(invitationPane, Duration.millis(400), -818);
+    }
+
+
+    @FXML
+    private void acceptInvite() {
+        if (currentInviteNotification == null) return;
+        try {
+            notificationViewModel.acceptInvite(currentInviteNotification);
+        } catch (Exception e) {
+            e.printStackTrace(); // TODO: show snackbar
+        }
+        closeInvitePane();
+    }
+
+    @FXML
+    private void declineInvite() {
+        if (currentInviteNotification == null) return;
+        notificationViewModel.declineInvite(currentInviteNotification);
+        closeInvitePane();
+    }
+
+
+    @FXML
+    private void newProjectAdd(MouseEvent event) throws IOException {
+        projectModalController.openPanel();
+    }
+
+    private void loadProjectModal() throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/Project/UI/AddProjectModal.fxml"));
+        AnchorPane panel = loader.load();
+        projectModalController = loader.getController();
+        projectModalController.setValue(this, appContainer.getProjectViewModel(), " ");
+        ((AnchorPane) addProjectPanel).getChildren().add(panel);
+    }
+
+
+    @FXML
+    private void sideBarButton(ActionEvent event) {
+        slideEffect(sidebar, Duration.millis(300), -230);
+    }
+
+    @FXML
+    private void menuBar(MouseEvent mouseEvent) {
+        slideEffect(sidebar, Duration.millis(300), 230);
+        toogleBar = true;
+    }
+
+    @FXML
+    private void overviewPage() throws IOException {
+        loadPage(Path.OVERVIEW, e -> new Overview_Controller());
+        toggle();
+    }
+
+    @FXML
+    private void projectPage() throws IOException {
+        loadPage(Path.PROJECT, e -> new ProjectUI_Controller(appContainer.getProjectViewModel(), appContainer.getProjectDetailViewModel()));
+        toggle();
+    }
+
+    @FXML
+    private void taskPage() throws IOException {
+        ProjectViewModel projectVM = appContainer.getProjectViewModel();
+        if (projectVM.getProjects().isEmpty()) projectVM.loadProject();
+
+        if (!projectVM.getProjects().isEmpty()) {
+            Project firstProject = projectVM.getProjects().get(0);
+            boolean isLeader = projectVM.isLeaderOf(firstProject);
+            appContainer.getTaskViewModel().init(firstProject.getId(), isLeader);
+        }
+        loadPage(Path.TASK, e -> new TaskUI_Controller(appContainer.getTaskViewModel(), appContainer.getProjectViewModel(), this));
+        toggle();
+    }
+
+    @FXML
+    private void bugPage() throws IOException {
+        loadPage(Path.BUG,
+                e -> new BugUI_Controller(appContainer.getBugViewModel(), this));
+        toggle();
+    }
+
+    @FXML
+    private void settingPage() throws IOException {
+        loadPage(Path.SETTINGS,
+                e -> new SettingsUI_Controller(appContainer.getSettingsViewModel()));
+        toggle();
+    }
+
+    @FXML
+    private void logout() throws IOException {
+        Stage stage = (Stage) contentPane.getScene().getWindow();
+        new SceneTransition(stage).switchToLogin(
+                Path.LOGIN, e -> new LoginUI_Controller(appContainer.getAuthViewModel(), appContainer));
+    }
+
+
     public void statusIndicate(ActionEvent event) {
         buttonPressed++;
-        if(buttonPressed>3) buttonPressed = 0;
+        if (buttonPressed > 3) buttonPressed = 0;
         loadStatus();
     }
-    void loadStatus(){
+
+    void loadStatus() {
         currStatus.setText(option[buttonPressed]);
         applyStatusStyle(buttonPressed);
     }
@@ -379,35 +384,59 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
     }
 
     public void close(ActionEvent event) {
-    slideRight(); // working
+        slideRight();
     }
-    public void slideLeft(){
-        slideEffect(slideTaskInfo,Duration.millis(500),-487);
+
+    public void slideLeft() {
+        slideEffect(slideTaskInfo, Duration.millis(500), -487);
     }
-    void slideRight(){
-        slideEffect(slideTaskInfo,Duration.millis(500),487);
+
+    void slideRight() {
+        slideEffect(slideTaskInfo, Duration.millis(500), 487);
     }
-    public void taskValue(String taskTitle, String taskDetail, TaskStatus status){
-        this.taskDetail.setText(taskDetail);
-        this.taskTitle.setText(taskTitle);
-        this.currStatus.setText(status.toString());
+
+    public void taskValue(String title, String detail, TaskStatus status) {
+        taskDetail.setText(detail);
+        taskTitle.setText(title);
+        currStatus.setText(status.toString());
     }
 
     private void applyStatusStyle(int index) {
-        // Remove all status classes first
         currStatus.getStyleClass().removeAll(
-                "status-todo",
-                "status-progress",
-                "status-review",
-                "status-done"
-        );
-
-        // Add the right one
+                "status-todo", "status-progress", "status-review", "status-done");
         switch (index) {
-            case 0 -> currStatus.getStyleClass().add("status-todo");       // TODO
-            case 1 -> currStatus.getStyleClass().add("status-progress");   // IN_PROGRESS
-            case 2 -> currStatus.getStyleClass().add("status-review");     // IN_REVIEW
-            case 3 -> currStatus.getStyleClass().add("status-done");       // DONE
+            case 0 -> currStatus.getStyleClass().add("status-todo");
+            case 1 -> currStatus.getStyleClass().add("status-progress");
+            case 2 -> currStatus.getStyleClass().add("status-review");
+            case 3 -> currStatus.getStyleClass().add("status-done");
         }
+    }
+
+
+    void removeScrollBar(ScrollPane scrollPane) {
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    void slideEffect(Node node, Duration duration, double x) {
+        TranslateTransition t = new TranslateTransition();
+        t.setNode(node);
+        t.setDuration(duration);
+        t.setToX(x);
+        t.play();
+    }
+
+    private FXMLLoader loadPage(String path, Callback<Class<?>, Object> controllerFactory)
+            throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                Objects.requireNonNull(getClass().getResource(path)));
+        loader.setControllerFactory(controllerFactory);
+        AnchorPane pane = loader.load();
+        new SceneTransition(null).loadingContent(contentPane, pane);
+        return loader;
+    }
+
+    void toggle() {
+        if (toogleBar) sideBarButton(null);
     }
 }
