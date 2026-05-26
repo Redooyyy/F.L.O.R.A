@@ -1,28 +1,45 @@
 package com.example.flora.Features.Auth.service;
 
+import com.example.flora.Features.Auth.exception.AuthException;
 import com.example.flora.Features.Auth.model.User;
 import com.example.flora.Features.Auth.repository.UserRepository;
 
 public class AuthService {
     private final UserRepository userRepository;
 
-    public AuthService(UserRepository userRepository){
+    public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User signUp(String email, String password){
-        if(userRepository.userExist(email)) System.out.println("User with this email already exists"); //TODO: Must replace with custom exception
-        else {
+    public User signUp(String email, String password) {
+        if (userRepository.userExist(email)) {
+            throw new AuthException(
+                    AuthException.Reason.USER_ALREADY_EXISTS,
+                    "An account with this email already exists."
+            );
+        }
+        try {
             User user = new User(email, password);
             userRepository.saveUser(user);
             return user;
+        } catch (RuntimeException e) {
+            throw new AuthException(AuthException.Reason.SERVER_ERROR,
+                    "Registration failed. Please try again.");
         }
-        return null;
     }
 
-    public User login(String email, String password){
-        User user = userRepository.findByEmail(email);
-        if(user != null && user.getPassword().equals(password)) return user;
-        else return null; //TODO: Must throw an exception / -_- string(for wrong password test)
+    public User login(String email, String password) {
+        User user;
+        try {
+            user = userRepository.findByEmail(email);
+        } catch (RuntimeException e) {
+            throw new AuthException(AuthException.Reason.SERVER_ERROR,
+                    "Login failed. Please try again.");
+        }
+        if (user == null || !user.getPassword().equals(password)) {
+            throw new AuthException(AuthException.Reason.INVALID_CREDENTIALS,
+                    "Incorrect email or password.");
+        }
+        return user;
     }
 }
