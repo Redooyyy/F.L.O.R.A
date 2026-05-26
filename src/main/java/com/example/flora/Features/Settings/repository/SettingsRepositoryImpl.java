@@ -37,16 +37,16 @@ public class SettingsRepositoryImpl implements SettingsRepository {
                 INSERT INTO user_settings
                     (user_id, display_name, email, bio, avatar_color,
                      notify_task_assign, notify_bug_report, notify_mention, theme)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT(user_id) DO UPDATE SET
-                    display_name       = excluded.display_name,
-                    email              = excluded.email,
-                    bio                = excluded.bio,
-                    avatar_color       = excluded.avatar_color,
-                    notify_task_assign = excluded.notify_task_assign,
-                    notify_bug_report  = excluded.notify_bug_report,
-                    notify_mention     = excluded.notify_mention,
-                    theme              = excluded.theme
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                     ON DUPLICATE KEY UPDATE
+                    display_name       = VALUES(display_name),
+                    email              = VALUES(email),
+                    bio                = VALUES(bio),
+                    avatar_color       = VALUES(avatar_color),
+                    notify_task_assign = VALUES(notify_task_assign),
+                    notify_bug_report  = VALUES(notify_bug_report),
+                    notify_mention     = VALUES(notify_mention),
+                    theme              = VALUES(theme)
                 """;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, s.getUserId());

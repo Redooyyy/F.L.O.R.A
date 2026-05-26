@@ -117,7 +117,7 @@ public class SettingsUI_Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        viewModel.init();
         fieldDisplayName.textProperty().bindBidirectional(viewModel.displayNameProperty());
         fieldEmail.textProperty().bindBidirectional(viewModel.emailProperty());
         fieldBio.textProperty().bindBidirectional(viewModel.bioProperty());
