@@ -141,7 +141,7 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
                 throw new RuntimeException(e);
             }
         });
-        notificationViewModel.load(userId);
+        notificationViewModel.load();
         loadNotificationCard();
     }
     //TODO: update notification model for sender, project lead, project name
