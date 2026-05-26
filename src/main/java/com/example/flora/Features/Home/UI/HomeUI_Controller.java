@@ -11,6 +11,8 @@ import com.example.flora.Features.Home.model.Notification;
 import com.example.flora.Features.Overview.UI.Overview_Controller;
 import com.example.flora.Features.Project.UI.AddProjectModal_Controller;
 import com.example.flora.Features.Project.UI.ProjectUI_Controller;
+import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
+import com.example.flora.Features.Project.model.Project;
 import com.example.flora.Features.Settings.UI.SettingsUI_Controller;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
 import com.example.flora.Features.Task.model.TaskStatus;
@@ -270,8 +272,24 @@ public HomeUI_Controller(AppContainer appContainer, NotificationViewModel notifi
 
     @FXML
     private void taskPage() throws IOException {
-    loadPage(Path.TASK,e->new TaskUI_Controller(appContainer.getTaskViewModel(),this));
-    toggle();
+        // Auto-select the first project the user belongs to
+        ProjectViewModel projectVM = appContainer.getProjectViewModel();
+
+        if (projectVM.getProjects().isEmpty()) {
+            projectVM.loadProject(); // ensure projects are loaded
+        }
+
+        if (!projectVM.getProjects().isEmpty()) {
+            Project firstProject = projectVM.getProjects().get(0);
+            boolean isLeader = projectVM.isLeaderOf(firstProject);
+            appContainer.getTaskViewModel().init(firstProject.getId(), isLeader);
+        }
+        loadPage(Path.TASK, e -> new TaskUI_Controller(
+                appContainer.getTaskViewModel(),
+                appContainer.getProjectViewModel(),
+                this
+        ));
+        toggle();
     }
 
     @FXML
