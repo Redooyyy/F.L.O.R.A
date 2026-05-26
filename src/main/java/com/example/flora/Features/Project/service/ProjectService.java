@@ -19,7 +19,7 @@ public class ProjectService {
 
     public Project createProject(String name, String description, String ownerID) {
         // TODO: replace "121" with a real ID generator (UUID.randomUUID().toString())
-        Project project = new Project("121", name, description, ownerID, DateAndTime.now());
+        Project project = new Project("0", name, description, ownerID, DateAndTime.now());
         projectRepository.save(project);
         projectRepository.addMember(project.getId(), ownerID, ProjectRole.LEADER);
         return project;
@@ -27,7 +27,7 @@ public class ProjectService {
 
     public Project createProject(String name, String description, String ownerID,
                                  List<String> devices, List<String> techs) {
-        Project project = new Project("121", name, description, ownerID,
+        Project project = new Project("0", name, description, ownerID,
                 DateAndTime.now(), devices, techs);
         projectRepository.save(project);
         projectRepository.addMember(project.getId(), ownerID, ProjectRole.LEADER);

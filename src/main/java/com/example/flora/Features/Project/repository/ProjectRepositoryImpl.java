@@ -4,10 +4,7 @@ import com.example.flora.Features.Project.model.Project;
 import com.example.flora.Features.Project.model.ProjectMembership;
 import com.example.flora.Features.Project.model.ProjectRole;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,17 +22,19 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public void save(Project project) {
-        String sql = "INSERT INTO projects (id, name, description, owner_id, created_at, devices, techs) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, project.getId());
-            ps.setString(2, project.getName());
-            ps.setString(3, project.getDescription());
-            ps.setString(4, project.getOwnerId());
-            ps.setString(5, project.getCreatedAt());
-            ps.setString(6, joinList(project.getDevices()));
-            ps.setString(7, joinList(project.getTechs()));
+        String sql = "INSERT INTO projects (name, description, owner_id, created_at, devices, techs) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, project.getName());
+            ps.setString(2, project.getDescription());
+            ps.setString(3, project.getOwnerId());
+            ps.setString(4, project.getCreatedAt());
+            ps.setString(5, joinList(project.getDevices()));
+            ps.setString(6, joinList(project.getTechs()));
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) project.setId(Integer.toString(rs.getInt(1)));
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save project: " + e.getMessage(), e);
         }
