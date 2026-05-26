@@ -36,21 +36,25 @@ public class BugRepositoryImpl implements BugRepository {
     @Override
     public void save(Bug bug) {
         String sql = """
-                INSERT INTO bugs
-                    (id, project_name, title, description, severity, status, fixing_user_id, reported_by, reported_date)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, bug.getId());
-            ps.setString(2, bug.getProjectName());
-            ps.setString(3, bug.getTitle());
-            ps.setString(4, bug.getDescription());
-            ps.setString(5, bug.getSeverity().name());
-            ps.setString(6, bug.getStatus().name());
-            ps.setString(7, bug.getFixingUserId());   // may be null
-            ps.setString(8, bug.getReportedByUserId());
-            ps.setString(9, bug.getReportedDate());
+            INSERT INTO bugs
+                (project_name, title, description, severity, status, fixing_user_id, reported_by, reported_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, bug.getProjectName());
+            ps.setString(2, bug.getTitle());
+            ps.setString(3, bug.getDescription());
+            ps.setString(4, bug.getSeverity().name());
+            ps.setString(5, bug.getStatus().name());
+            ps.setString(6, bug.getFixingUserId());
+            ps.setString(7, bug.getReportedByUserId());
+            ps.setString(8, bug.getReportedDate());
             ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                bug.setId(keys.getInt(1));
+            }
         } catch (SQLException e) {
             throw new RuntimeException("save failed: " + e.getMessage(), e);
         }
@@ -85,10 +89,10 @@ public class BugRepositoryImpl implements BugRepository {
     }
 
     @Override
-    public Optional<Bug> findById(String id) {
+    public Optional<Bug> findById(int id) {
         String sql = "SELECT * FROM bugs WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, id);
+            ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return Optional.of(mapRow(rs));
             }
@@ -136,11 +140,11 @@ public class BugRepositoryImpl implements BugRepository {
     }
 
     @Override
-    public Optional<Bug> updateStatus(String bugId, BugStatus newStatus) {
+    public Optional<Bug> updateStatus(int bugId, BugStatus newStatus) {
         String sql = "UPDATE bugs SET status = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, newStatus.name());
-            ps.setString(2, bugId);
+            ps.setInt(2, bugId);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("updateStatus failed: " + e.getMessage(), e);
@@ -149,12 +153,12 @@ public class BugRepositoryImpl implements BugRepository {
     }
 
     @Override
-    public Optional<Bug> assignFixer(String bugId, String fixerUserId) {
+    public Optional<Bug> assignFixer(int bugId, String fixerUserId) {
         String sql = "UPDATE bugs SET fixing_user_id = ?, status = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, fixerUserId);
             ps.setString(2, BugStatus.IN_PROGRESS.name());
-            ps.setString(3, bugId);
+            ps.setInt(3, bugId);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("assignFixer failed: " + e.getMessage(), e);
@@ -162,9 +166,24 @@ public class BugRepositoryImpl implements BugRepository {
         return findById(bugId);
     }
 
+    @Override
+    public String findProjectLeader(String projectName) {
+        if (projectName == null) return "";
+        String sql = "SELECT owner_id FROM projects WHERE name = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, projectName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString("owner_id");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("findProjectLeader failed: " + e.getMessage(), e);
+        }
+        return "";
+    }
+
     private Bug mapRow(ResultSet rs) throws SQLException {
         return new Bug(
-                rs.getString("id"),
+                rs.getInt("id"),
                 rs.getString("project_name"),
                 rs.getString("title"),
                 rs.getString("description"),
