@@ -1,8 +1,7 @@
-package com.example.flora.Core.session;
+package com.example.flora.Core.Session;
 
 import com.example.flora.Features.Auth.model.User;
 
-import java.sql.PreparedStatement;
 
 public class UserSession {
     private static User currentUser;
@@ -23,5 +22,5 @@ public class UserSession {
         return currentUser != null;
     }
 
-
+    
 }
