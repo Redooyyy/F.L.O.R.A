@@ -17,10 +17,10 @@ public class UserSession {
     public static void clear() {
         currentUser = null;
     }
-
+    
     public static boolean isLoggedIn() {
         return currentUser != null;
     }
 
-    
+
 }
