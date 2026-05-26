@@ -32,20 +32,19 @@ public class ProjectDetailViewModel {
 
     private final IntegerProperty memberCount = new SimpleIntegerProperty(0);
 
-    public ProjectDetailViewModel(TaskViewModel taskViewModel, BugViewModel bugViewModel) {
+    public ProjectDetailViewModel(TaskViewModel taskViewModel, BugViewModel bugViewModel,String currentUserId) {
         this.taskViewModel = taskViewModel;
         this.bugViewModel = bugViewModel;
+        this.currentUserId = currentUserId;
     }
 
-    public void init(Project project, String currentUserId, boolean isLeader) {
+    public void init(Project project,boolean isLeader) {
         this.currentProject = project;
-        this.currentUserId = currentUserId;
         this.isLeader = isLeader;
 
-        taskViewModel.init(project.getId(), currentUserId, isLeader);
+        taskViewModel.init(project.getId(), isLeader);
 
         bugViewModel.selectProject(project.getName());
-        bugViewModel.setCurrentUser(currentUserId);
 
         loadMembers();
     }
@@ -136,8 +135,8 @@ public class ProjectDetailViewModel {
         bugViewModel.claimBug(bug);
     }
 
-    public void assignBug(Bug bug, String userId) {
-        bugViewModel.assignBug(bug, userId);
+    public boolean assignBug(Bug bug, String userId) {
+        return bugViewModel.assignBug(bug, userId);
     }
 
     public void markBugFixed(Bug bug) {

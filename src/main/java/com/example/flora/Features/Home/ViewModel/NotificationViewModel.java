@@ -8,20 +8,22 @@ import javafx.collections.ObservableList;
 public class NotificationViewModel {
 
     private final NotificationService service;
+    private final int userID;
 
     private final ObservableList<Notification> notifications =
             FXCollections.observableArrayList();
 
-    public NotificationViewModel(NotificationService service) {
+    public NotificationViewModel(NotificationService service, int userID) {
         this.service = service;
+        this.userID = userID;
     }
 
     public ObservableList<Notification> getNotifications() {
         return notifications;
     }
 
-    public void load(int userId) {
-        notifications.setAll(service.loadNotifications(userId));
+    public void load() {
+        notifications.setAll(service.loadNotifications(this.userID));
     }
 
     public void markAsRead(Notification notification) {
@@ -36,6 +38,6 @@ public class NotificationViewModel {
 
     public void create(int userId, String title, String desc) {
         service.create(userId, title, desc);
-        load(userId);
+        load();
     }
 }

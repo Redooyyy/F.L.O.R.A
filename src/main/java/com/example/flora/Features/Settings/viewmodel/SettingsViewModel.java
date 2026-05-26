@@ -37,14 +37,14 @@ public class SettingsViewModel {
     private String currentUserId;
     private List<Project> leaderProjectsSnapshot;   // for auth checks in service
 
-    public SettingsViewModel(SettingsService service) {
+    public SettingsViewModel(SettingsService service, String userID, String email) {
         this.service = service;
+        this.currentUserId = userID;
+        current = service.getOrCreate(userID, email);
     }
 
 
-    public void init(String userId, String email) {
-        this.currentUserId = userId;
-        current = service.getOrCreate(userId, email);
+    public void init() {
         loadFromModel();
         loadLeaderProjects();
     }
