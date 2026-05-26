@@ -1,5 +1,6 @@
 package com.example.flora.Features.Task.ViewModel;
 
+import com.example.flora.Core.session.UserSession;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
 import com.example.flora.Features.Task.service.TaskServices;
@@ -38,14 +39,14 @@ public class TaskViewModel {
     private LocalDate pendingDraftDeadline;
 
 
-    public TaskViewModel(TaskServices taskServices) {
+    public TaskViewModel(TaskServices taskServices, String currentUserId) {
         this.taskServices = taskServices;
+        this.currentUserId = currentUserId;
     }
 
 
-    public void init(String projectId, String currentUserId, boolean isLeader) {
+    public void init(String projectId, boolean isLeader) {
         this.currentProjectId = projectId;
-        this.currentUserId = currentUserId;
         this.isLeader = isLeader;
         activeFilter.set(isLeader ? "ALL" : "MY");
         loadTasks();
