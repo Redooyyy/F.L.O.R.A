@@ -59,7 +59,7 @@ public class NotificationService {
     }
 
 
-    private void createTyped(int userId,String title, String desc, NotificationType type, String senderName, String projectName, String role) {
+    public void createTyped(int userId,String title, String desc, NotificationType type, String senderName, String projectName, String role) {
         if (repository instanceof NotificationRepositoryImpl impl) {
             impl.createNotification(userId, title, desc, type, senderName, projectName, role);
         } else {
