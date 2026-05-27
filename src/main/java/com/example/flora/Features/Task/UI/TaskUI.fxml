@@ -13,52 +13,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane
-        maxHeight="-Infinity" maxWidth="-Infinity"
-        minHeight="-Infinity" minWidth="-Infinity"
-        prefHeight="580.0" prefWidth="1100.0"
-        styleClass="task-root"
-        stylesheets="@TaskStyle.css"
-        xmlns="http://javafx.com/javafx/23.0.1"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="com.example.flora.Features.Task.UI.TaskUI_Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="1100.0" styleClass="task-root" stylesheets="@TaskStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.flora.Features.Task.UI.TaskUI_Controller">
 
     <children>
 
 
-        <VBox styleClass="task-sidebar"
-              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="0.0"
-              prefWidth="224.0">
+        <VBox prefWidth="224.0" styleClass="task-sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 
 
-            <HBox styleClass="sidebar-header" alignment="CENTER_LEFT" prefHeight="56.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="56.0" styleClass="sidebar-header">
                 <padding>
-                    <Insets left="20.0" right="14.0"/>
+                    <Insets left="20.0" right="14.0" />
                 </padding>
 
-                <Pane style="-fx-background-color:#7C6AF7; -fx-background-radius:50%;"
-                      prefWidth="7.0" prefHeight="7.0">
+                <Pane prefHeight="7.0" prefWidth="7.0" style="-fx-background-color:#7C6AF7; -fx-background-radius:50%;">
                     <HBox.margin>
-                        <Insets right="8.0"/>
+                        <Insets right="8.0" />
                     </HBox.margin>
                 </Pane>
-                <Label text="MY PROJECTS" styleClass="sidebar-title">
+                <Label styleClass="sidebar-title" text="MY PROJECTS">
                     <font>
-                        <Font name="System Bold" size="10.0"/>
+                        <Font name="System Bold" size="10.0" />
                     </font>
                 </Label>
             </HBox>
 
-            <Pane style="-fx-background-color:#2C2A3E;" prefHeight="1.0" maxHeight="1.0"/>
+            <Pane maxHeight="1.0" prefHeight="1.0" style="-fx-background-color:#2C2A3E;" />
 
 
-            <ScrollPane fx:id="proScroll" styleClass="task-sidebar-scroll"
-                        fitToWidth="true" VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="proScroll" fitToWidth="true" styleClass="task-sidebar-scroll" VBox.vgrow="ALWAYS">
                 <content>
                     <VBox fx:id="projectCardScroll" spacing="5.0">
                         <padding>
-                            <Insets top="10.0" bottom="10.0" left="8.0" right="8.0"/>
+                            <Insets bottom="10.0" left="8.0" right="8.0" top="10.0" />
                         </padding>
                     </VBox>
                 </content>
@@ -66,222 +53,155 @@
         </VBox>
 
 
-        <Pane style="-fx-background-color: linear-gradient(to bottom, transparent, #7C6AF733, transparent);"
-              prefWidth="1.0" maxWidth="1.0"
-              AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="224.0"/>
+        <Pane maxWidth="1.0" prefWidth="1.0" style="-fx-background-color: linear-gradient(to bottom, transparent, #7C6AF733, transparent);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="224.0" AnchorPane.topAnchor="0.0" />
 
 
-        <StackPane
-                AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0">
+        <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
 
             <AnchorPane styleClass="task-main-panel">
 
 
-                <HBox styleClass="project-header-bar" alignment="CENTER_LEFT"
-                      prefHeight="60.0"
-                      AnchorPane.topAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <HBox alignment="CENTER_LEFT" prefHeight="60.0" styleClass="project-header-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <padding>
-                        <Insets left="28.0" right="20.0"/>
+                        <Insets left="28.0" right="20.0" />
                     </padding>
 
 
                     <VBox alignment="CENTER_LEFT" spacing="1.0">
-                        <Label text="TASKS"
-                               style="-fx-text-fill:#4A475E; -fx-font-size:9px; -fx-font-family:'System Bold';">
+                        <Label style="-fx-text-fill:#4A475E; -fx-font-size:9px; -fx-font-family:'System Bold';" text="TASKS">
                             <font>
-                                <Font name="System Bold" size="9.0"/>
+                                <Font name="System Bold" size="9.0" />
                             </font>
                         </Label>
-                        <Label fx:id="projectNameInViewBox" styleClass="project-name-label"
-                               text="Select a project">
+                        <Label fx:id="projectNameInViewBox" styleClass="project-name-label" text="Select a project">
                             <font>
-                                <Font name="System Bold" size="18.0"/>
+                                <Font name="System Bold" size="18.0" />
                             </font>
                         </Label>
                     </VBox>
 
-                    <Region HBox.hgrow="ALWAYS"/>
+                    <Region HBox.hgrow="ALWAYS" />
 
 
-                    <Label fx:id="roleBadge" text=""
-                           style="-fx-background-color:#2C2A40; -fx-text-fill:#6B6882;
-                             -fx-font-size:9px; -fx-font-family:'System Bold';
-                             -fx-background-radius:20; -fx-padding:4 10 4 10;"
-                           visible="false" managed="false">
+                    <Label fx:id="roleBadge" managed="false" style="-fx-background-color:#2C2A40; -fx-text-fill:#6B6882;                              -fx-font-size:9px; -fx-font-family:'System Bold';                              -fx-background-radius:20; -fx-padding:4 10 4 10;" text="" visible="false">
                         <HBox.margin>
-                            <Insets right="10.0"/>
+                            <Insets right="10.0" />
                         </HBox.margin>
                     </Label>
 
 
-                    <Button fx:id="addTaskBtn"
-                            text="＋  New Task"
-                            styleClass="add-task-pill-btn"
-                            onAction="#onAddTaskClicked"
-                            visible="false" managed="false"/>
+                    <Button fx:id="addTaskBtn" managed="false" onAction="#onAddTaskClicked" styleClass="add-task-pill-btn" text="＋  New Task" visible="false" />
                 </HBox>
 
 
-                <Pane style="-fx-background-color:#2C2A3E;"
-                      prefHeight="1.0" maxHeight="1.0"
-                      AnchorPane.topAnchor="60.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                <Pane maxHeight="1.0" prefHeight="1.0" style="-fx-background-color:#2C2A3E;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
 
 
-                <VBox fx:id="addTaskPanel"
-                      AnchorPane.topAnchor="61.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      styleClass="add-task-panel"
-                      visible="false" managed="false"
-                      spacing="10.0">
+                <VBox fx:id="addTaskPanel" managed="false" spacing="10.0" styleClass="add-task-panel" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0">
                     <padding>
-                        <Insets top="14.0" bottom="14.0" left="28.0" right="28.0"/>
+                        <Insets bottom="14.0" left="28.0" right="28.0" top="14.0" />
                     </padding>
 
 
                     <HBox alignment="CENTER_LEFT" spacing="8.0">
-                        <Pane style="-fx-background-color:#7C6AF7; -fx-background-radius:3px;"
-                              prefWidth="3.0" prefHeight="18.0">
+                        <Pane prefHeight="18.0" prefWidth="3.0" style="-fx-background-color:#7C6AF7; -fx-background-radius:3px;">
                             <HBox.margin>
-                                <Insets right="4.0"/>
+                                <Insets right="4.0" />
                             </HBox.margin>
                         </Pane>
-                        <Label text="Create Task" styleClass="add-panel-title">
+                        <Label styleClass="add-panel-title" text="Create Task">
                             <font>
-                                <Font name="System Bold" size="13.0"/>
+                                <Font name="System Bold" size="13.0" />
                             </font>
                         </Label>
-                        <Region HBox.hgrow="ALWAYS"/>
+                        <Region HBox.hgrow="ALWAYS" />
 
-                        <HBox spacing="4.0" alignment="CENTER"
-                              style="-fx-background-color:#14121E; -fx-background-radius:20; -fx-padding:3 4 3 4;">
-                            <Button fx:id="modeAssignBtn" mnemonicParsing="false"
-                                    onAction="#switchToAssignMode"
-                                    styleClass="mode-pill-active" text="Assign Now"
-                                    prefHeight="26.0">
+                        <HBox alignment="CENTER" spacing="4.0" style="-fx-background-color:#14121E; -fx-background-radius:20; -fx-padding:3 4 3 4;">
+                            <Button fx:id="modeAssignBtn" mnemonicParsing="false" onAction="#switchToAssignMode" prefHeight="26.0" styleClass="mode-pill-active" text="Assign Now">
                                 <font>
-                                    <Font name="System Bold" size="11.0"/>
+                                    <Font name="System Bold" size="11.0" />
                                 </font>
                             </Button>
-                            <Button fx:id="modeDraftBtn" mnemonicParsing="false"
-                                    onAction="#switchToDraftMode"
-                                    styleClass="mode-pill" text="Save as Draft"
-                                    prefHeight="26.0">
+                            <Button fx:id="modeDraftBtn" mnemonicParsing="false" onAction="#switchToDraftMode" prefHeight="26.0" styleClass="mode-pill" text="Save as Draft">
                                 <font>
-                                    <Font name="System Bold" size="11.0"/>
+                                    <Font name="System Bold" size="11.0" />
                                 </font>
                             </Button>
                         </HBox>
-                        <Button mnemonicParsing="false" onAction="#onAddTaskClicked"
-                                styleClass="panel-close-btn" text="✕">
+                        <Button mnemonicParsing="false" onAction="#onAddTaskClicked" styleClass="panel-close-btn" text="✕">
                             <padding>
-                                <Insets top="4.0" bottom="4.0" left="9.0" right="9.0"/>
+                                <Insets bottom="4.0" left="9.0" right="9.0" top="4.0" />
                             </padding>
                         </Button>
                     </HBox>
 
 
-                    <HBox fx:id="assignFields" spacing="8.0" alignment="CENTER_LEFT"
-                          visible="true" managed="true">
-                        <TextField fx:id="taskTitleInput"
-                                   promptText="Task title..."
-                                   prefHeight="36.0" prefWidth="220.0"
-                                   styleClass="task-input"/>
-                        <TextField fx:id="taskAssigneeInput"
-                                   promptText="Assign to username..."
-                                   prefHeight="36.0" prefWidth="190.0"
-                                   styleClass="task-input"/>
-                        <Label fx:id="assignDeadlineChip"
-                               text="📅  Set deadline"
-                               styleClass="deadline-chip"
-                               onMouseClicked="#toggleAssignDeadline">
+                    <HBox fx:id="assignFields" alignment="CENTER_LEFT" managed="true" spacing="8.0" visible="true">
+                        <TextField fx:id="taskTitleInput" prefHeight="36.0" prefWidth="220.0" promptText="Task title..." styleClass="task-input" />
+                        <TextField fx:id="taskAssigneeInput" prefHeight="36.0" prefWidth="190.0" promptText="Assign to username..." styleClass="task-input" />
+                        <Label fx:id="assignDeadlineChip" onMouseClicked="#toggleAssignDeadline" styleClass="deadline-chip" text="📅  Set deadline">
                             <padding>
-                                <Insets top="8.0" bottom="8.0" left="14.0" right="14.0"/>
+                                <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
                             </padding>
                         </Label>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" onAction="#onAssignTask"
-                                prefHeight="36.0" styleClass="add-task-submit-btn" text="✦  Assign">
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#onAssignTask" prefHeight="36.0" styleClass="add-task-submit-btn" text="✦  Assign">
                             <font>
-                                <Font name="System Bold" size="12.0"/>
+                                <Font name="System Bold" size="12.0" />
                             </font>
                             <padding>
-                                <Insets top="4.0" bottom="4.0" left="18.0" right="18.0"/>
+                                <Insets bottom="4.0" left="18.0" right="18.0" top="4.0" />
                             </padding>
                         </Button>
                     </HBox>
 
 
-                    <HBox fx:id="draftFields" spacing="8.0" alignment="CENTER_LEFT"
-                          visible="false" managed="false">
-                        <TextField fx:id="draftTitleInput"
-                                   promptText="Task title (assign later)..."
-                                   prefHeight="36.0" prefWidth="300.0"
-                                   styleClass="task-input"/>
-                        <Label fx:id="draftDeadlineChip"
-                               text="📅  Set deadline"
-                               styleClass="deadline-chip"
-                               onMouseClicked="#toggleDraftDeadline">
+                    <HBox fx:id="draftFields" alignment="CENTER_LEFT" managed="false" spacing="8.0" visible="false">
+                        <TextField fx:id="draftTitleInput" prefHeight="36.0" prefWidth="300.0" promptText="Task title (assign later)..." styleClass="task-input" />
+                        <Label fx:id="draftDeadlineChip" onMouseClicked="#toggleDraftDeadline" styleClass="deadline-chip" text="📅  Set deadline">
                             <padding>
-                                <Insets top="8.0" bottom="8.0" left="14.0" right="14.0"/>
+                                <Insets bottom="8.0" left="14.0" right="14.0" top="8.0" />
                             </padding>
                         </Label>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button mnemonicParsing="false" onAction="#onSaveDraftTask"
-                                prefHeight="36.0" styleClass="draft-submit-btn" text="📌  Save Draft">
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#onSaveDraftTask" prefHeight="36.0" styleClass="draft-submit-btn" text="📌  Save Draft">
                             <font>
-                                <Font name="System Bold" size="12.0"/>
+                                <Font name="System Bold" size="12.0" />
                             </font>
                             <padding>
-                                <Insets top="4.0" bottom="4.0" left="18.0" right="18.0"/>
+                                <Insets bottom="4.0" left="18.0" right="18.0" top="4.0" />
                             </padding>
                         </Button>
                     </HBox>
                 </VBox>
 
 
-                <HBox fx:id="filterBar" styleClass="filter-bar" alignment="CENTER_LEFT"
-                      prefHeight="46.0" spacing="4.0"
-                      AnchorPane.topAnchor="61.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <HBox fx:id="filterBar" alignment="CENTER_LEFT" prefHeight="46.0" spacing="4.0" styleClass="filter-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0">
                     <padding>
-                        <Insets left="26.0" right="26.0"/>
+                        <Insets left="26.0" right="26.0" />
                     </padding>
-                    <Button fx:id="filterAll" text="All" styleClass="filter-tab-active" onAction="#onFilterAll"/>
-                    <Button fx:id="filterMy" text="Mine" styleClass="filter-tab" onAction="#onFilterMy"/>
-                    <Button fx:id="filterDue" text="Due Soon" styleClass="filter-tab" onAction="#onFilterDue"/>
-                    <Button fx:id="filterCompleted" text="Completed" styleClass="filter-tab"
-                            onAction="#onFilterCompleted"/>
+                    <Button fx:id="filterAll" onAction="#onFilterAll" styleClass="filter-tab-active" text="All" />
+                    <Button fx:id="filterMy" onAction="#onFilterMy" styleClass="filter-tab" text="Mine" />
+                    <Button fx:id="filterDue" onAction="#onFilterDue" styleClass="filter-tab" text="Due Soon" />
+                    <Button fx:id="filterCompleted" onAction="#onFilterCompleted" styleClass="filter-tab" text="Completed" />
 
-                    <Button fx:id="filterDrafts" text="✏ Drafts" styleClass="filter-tab"
-                            onAction="#onFilterDrafts"
-                            visible="false" managed="false"/>
-                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="filterDrafts" managed="false" onAction="#onFilterDrafts" styleClass="filter-tab" text="✏ Drafts" visible="false" />
+                    <Region HBox.hgrow="ALWAYS" />
 
-                    <Label fx:id="taskCountBadge" text="0 tasks"
-                           style="-fx-text-fill:#4A475E; -fx-font-size:11px;"/>
+                    <Label fx:id="taskCountBadge" style="-fx-text-fill:#4A475E; -fx-font-size:11px;" text="0 tasks" />
                 </HBox>
 
 
-                <Pane style="-fx-background-color:#2C2A3E;"
-                      prefHeight="1.0" maxHeight="1.0"
-                      AnchorPane.topAnchor="107.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+                <Pane maxHeight="1.0" prefHeight="1.0" style="-fx-background-color:#2C2A3E;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="107.0" />
 
 
-                <ScrollPane fx:id="tasScroll" styleClass="task-main-scroll"
-                            fitToWidth="true"
-                            AnchorPane.topAnchor="108.0" AnchorPane.bottomAnchor="0.0"
-                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <ScrollPane fx:id="tasScroll" fitToWidth="true" styleClass="task-main-scroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="108.0">
                     <content>
-                        <VBox fx:id="TaskCardScroll" spacing="0.0">
-                            <padding>
-                                <Insets top="8.0" bottom="20.0" left="0.0" right="0.0"/>
-                            </padding>
+                        <VBox fx:id="TaskCardScroll" spacing="10.0">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
                         </VBox>
                     </content>
                 </ScrollPane>
@@ -289,21 +209,13 @@
             </AnchorPane>
 
 
-            <AnchorPane fx:id="detailOverlay" visible="false"
-                        styleClass="detail-overlay"
-                        StackPane.alignment="CENTER_RIGHT">
+            <AnchorPane fx:id="detailOverlay" styleClass="detail-overlay" visible="false" StackPane.alignment="CENTER_RIGHT">
 
                 <!-- Scrim -->
-                <Pane styleClass="detail-scrim"
-                      AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="370.0"
-                      onMouseClicked="#onScrimClicked"/>
+                <Pane onMouseClicked="#onScrimClicked" styleClass="detail-scrim" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="370.0" AnchorPane.topAnchor="0.0" />
 
                 <!-- Container — TaskDetailUI.fxml injected here -->
-                <AnchorPane fx:id="detailContainer"
-                            AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-                            AnchorPane.rightAnchor="0.0"
-                            prefWidth="370.0"/>
+                <AnchorPane fx:id="detailContainer" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </AnchorPane>
 
         </StackPane>
