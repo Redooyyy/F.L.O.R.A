@@ -37,20 +37,22 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void save(Task task) {
         String sql = """
-                INSERT INTO tasks (id, title, description, status,
+                INSERT INTO tasks (title, description, status,
                                    project_id, assignee_id, due_date, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES ( ?, ?, ?, ?, ?, ?, ?)
                 """;
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, task.getId());
-            ps.setString(2, task.getTitle());
-            ps.setString(3, task.getDescription());
-            ps.setString(4, task.getStatus().name());
-            ps.setString(5, task.getProjectId());
-            ps.setString(6, task.getAssigneeId());   // nullable
-            ps.setString(7, task.getDueDate());      // nullable
-            ps.setString(8, task.getCreatedAt());
+        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, task.getTitle());
+            ps.setString(2, task.getDescription());
+            ps.setString(3, task.getStatus().name());
+            ps.setString(4, task.getProjectId());
+            ps.setString(5, task.getAssigneeId());   // nullable
+            ps.setString(6, task.getDueDate());      // nullable
+            ps.setString(7, task.getCreatedAt());
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if(rs.next()) task.setId(Integer.toString(rs.getInt(1)));
         } catch (SQLException e) {
             throw new RuntimeException("Failed to save task: " + task.getId(), e);
         }
