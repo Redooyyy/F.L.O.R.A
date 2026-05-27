@@ -4,6 +4,8 @@ import com.example.flora.Features.Auth.exception.AuthException;
 import com.example.flora.Features.Auth.model.User;
 import com.example.flora.Features.Auth.repository.UserRepository;
 
+import java.util.List;
+
 public class AuthService {
     private final UserRepository userRepository;
 
@@ -41,5 +43,9 @@ public class AuthService {
                     "Incorrect email or password.");
         }
         return user;
+    }
+
+    public List<String> searchUsers(String query) {
+        return userRepository.searchByUsernameLike(query);
     }
 }
