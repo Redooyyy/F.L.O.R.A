@@ -84,9 +84,10 @@ public class AppContainer {
 
         notificationViewModel = new NotificationViewModel(notificationService,projectService, userId, userIdStr);
         projectViewModel = new ProjectViewModel(projectService, userIdStr);
-        taskViewModel = new TaskViewModel(taskServices, userIdStr);
         bugViewModel = new BugViewModel(bugService, userIdStr);
-        projectDetailViewModel = new ProjectDetailViewModel(taskViewModel, bugViewModel,userIdStr);
+        taskViewModel = new TaskViewModel(taskServices, userIdStr);
+        projectDetailViewModel = new ProjectDetailViewModel(taskViewModel, bugViewModel,authViewModel,userIdStr);
+        taskViewModel.setProjectDetailViewModel(projectDetailViewModel);
         settingsViewModel = new SettingsViewModel(settingsService, userIdStr, user.getEmail());
     }
 
