@@ -1,30 +1,38 @@
 package com.example.flora.Features.Task.UI.Detail;
 
 import com.example.flora.Core.Helper.DateAndTime;
+import com.example.flora.Core.Helper.UI_Helper.Builder;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
+import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 
-public class TaskDetailUI_Controller {
+public class TaskDetailUI_Controller implements Initializable {
 
     private static final DateTimeFormatter DATE_FMT =
             DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     private final TaskUI_Controller parentController;
+    private final TaskViewModel model;
 
     @FXML
     private Pane headerAccentBar;
@@ -93,8 +101,9 @@ public class TaskDetailUI_Controller {
     private Task boundTask;
     private boolean isLeader = false;
 
-    public TaskDetailUI_Controller(TaskUI_Controller parentController) {
+    public TaskDetailUI_Controller(TaskUI_Controller parentController, TaskViewModel model) {
         this.parentController = parentController;
+        this.model = model;
     }
 
 
@@ -165,9 +174,6 @@ public class TaskDetailUI_Controller {
                 ? "-fx-background-color:#3D3B55; -fx-background-radius:50%;"
                 : "-fx-background-color:#7C6AF7; -fx-background-radius:50%;");
 
-        if (!draft && boundTask.getAssigneeId() != null)
-            reassignField.setText(boundTask.getAssigneeId());
-
         detailCreatedAt.setText(nvl(boundTask.getCreatedAt(), "—"));
 
         applyStatus(boundTask.getStatus());
@@ -176,7 +182,6 @@ public class TaskDetailUI_Controller {
 
         applyRoleVisibility();
     }
-
 
     @FXML
     private void onCycleStatus() {
@@ -268,7 +273,9 @@ public class TaskDetailUI_Controller {
         if (reassignBox.isVisible()) {
             hideReassign();
         } else {
-            hideDeadlineEdit();   // close the other panel first
+            hideDeadlineEdit();
+            if (boundTask != null && boundTask.getAssigneeId() != null)
+                reassignField.setText(boundTask.getAssigneeId());
             showWithFade(reassignBox);
             reassignBtn.setText("✕ Close");
         }
@@ -399,5 +406,26 @@ public class TaskDetailUI_Controller {
 
     private String nvl(String v, String fallback) {
         return (v != null && !v.isBlank()) ? v : fallback;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // In your FXML root or in code
+        reassignField.sceneProperty().addListener((obs, o, n) -> {
+            if (n != null) {
+                AnchorPane root = (AnchorPane) n.getRoot();
+                new Builder(reassignField, root) //(AnchorPane) taskAssigneeInput.getParent().getParent()
+                        .suggestions(q -> model.getMembers().stream()
+                                .filter(m -> q.isBlank() || m.toLowerCase().contains(q.toLowerCase()))
+                                .toList())
+                        .showOnFocus(true)
+                        .onSelect((val, f) -> {
+                            f.setText(val);
+                            f.positionCaret(val.length());
+                        })
+                        .build()
+                        .attach();
+            }
+        });
     }
 }
