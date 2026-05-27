@@ -1,5 +1,6 @@
 package com.example.flora.Features.Project.UI;
 
+import com.example.flora.Core.Helper.UI_Helper.Builder;
 import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -29,10 +31,17 @@ public class MemberSectionHandler {
     }
 
 
-    public void bind(TextField inviteSearchField, Label inviteFeedback, VBox memberList) {
+    public void bind(TextField inviteSearchField, Label inviteFeedback, VBox memberList, AnchorPane root) {
         this.inviteSearchField = inviteSearchField;
         this.inviteFeedback = inviteFeedback;
         this.memberList = memberList;
+        inviteSearchField.sceneProperty().addListener((obs, o, n) -> {
+            if (n != null) new Builder(inviteSearchField, root)
+                    .suggestions(viewModel::searchUsers)
+                    .onSelect((val, f) -> { f.setText(val); f.positionCaret(val.length()); })
+                    .build()
+                    .attach();
+        });
     }
 
 

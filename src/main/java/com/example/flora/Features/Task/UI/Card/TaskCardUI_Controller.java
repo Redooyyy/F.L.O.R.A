@@ -1,6 +1,7 @@
 package com.example.flora.Features.Task.UI.Card;
 
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
+import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 public class TaskCardUI_Controller {
 
     private final TaskUI_Controller parentController;
+    private final TaskViewModel viewModel;
 
     @FXML
     private Pane accentBar;
@@ -28,8 +30,9 @@ public class TaskCardUI_Controller {
 
     private Task boundTask;
 
-    public TaskCardUI_Controller(TaskUI_Controller parentController) {
+    public TaskCardUI_Controller(TaskUI_Controller parentController, TaskViewModel viewModel) {
         this.parentController = parentController;
+        this.viewModel=viewModel;
     }
 
     public void bind(Task task) {

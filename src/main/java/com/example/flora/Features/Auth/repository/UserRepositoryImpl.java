@@ -3,6 +3,8 @@ package com.example.flora.Features.Auth.repository;
 import com.example.flora.Features.Auth.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -77,5 +79,27 @@ public class UserRepositoryImpl implements UserRepository {
                 rs.getString("password"),
                 rs.getInt("id")
         );
+    }
+
+    @Override
+    public List<String> searchByUsernameLike(String query) {
+        List<String> users = new ArrayList<>();
+        String sql = """
+            SELECT username
+            FROM users
+            WHERE username LIKE ?
+            ORDER BY username
+            LIMIT 6
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + query + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(rs.getString("username"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to search usernames: " + e.getMessage(), e);
+        }
+        return users;
     }
 }

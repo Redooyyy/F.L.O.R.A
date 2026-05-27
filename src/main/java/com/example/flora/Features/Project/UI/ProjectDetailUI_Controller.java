@@ -122,6 +122,8 @@ public class ProjectDetailUI_Controller implements Initializable {
     private Label statTasks;
     @FXML
     private Label statBugs;
+    @FXML
+    private HBox bugFilterBar;
 
 
     private final ProjectDetailViewModel viewModel;
@@ -151,16 +153,16 @@ public class ProjectDetailUI_Controller implements Initializable {
         taskHandler.bind(addTaskToggleBtn, filterMenuBtn, addTaskPanel,
                 modeAssignBtn, modeDraftBtn, assignFields, draftFields,
                 taskTitleInput, taskAssigneeInput, assignDeadlineChip,
-                draftTitleInput, draftDeadlineChip, taskList, taskScroll);
+                draftTitleInput, draftDeadlineChip, taskList, taskScroll,
+                projectDetailRoot); 
 
         memberHandler = new MemberSectionHandler(viewModel);
-        memberHandler.bind(inviteSearchField, inviteFeedback, memberList);
-
+        memberHandler.bind(inviteSearchField, inviteFeedback, memberList, projectDetailRoot);
         bugHandler = new BugSectionHandler(viewModel);
         bugHandler.bind(reportBugToggleBtn, reportBugPanel,
                 bugTitleInput, bugReporterInput, bugSeverityCombo, bugReportFeedback,
                 bugFilterAll, bugFilterOpen, bugFilterProgress, bugFilterClosed,
-                bugList, bugScroll);
+                bugList, bugScroll,projectDetailRoot, bugFilterBar);
 
 
         viewModel.taskCountProperty().addListener((obs, o, n) -> statTasks.setText(String.valueOf(n)));

@@ -1,15 +1,15 @@
 package com.example.flora.Features.Task.UI;
 
-import com.example.flora.Core.Helper.DateAndTime;
 import com.example.flora.Features.Home.UI.HomeUI_Controller;
 import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import com.example.flora.Features.Project.model.Project;
+import com.example.flora.Features.Task.UI.Card.TaskCardUI_Controller;
 import com.example.flora.Features.Task.UI.Detail.TaskDetailUI_Controller;
 import com.example.flora.Features.Task.ViewModel.TaskViewModel;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
+import com.example.flora.Core.Helper.UI_Helper.Builder;
 import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +21,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
@@ -37,17 +36,14 @@ public class TaskUI_Controller implements Initializable {
     private static final DateTimeFormatter DATE_FMT =
             DateTimeFormatter.ofPattern("dd MMM yyyy");
 
-
     private final TaskViewModel taskViewModel;
     private final ProjectViewModel projectViewModel;
     private final HomeUI_Controller homeController;
-
 
     @FXML
     private ScrollPane proScroll;
     @FXML
     private VBox projectCardScroll;
-
 
     @FXML
     private Label projectNameInViewBox;
@@ -55,7 +51,6 @@ public class TaskUI_Controller implements Initializable {
     private Label roleBadge;
     @FXML
     private Button addTaskBtn;
-
 
     @FXML
     private VBox addTaskPanel;
@@ -78,7 +73,6 @@ public class TaskUI_Controller implements Initializable {
     @FXML
     private Label draftDeadlineChip;
 
-
     @FXML
     private HBox filterBar;
     @FXML
@@ -94,23 +88,19 @@ public class TaskUI_Controller implements Initializable {
     @FXML
     private Label taskCountBadge;
 
-
     @FXML
     private ScrollPane tasScroll;
     @FXML
     private VBox TaskCardScroll;
-
 
     @FXML
     private AnchorPane detailOverlay;
     @FXML
     private AnchorPane detailContainer;
 
-
     private boolean addPanelOpen = false;
     private Project activeProject;
     private TaskDetailUI_Controller detailController;
-
 
     public TaskUI_Controller(TaskViewModel taskViewModel,
                              ProjectViewModel projectViewModel,
@@ -119,7 +109,6 @@ public class TaskUI_Controller implements Initializable {
         this.projectViewModel = projectViewModel;
         this.homeController = homeController;
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -142,6 +131,17 @@ public class TaskUI_Controller implements Initializable {
                     renderTaskRows();
                 });
 
+        taskAssigneeInput.sceneProperty().addListener((obs, o, n) -> {
+            if (n != null) new Builder(taskAssigneeInput, (AnchorPane) taskAssigneeInput.getParent().getParent().getParent())
+                    .suggestions(q -> taskViewModel.getMembers().stream()
+                            .filter(m -> q.isBlank() || m.toLowerCase().contains(q.toLowerCase()))
+                            .toList())
+                    .showOnFocus(true)
+                    .onSelect((val, f) -> { f.setText(val); f.positionCaret(val.length()); })
+                    .build()
+                    .attach();
+        });
+
         List<Project> all = projectViewModel.getProjects();
         if (!all.isEmpty()) {
             selectProject(all.get(0));
@@ -151,12 +151,11 @@ public class TaskUI_Controller implements Initializable {
         }
     }
 
-
     private void loadDetailPanel() {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/Task/UI/Detail/TaskDetailUI.fxml"));
-            loader.setControllerFactory(c -> new TaskDetailUI_Controller(this));
+            loader.setControllerFactory(c -> new TaskDetailUI_Controller(this, taskViewModel));
             Node panel = loader.load();
             detailController = loader.getController();
             detailContainer.getChildren().setAll(panel);
@@ -169,7 +168,6 @@ public class TaskUI_Controller implements Initializable {
             throw new RuntimeException("Failed to load TaskDetailUI.fxml", e);
         }
     }
-
 
     private void loadProjectSidebar() {
         projectCardScroll.getChildren().clear();
@@ -195,7 +193,6 @@ public class TaskUI_Controller implements Initializable {
         card.getStyleClass().add("notify-card");
         card.setPadding(new Insets(10, 12, 10, 12));
         card.setCursor(javafx.scene.Cursor.HAND);
-
 
         HBox inner = new HBox(8);
         inner.setAlignment(Pos.CENTER_LEFT);
@@ -237,7 +234,6 @@ public class TaskUI_Controller implements Initializable {
     private void highlightSidebarCard(Project active) {
         for (Node node : projectCardScroll.getChildren()) {
             if (!(node instanceof VBox card)) continue;
-            // peek at the name label inside inner HBox > VBox
             boolean isActive = false;
             try {
                 HBox inner = (HBox) card.getChildren().get(0);
@@ -252,12 +248,9 @@ public class TaskUI_Controller implements Initializable {
         }
     }
 
-
     private void applyRoleUI(boolean leader) {
-        // Add task button
         addTaskBtn.setVisible(leader);
         addTaskBtn.setManaged(leader);
-
 
         roleBadge.setVisible(true);
         roleBadge.setManaged(true);
@@ -265,7 +258,6 @@ public class TaskUI_Controller implements Initializable {
         roleBadge.setStyle(leader
                 ? "-fx-background-color:#241E3A; -fx-text-fill:#7C6AF7; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-background-radius:20; -fx-padding:4 10 4 10; -fx-border-color:#7C6AF755; -fx-border-radius:20; -fx-border-width:1;"
                 : "-fx-background-color:#1E1C2E; -fx-text-fill:#4A475E; -fx-font-size:9px; -fx-font-family:'System Bold'; -fx-background-radius:20; -fx-padding:4 10 4 10;");
-
 
         filterDrafts.setVisible(leader);
         filterDrafts.setManaged(leader);
@@ -282,7 +274,6 @@ public class TaskUI_Controller implements Initializable {
         updateFilterButtons(taskViewModel.activeFilterProperty().get());
     }
 
-
     @FXML
     private void onAddTaskClicked() {
         if (!taskViewModel.isLeader()) return;
@@ -291,12 +282,10 @@ public class TaskUI_Controller implements Initializable {
         addTaskPanel.setManaged(addPanelOpen);
         addTaskBtn.setText(addPanelOpen ? "✕  Cancel" : "＋ New Task");
 
-
         double filterTop = addPanelOpen ? 200.0 : 61.0;
         double scrollTop = addPanelOpen ? 240.0 : 108.0;
         AnchorPane.setTopAnchor(filterBar, filterTop);
         AnchorPane.setTopAnchor(tasScroll, scrollTop);
-
 
         if (addPanelOpen) {
             FadeTransition ft = new FadeTransition(Duration.millis(180), addTaskPanel);
@@ -341,7 +330,6 @@ public class TaskUI_Controller implements Initializable {
         inactive.getStyleClass().add("mode-pill");
     }
 
-
     @FXML
     private void toggleAssignDeadline(MouseEvent e) {
         toggleDeadlineRow("assign-dl-row", assignFields, assignDeadlineChip, true);
@@ -375,7 +363,7 @@ public class TaskUI_Controller implements Initializable {
         dp.setPromptText("Pick a date...");
         dp.setPrefWidth(168);
         dp.setPrefHeight(32);
-        dp.getStyleClass().add("date-picker");  // Date picker
+        dp.getStyleClass().add("date-picker");
         dp.setStyle("-fx-font-size:12px;");
         dp.setConverter(dateConverter());
 
@@ -409,7 +397,6 @@ public class TaskUI_Controller implements Initializable {
         return b;
     }
 
-
     @FXML
     private void onAssignTask(ActionEvent e) {
         if (!taskViewModel.isLeader()) return;
@@ -433,7 +420,6 @@ public class TaskUI_Controller implements Initializable {
         draftDeadlineChip.setText("📅  Set deadline");
         addTaskPanel.getChildren().removeIf(n -> "draft-dl-row".equals(n.getUserData()));
     }
-
 
     @FXML
     private void onFilterAll() {
@@ -460,11 +446,9 @@ public class TaskUI_Controller implements Initializable {
         if (taskViewModel.isLeader()) taskViewModel.setActiveFilter("DRAFTS");
     }
 
-
     private void renderTaskRows() {
         TaskCardScroll.getChildren().clear();
         List<Task> filtered = taskViewModel.getFilteredTasks();
-
 
         if (taskCountBadge != null)
             taskCountBadge.setText(filtered.size() + (filtered.size() == 1 ? " task" : " tasks"));
@@ -478,280 +462,23 @@ public class TaskUI_Controller implements Initializable {
         }
 
         for (Task task : filtered) {
-            TaskCardScroll.getChildren().add(buildTaskRow(task));
+            TaskCardScroll.getChildren().add(buildTaskCard(task));
         }
     }
 
-
-    private VBox buildTaskRow(Task task) {
-        boolean draft = task.isDraft();
-        boolean isLeader = taskViewModel.isLeader();
-        boolean isAssignee = !draft
-                && task.getAssigneeId() != null
-                && task.getAssigneeId().equalsIgnoreCase(taskViewModel.getCurrentUserId());
-
-
-        VBox row = new VBox(0);
-        row.setPadding(new Insets(0, 28, 0, 0));
-        row.setStyle("-fx-cursor: default;");
-
-
-        HBox body = new HBox(0);
-        body.setAlignment(Pos.TOP_CENTER);
-
-
-        Pane accentBar = new Pane();
-        accentBar.setPrefWidth(4);
-        accentBar.setMinHeight(56);
-        String accentColor = draft ? "#FBB024" : switch (task.getStatus()) {
-            case TODO -> "#3D3B55";
-            case IN_PROGRESS -> "#7C6AF7";
-            case IN_REVIEW -> "#F5A623";
-            case DONE -> "#34D399";
-        };
-        accentBar.setStyle("-fx-background-color:" + accentColor + ";");
-        HBox.setHgrow(accentBar, Priority.NEVER);
-
-
-        VBox content = new VBox(0);
-        HBox.setHgrow(content, Priority.ALWAYS);
-        content.setStyle("-fx-background-color:#1A1829;");
-
-
-        HBox titleRow = new HBox(10);
-        titleRow.setPadding(new Insets(12, 16, 4, 16));
-        titleRow.setAlignment(Pos.CENTER_LEFT);
-
-        Label titleLbl = new Label(draft ? "✏  " + task.getTitle() : task.getTitle());
-        titleLbl.setTextFill(Color.web(draft ? "#FBB024" : "#EDE9F6"));
-        titleLbl.setStyle("-fx-font-size:13px; -fx-font-family:'System Bold';");
-        HBox.setHgrow(titleLbl, Priority.ALWAYS);
-        titleRow.getChildren().add(titleLbl);
-
-        if (!draft && task.getCreatedAt() != null && !task.getCreatedAt().isBlank()) {
-            Label createdChip = new Label("🗓 " + task.getCreatedAt());
-            createdChip.setStyle("-fx-text-fill:#3D3B55; -fx-font-size:10px; -fx-background-color:#14121E; -fx-background-radius:8; -fx-padding:3 8 3 8;");
-            titleRow.getChildren().add(createdChip);
-        }
-
-
-        HBox metaRow = new HBox(8);
-        metaRow.setPadding(new Insets(0, 16, 12, 16));
-        metaRow.setAlignment(Pos.CENTER_LEFT);
-
-        HBox chips = new HBox(8);
-        chips.setAlignment(Pos.CENTER_LEFT);
-        HBox actions = new HBox(6);
-        actions.setAlignment(Pos.CENTER_RIGHT);
-        HBox.setHgrow(actions, Priority.ALWAYS);
-
-
-        Label deadlineLbl = buildDeadlineChip(task);
-        chips.getChildren().add(deadlineLbl);
-
-
-        Label assigneeLbl = new Label(draft ? "Unassigned" : "@" + task.getAssigneeId());
-        assigneeLbl.setStyle(draft
-                ? "-fx-text-fill:#FBB024; -fx-font-size:11px; -fx-background-color:#2C2010; -fx-background-radius:20; -fx-padding:3 8 3 8;"
-                : "-fx-text-fill:#9B97BC; -fx-font-size:11px; -fx-background-color:#1E1C2E; -fx-background-radius:20; -fx-padding:3 8 3 8;");
-
-
-        Label statusLbl = new Label(statusLabel(task.getStatus()));
-        statusLbl.setStyle(statusStyle(task.getStatus()));
-        statusLbl.setPrefWidth(90);
-        statusLbl.setAlignment(Pos.CENTER);
-
-        chips.getChildren().addAll(assigneeLbl, statusLbl);
-
-
-        VBox expandPanel = new VBox(8);
-        expandPanel.setPadding(new Insets(0, 16, 10, 16));
-        expandPanel.setVisible(false);
-        expandPanel.setManaged(false);
-        expandPanel.setStyle("-fx-border-color:#2D2845; -fx-border-width: 1 0 0 0;");
-
-
-        if (isAssignee && task.getStatus() != TaskStatus.DONE) {
-            Button changeStatusBtn = buildActionBtn("⟳ Status", "#7C6AF7");
-            changeStatusBtn.setOnAction(ev -> toggleExpand(expandPanel, "cs",
-                    () -> buildChangeStatusRow(task, statusLbl, accentBar, expandPanel)));
-            actions.getChildren().add(changeStatusBtn);
-        }
-
-
-        if (isLeader) {
-            Button doneBtn = buildActionBtn("✔ Done", "#34D399");
-            doneBtn.setOnAction(ev -> {
-                taskViewModel.markDone(task);
-                task.setStatus(TaskStatus.DONE);
-                statusLbl.setText("Done");
-                statusLbl.setStyle(statusStyle(TaskStatus.DONE));
-                accentBar.setStyle("-fx-background-color:#34D399;");
-                doneBtn.setDisable(true);
-            });
-            doneBtn.setDisable(task.getStatus() == TaskStatus.DONE);
-
-            Button dlBtn = buildActionBtn("📅 Deadline", "#F5A623");
-            dlBtn.setOnAction(ev -> toggleExpand(expandPanel, "dl",
-                    () -> buildDeadlineExpandRow(task, deadlineLbl, expandPanel)));
-
-            Button raBtn = buildActionBtn("↺ Reassign", "#9B97BC");
-            raBtn.setOnAction(ev -> toggleExpand(expandPanel, "ra",
-                    () -> buildReassignExpandRow(task, assigneeLbl, expandPanel)));
-
-            actions.getChildren().addAll(dlBtn, raBtn, doneBtn);
-        }
-
-
-        titleLbl.setOnMouseClicked(e -> onTaskSelected(task));
-        titleLbl.setStyle(titleLbl.getStyle() + " -fx-cursor:hand;");
-
-        metaRow.getChildren().addAll(chips, actions);
-        content.getChildren().addAll(titleRow, metaRow, expandPanel);
-        body.getChildren().addAll(accentBar, content);
-
-
-        Pane sep = new Pane();
-        sep.setPrefHeight(1);
-        sep.setMaxHeight(1);
-        sep.setStyle("-fx-background-color:#2C2A3E;");
-
-        row.getChildren().addAll(body, sep);
-        return row;
-    }
-
-
-    private void toggleExpand(VBox expandPanel, String tag, java.util.function.Supplier<Node> contentBuilder) {
-        boolean alreadyOpen = expandPanel.isVisible() && tag.equals(expandPanel.getUserData());
-        expandPanel.getChildren().clear();
-        if (alreadyOpen) {
-            expandPanel.setVisible(false);
-            expandPanel.setManaged(false);
-        } else {
-            expandPanel.getChildren().add(contentBuilder.get());
-            expandPanel.setUserData(tag);
-            expandPanel.setVisible(true);
-            expandPanel.setManaged(true);
-            FadeTransition ft = new FadeTransition(Duration.millis(180), expandPanel);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            ft.play();
+    private Node buildTaskCard(Task task) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Task/UI/Card/TaskCardUI.fxml"));
+            loader.setControllerFactory(c -> new TaskCardUI_Controller(this, taskViewModel));
+            Node card = loader.load();
+            TaskCardUI_Controller ctrl = loader.getController();
+            ctrl.bind(task);
+            return card;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load TaskCardUI.fxml", e);
         }
     }
-
-    private HBox buildDeadlineExpandRow(Task task, Label deadlineLbl, VBox expandPanel) {
-        HBox row = new HBox(8);
-        row.setAlignment(Pos.CENTER_LEFT);
-        row.setPadding(new Insets(8, 0, 2, 0));
-
-        Label lbl = smallLabel("New deadline:");
-        LocalDate current = DateAndTime.parseDate(task.getDueDate());
-        DatePicker dp = new DatePicker(current != null ? current : LocalDate.now());
-        dp.setPrefWidth(160);
-        dp.setPrefHeight(30);
-        dp.getStyleClass().add("task-date-picker");
-        dp.setStyle("-fx-font-size:12px;");
-        dp.setConverter(dateConverter());
-
-        Button saveBtn = buildActionBtn("✔ Save", "#34D399");
-        saveBtn.setOnAction(ev -> {
-            taskViewModel.updateDeadline(task, dp.getValue());
-            refreshDeadlineChip(deadlineLbl, task);
-            expandPanel.setVisible(false);
-            expandPanel.setManaged(false);
-        });
-        Button cancelBtn = buildActionBtn("✕", "#4A475E");
-        cancelBtn.setOnAction(ev -> {
-            expandPanel.setVisible(false);
-            expandPanel.setManaged(false);
-        });
-
-        row.getChildren().addAll(lbl,
-                nudge("−7d", dp, -7), nudge("−1d", dp, -1), dp,
-                nudge("+1d", dp, 1), nudge("+7d", dp, 7),
-                saveBtn, cancelBtn);
-        return row;
-    }
-
-    private HBox buildReassignExpandRow(Task task, Label assigneeLbl, VBox expandPanel) {
-        HBox row = new HBox(8);
-        row.setAlignment(Pos.CENTER_LEFT);
-        row.setPadding(new Insets(8, 0, 2, 0));
-
-        Label lbl = smallLabel("Reassign to:");
-        TextField field = new TextField(task.getAssigneeId() != null ? task.getAssigneeId() : "");
-        field.setPromptText("Username...");
-        field.setPrefWidth(200);
-        field.setPrefHeight(30);
-        field.getStyleClass().add("task-input");
-
-        Button saveBtn = buildActionBtn("✔ Reassign", "#34D399");
-        saveBtn.setOnAction(ev -> {
-            String newMember = field.getText().trim();
-            taskViewModel.reassign(task, newMember);
-            task.setAssigneeId(newMember);
-            assigneeLbl.setText("@" + newMember);
-            assigneeLbl.setStyle("-fx-text-fill:#9B97BC; -fx-font-size:11px; -fx-background-color:#1E1C2E; -fx-background-radius:20; -fx-padding:3 8 3 8;");
-            expandPanel.setVisible(false);
-            expandPanel.setManaged(false);
-        });
-        Button cancelBtn = buildActionBtn("✕", "#4A475E");
-        cancelBtn.setOnAction(ev -> {
-            expandPanel.setVisible(false);
-            expandPanel.setManaged(false);
-        });
-
-        row.getChildren().addAll(lbl, field, saveBtn, cancelBtn);
-        return row;
-    }
-
-    private HBox buildChangeStatusRow(Task task, Label statusLbl, Pane accentBar, VBox expandPanel) {
-        HBox row = new HBox(8);
-        row.setAlignment(Pos.CENTER_LEFT);
-        row.setPadding(new Insets(8, 0, 4, 0));
-
-        Label lbl = smallLabel("Set status:");
-        row.getChildren().add(lbl);
-
-        for (TaskStatus s : TaskStatus.values()) {
-            Button sb = new Button(statusLabel(s));
-            sb.setStyle(statusStyle(s) + (s == task.getStatus()
-                    ? " -fx-cursor:hand; -fx-border-width:2;"
-                    : " -fx-cursor:hand; -fx-opacity:0.50;"));
-            sb.setOnAction(ev -> {
-                taskViewModel.updateStatus(task, s);
-                task.setStatus(s);
-                statusLbl.setText(statusLabel(s));
-                statusLbl.setStyle(statusStyle(s));
-                // re-color accent bar
-                String c = switch (s) {
-                    case TODO -> "#3D3B55";
-                    case IN_PROGRESS -> "#7C6AF7";
-                    case IN_REVIEW -> "#F5A623";
-                    case DONE -> "#34D399";
-                };
-                accentBar.setStyle("-fx-background-color:" + c + ";");
-                ScaleTransition pop = new ScaleTransition(Duration.millis(200), statusLbl);
-                pop.setFromX(0.80);
-                pop.setFromY(0.80);
-                pop.setToX(1.0);
-                pop.setToY(1.0);
-                pop.play();
-                FadeTransition ft = new FadeTransition(Duration.millis(160), expandPanel);
-                ft.setFromValue(1);
-                ft.setToValue(0);
-                ft.setOnFinished(e -> {
-                    expandPanel.setVisible(false);
-                    expandPanel.setManaged(false);
-                    expandPanel.setOpacity(1);
-                });
-                ft.play();
-            });
-            row.getChildren().add(sb);
-        }
-        return row;
-    }
-
 
     public void onTaskSelected(Task task) {
         if (detailController == null) return;
@@ -768,18 +495,15 @@ public class TaskUI_Controller implements Initializable {
         taskViewModel.deleteTask(task);
     }
 
-
     public void onDeadlineChanged(Task task, LocalDate newDate) {
         taskViewModel.updateDeadline(task, newDate);
         renderTaskRows();
     }
 
-
     public void onReassigned(Task task, String newAssigneeId) {
         taskViewModel.reassign(task, newAssigneeId);
         renderTaskRows();
     }
-
 
     public void openAddTaskPanel() {
         if (!taskViewModel.isLeader()) return;
@@ -813,71 +537,6 @@ public class TaskUI_Controller implements Initializable {
         }
     }
 
-
-    private Label buildDeadlineChip(Task task) {
-        boolean overdue = false;
-        String text = "No due date";
-        if (task.getDueDate() != null && !task.getDueDate().isBlank()) {
-            text = "📅 " + task.getDueDate();
-            LocalDate due = DateAndTime.parseDate(task.getDueDate());
-            overdue = due != null && due.isBefore(LocalDate.now())
-                    && task.getStatus() != TaskStatus.DONE;
-        }
-        Label chip = new Label(text);
-        chip.setStyle(overdue
-                ? "-fx-text-fill:#F87171; -fx-font-size:11px; -fx-background-color:#2C1010; -fx-background-radius:20; -fx-padding:3 8 3 8;"
-                : "-fx-text-fill:#6B6882; -fx-font-size:11px; -fx-background-color:#14121E; -fx-background-radius:20; -fx-padding:3 8 3 8;");
-        return chip;
-    }
-
-    private void refreshDeadlineChip(Label chip, Task task) {
-        if (task.getDueDate() != null && !task.getDueDate().isBlank()) {
-            chip.setText("📅 " + task.getDueDate());
-            chip.setStyle("-fx-text-fill:#6B6882; -fx-font-size:11px; -fx-background-color:#14121E; -fx-background-radius:20; -fx-padding:3 8 3 8;");
-        } else {
-            chip.setText("No due date");
-        }
-    }
-
-    private String statusLabel(TaskStatus s) {
-        return switch (s) {
-            case TODO -> "To Do";
-            case IN_PROGRESS -> "In Progress";
-            case IN_REVIEW -> "In Review";
-            case DONE -> "Done";
-        };
-    }
-
-    private String statusStyle(TaskStatus s) {
-        return switch (s) {
-            case TODO ->
-                    "-fx-text-fill:#8BA3CC; -fx-background-color:#1C2233; -fx-background-radius:20; -fx-font-size:11px; -fx-font-family:'System Bold'; -fx-padding:3 8 3 8;";
-            case IN_PROGRESS ->
-                    "-fx-text-fill:#A78BFA; -fx-background-color:#1E1633; -fx-background-radius:20; -fx-font-size:11px; -fx-font-family:'System Bold'; -fx-padding:3 8 3 8;";
-            case IN_REVIEW ->
-                    "-fx-text-fill:#F5A623; -fx-background-color:#251900; -fx-background-radius:20; -fx-font-size:11px; -fx-font-family:'System Bold'; -fx-padding:3 8 3 8;";
-            case DONE ->
-                    "-fx-text-fill:#34D399; -fx-background-color:#0C2018; -fx-background-radius:20; -fx-font-size:11px; -fx-font-family:'System Bold'; -fx-padding:3 8 3 8;";
-        };
-    }
-
-    private Button buildActionBtn(String text, String accentHex) {
-        Button b = new Button(text);
-        b.setStyle("-fx-background-color:#1E1C2E; -fx-text-fill:" + accentHex
-                + "; -fx-font-size:11px; -fx-background-radius:8;"
-                + " -fx-border-color:" + accentHex + "33; -fx-border-radius:8; -fx-border-width:1;"
-                + " -fx-cursor:hand;");
-        b.setPadding(new Insets(3, 10, 3, 10));
-        return b;
-    }
-
-    private Label smallLabel(String text) {
-        Label l = new Label(text);
-        l.setTextFill(Color.web("#9D8FBF"));
-        l.setStyle("-fx-font-size:12px;");
-        return l;
-    }
-
     private StringConverter<LocalDate> dateConverter() {
         return new StringConverter<>() {
             @Override
@@ -895,7 +554,6 @@ public class TaskUI_Controller implements Initializable {
             }
         };
     }
-
 
     @FXML
     private void onScrimClicked() {
