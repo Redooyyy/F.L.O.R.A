@@ -1,6 +1,7 @@
 package com.example.flora.Features.Project.UI;
 
 import com.example.flora.Core.Helper.DateAndTime;
+import com.example.flora.Core.Helper.UI_Helper.Builder;
 import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
@@ -43,6 +44,7 @@ public class TaskSectionHandler {
     private Label draftDeadlineChip;
     private VBox taskList;
     private ScrollPane taskScroll;
+    private AnchorPane root;
 
     private boolean addPanelOpen = false;
 
@@ -56,7 +58,7 @@ public class TaskSectionHandler {
                      HBox assignFields, HBox draftFields,
                      TextField taskTitleInput, TextField taskAssigneeInput,
                      Label assignDeadlineChip, TextField draftTitleInput,
-                     Label draftDeadlineChip, VBox taskList, ScrollPane taskScroll) {
+                     Label draftDeadlineChip, VBox taskList, ScrollPane taskScroll, AnchorPane root) {
 
         this.addTaskToggleBtn = addTaskToggleBtn;
         this.filterMenuBtn = filterMenuBtn;
@@ -72,6 +74,18 @@ public class TaskSectionHandler {
         this.draftDeadlineChip = draftDeadlineChip;
         this.taskList = taskList;
         this.taskScroll = taskScroll;
+        this.root = root;
+
+        taskAssigneeInput.sceneProperty().addListener((obs, o, n) -> {
+            if (n != null) new Builder(taskAssigneeInput, root)
+                    .suggestions(q -> viewModel.getMembers().stream()
+                            .filter(m -> q.isBlank() || m.toLowerCase().contains(q.toLowerCase()))
+                            .toList())
+                    .showOnFocus(true)
+                    .onSelect((val, f) -> { f.setText(val); f.positionCaret(val.length()); })
+                    .build()
+                    .attach();
+        });
     }
 
 
@@ -423,6 +437,15 @@ public class TaskSectionHandler {
         field.setPrefWidth(200);
         field.setPrefHeight(30);
         field.getStyleClass().add("modal-text-field");
+
+        new Builder(field, root)
+                .suggestions(q -> viewModel.getMembers().stream()
+                        .filter(m -> q.isBlank() || m.toLowerCase().contains(q.toLowerCase()))
+                        .toList())
+                .showOnFocus(true)
+                .onSelect((val, f) -> { f.setText(val); f.positionCaret(val.length()); })
+                .build()
+                .attach();
 
         Button saveBtn = new Button("✔ Reassign");
         saveBtn.getStyleClass().add("btn-accept");
