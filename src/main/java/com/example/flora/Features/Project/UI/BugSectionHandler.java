@@ -1,5 +1,6 @@
 package com.example.flora.Features.Project.UI;
 
+import com.example.flora.Core.Helper.UI_Helper.Builder;
 import com.example.flora.Features.Bug.model.Bug;
 import com.example.flora.Features.Bug.model.BugSeverity;
 import com.example.flora.Features.Bug.model.BugStatus;
@@ -35,6 +36,8 @@ public class BugSectionHandler {
     private Button bugFilterClosed;
     private VBox bugList;
     private ScrollPane bugScroll;
+    private HBox fltr;
+    private AnchorPane root;
 
     private boolean reportBugPanelOpen = false;
 
@@ -48,7 +51,7 @@ public class BugSectionHandler {
                      ComboBox<String> bugSeverityCombo, Label bugReportFeedback,
                      Button bugFilterAll, Button bugFilterOpen,
                      Button bugFilterProgress, Button bugFilterClosed,
-                     VBox bugList, ScrollPane bugScroll) {
+                     VBox bugList, ScrollPane bugScroll, AnchorPane root, HBox fltr) {
 
         this.reportBugToggleBtn = reportBugToggleBtn;
         this.reportBugPanel = reportBugPanel;
@@ -62,6 +65,19 @@ public class BugSectionHandler {
         this.bugFilterClosed = bugFilterClosed;
         this.bugList = bugList;
         this.bugScroll = bugScroll;
+        this.fltr = fltr;
+        this.root = root;
+
+        bugReporterInput.sceneProperty().addListener((obs, o, n) -> {
+            if (n != null) new Builder(bugReporterInput, root)
+                    .suggestions(q -> viewModel.getMembers().stream()
+                            .filter(m -> q.isBlank() || m.toLowerCase().contains(q.toLowerCase()))
+                            .toList())
+                    .showOnFocus(true)
+                    .onSelect((val, f) -> { f.setText(val); f.positionCaret(val.length()); })
+                    .build()
+                    .attach();
+        });
     }
 
 
@@ -70,7 +86,8 @@ public class BugSectionHandler {
         reportBugPanel.setVisible(reportBugPanelOpen);
         reportBugPanel.setManaged(reportBugPanelOpen);
 
-        AnchorPane.setTopAnchor(bugScroll, reportBugPanelOpen ? 230.0 : 92.0);
+        fltr.setVisible(!reportBugPanelOpen);
+        AnchorPane.setTopAnchor(bugScroll, reportBugPanelOpen ? 210.0 : 92.0);
 
         if (reportBugPanelOpen) {
             reportBugPanel.setOpacity(0);
@@ -380,6 +397,14 @@ public class BugSectionHandler {
         f.setPrefWidth(200);
         f.setPrefHeight(30);
         f.getStyleClass().add("modal-text-field");
+        new Builder(f, root)
+                .suggestions(q -> viewModel.getMembers().stream()
+                        .filter(m -> q.isBlank() || m.toLowerCase().contains(q.toLowerCase()))
+                        .toList())
+                .showOnFocus(true)
+                .onSelect((val, ff) -> { ff.setText(val); ff.positionCaret(val.length()); })
+                .build()
+                .attach();
 
         Button ok = new Button(isReassign ? "✔ Re-assign" : "✔ Assign");
         ok.getStyleClass().add("btn-accept");
