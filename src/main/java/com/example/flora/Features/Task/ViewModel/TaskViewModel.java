@@ -1,5 +1,6 @@
 package com.example.flora.Features.Task.ViewModel;
 
+import com.example.flora.Features.Project.ViewModel.ProjectDetailViewModel;
 import com.example.flora.Features.Task.model.Task;
 import com.example.flora.Features.Task.model.TaskStatus;
 import com.example.flora.Features.Task.service.TaskServices;
@@ -17,6 +18,7 @@ public class TaskViewModel {
 
 
     private final TaskServices taskServices;
+    private ProjectDetailViewModel projectDetailViewModel;
 
 
     private String currentProjectId;
@@ -38,11 +40,14 @@ public class TaskViewModel {
     private LocalDate pendingDraftDeadline;
 
 
-    public TaskViewModel(TaskServices taskServices, String currentUserId) {
+    public TaskViewModel(TaskServices taskServices,String currentUserId) {
         this.taskServices = taskServices;
         this.currentUserId = currentUserId;
     }
 
+    public void setProjectDetailViewModel(ProjectDetailViewModel projectDetailViewModel) {
+        this.projectDetailViewModel = projectDetailViewModel;
+    }
 
     public void init(String projectId, boolean isLeader) {
         this.currentProjectId = projectId;
@@ -200,4 +205,9 @@ public class TaskViewModel {
         title.set("");
         description.set("");
     }
+
+    public ObservableList<String> getMembers() {
+        return projectDetailViewModel.passInTaskView();
+    }
+
 }

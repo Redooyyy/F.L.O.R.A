@@ -1,5 +1,6 @@
 package com.example.flora.Features.Project.ViewModel;
 
+import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import com.example.flora.Features.Bug.model.Bug;
 import com.example.flora.Features.Bug.model.BugSeverity;
 import com.example.flora.Features.Bug.model.BugStatus;
@@ -23,6 +24,7 @@ public class ProjectDetailViewModel {
 
     private final TaskViewModel taskViewModel;
     private final BugViewModel bugViewModel;   // ← injected, no longer self-owned
+    private final AuthViewModel authViewModel;
 
     private Project currentProject;
     private String currentUserId;
@@ -32,10 +34,11 @@ public class ProjectDetailViewModel {
 
     private final IntegerProperty memberCount = new SimpleIntegerProperty(0);
 
-    public ProjectDetailViewModel(TaskViewModel taskViewModel, BugViewModel bugViewModel,String currentUserId) {
+    public ProjectDetailViewModel(TaskViewModel taskViewModel, BugViewModel bugViewModel,AuthViewModel authViewModel,String currentUserId) {
         this.taskViewModel = taskViewModel;
         this.bugViewModel = bugViewModel;
         this.currentUserId = currentUserId;
+        this.authViewModel = authViewModel;
     }
 
     public void init(Project project,boolean isLeader) {
@@ -52,6 +55,14 @@ public class ProjectDetailViewModel {
 
     public TaskViewModel getTaskViewModel() {
         return taskViewModel;
+    }
+
+    public List<String> searchUsers(String query) {
+        if (query == null || query.isBlank()) return List.of();
+        return authViewModel.searchUsers(query)
+                .stream()
+                .filter(u -> !members.contains(u))
+                .toList();
     }
 
     public void assignTask(String title, String assigneeId, LocalDate deadline) {
@@ -216,5 +227,10 @@ public class ProjectDetailViewModel {
         IntegerProperty prop = new SimpleIntegerProperty();
         prop.bind(Bindings.size(taskViewModel.getTasks()));
         return prop;
+    }
+
+    public ObservableList<String>passInTaskView(){
+        loadMembers();
+        return getMembers();
     }
 }
