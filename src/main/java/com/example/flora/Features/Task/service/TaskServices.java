@@ -24,7 +24,9 @@ public class TaskServices {
     public Task assignTask(String title, String description,
                            String projectId, String assigneeId, LocalDate dueDate) {
         Task task = new Task(
-                UUID.randomUUID().toString(),
+                //TODO: fix with generated key must  must
+                //BUG: serious issue  -_-
+               "0",
                 title, description,
                 TaskStatus.TODO,
                 projectId, assigneeId,
