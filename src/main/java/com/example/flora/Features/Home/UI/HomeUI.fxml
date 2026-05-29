@@ -57,6 +57,12 @@
                   <Font size="26.0" />
                </font>
             </Text>
+            <Label fx:id="notificationBadge"
+                   layoutX="912.0" layoutY="18.0"
+                   prefHeight="16.0" prefWidth="16.0"
+                   styleClass="notif-badge"
+                   text="0"
+                   mouseTransparent="true" />
          </children>
       </AnchorPane>
       <VBox fx:id="sidebar" layoutX="-230.0" prefHeight="588.0" prefWidth="209.0" styleClass="sidebar">
