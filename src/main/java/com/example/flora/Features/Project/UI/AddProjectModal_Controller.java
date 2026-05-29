@@ -2,10 +2,7 @@ package com.example.flora.Features.Project.UI;
 
 import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import com.example.flora.Features.Home.UI.HomeUI_Controller;
-import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -151,7 +148,10 @@ public class AddProjectModal_Controller implements Initializable {
                     new ArrayList<>(selectedTechs));
             showFeedback("✔  Project created!", true);
             PauseTransition wait = new PauseTransition(Duration.millis(700));
-            wait.setOnFinished(e -> closePanel());
+            wait.setOnFinished(e -> {
+                closePanel();
+                homeController.loadNotifAfterProjectCreate();
+            });
             wait.play();
         } catch (Exception ex) {
             showFeedback("✘  Failed to create project: " + ex.getMessage(), false);
