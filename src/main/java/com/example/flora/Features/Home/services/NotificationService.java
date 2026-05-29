@@ -35,11 +35,20 @@ public class NotificationService {
     }
 
 
-    public void notifyProjectInvite(int targetUserId, String projectName, String invitedBy, String roleOffered) {
+    public void notifyProjectInvite(int targetUserId, int projectId, String projectName, String invitedBy, String roleOffered) {
         String title = "Project Invitation";
         String desc = invitedBy + " invited you to join: " + projectName;
-        createTyped(targetUserId, title, desc,
-                NotificationType.PROJECT_INVITE, invitedBy, projectName, roleOffered);
+        createTypedWithProject(targetUserId, title, desc,
+                NotificationType.PROJECT_INVITE, invitedBy, projectName, roleOffered, projectId);
+    }
+
+    public void createTypedWithProject(int userId, String title, String desc, NotificationType type,
+                                       String senderName, String projectName, String role, int projectId) {
+        if (repository instanceof NotificationRepositoryImpl impl) {
+            impl.createNotification(userId, title, desc, type, senderName, projectName, role, projectId);
+        } else {
+            repository.createNotification(userId, title, desc);
+        }
     }
 
     public void create(int userId, String title, String desc) {
@@ -63,7 +72,7 @@ public class NotificationService {
         if (repository instanceof NotificationRepositoryImpl impl) {
             impl.createNotification(userId, title, desc, type, senderName, projectName, role);
         } else {
-            repository.createNotification(userId, title, desc); // fallback
+            repository.createNotification(userId, title, desc);
         }
     }
 }

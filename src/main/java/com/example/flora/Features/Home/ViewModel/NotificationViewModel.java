@@ -63,8 +63,7 @@ public class NotificationViewModel {
         if (notification.getType() != NotificationType.PROJECT_INVITE) return;
 
         try {
-            //TODO:ROLE MUST
-            projectService.addMember(notification.getProjectName(), userStringID);
+            projectService.addMember(Integer.toString(notification.getProjectID()), userStringID);
         } catch (Exception e) {
             throw new RuntimeException("Failed to accept invitation: " + e.getMessage(), e);
         }
@@ -79,8 +78,8 @@ public class NotificationViewModel {
         delete(notification);
     }
 
-    public void createTestInvite(int userId, String project, String sender, String role) {
-        notificationService.notifyProjectInvite(userId, project, sender, role);
+    public void createTestInvite(int userId,int projectID, String project, String sender, String role) {
+        notificationService.notifyProjectInvite(userId,projectID, project, sender, role);
     }
 
     public void createTestTaskAssigned(int userId, String task, String project, String sender) {

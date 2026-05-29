@@ -1,6 +1,7 @@
 package com.example.flora.Features.Project.service;
 
 import com.example.flora.Core.Helper.DateAndTime;
+import com.example.flora.Core.Notify.Notify;
 import com.example.flora.Features.Project.model.Project;
 import com.example.flora.Features.Project.model.ProjectMembership;
 import com.example.flora.Features.Project.model.ProjectRole;
@@ -31,6 +32,7 @@ public class ProjectService {
                 DateAndTime.now(), devices, techs);
         projectRepository.save(project);
         projectRepository.addMember(project.getId(), ownerID, ProjectRole.LEADER);
+        Notify.projectCreated(Integer.parseInt(ownerID),name);
         return project;
     }
 

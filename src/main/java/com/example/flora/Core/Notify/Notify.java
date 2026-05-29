@@ -11,8 +11,8 @@ public final class Notify {
         return NotifySession.getNotificationService();
     }
 
-    public static void invite(int receiverId, String projectName, String senderName, String role) {
-        svc().notifyProjectInvite(receiverId, projectName, senderName, role);
+    public static void invite(int receiverId, int projectId, String projectName, String senderName, String role) {
+        svc().notifyProjectInvite(receiverId, projectId, projectName, senderName, role);
     }
 
     public static void removedFromProject(int receiverId, String projectName, String senderName) {
@@ -23,6 +23,11 @@ public final class Notify {
     public static void projectDeleted(int receiverId, String projectName) {
         svc().create(receiverId, "Project deleted",
                 String.format("The project \"%s\" has been deleted by its leader.", projectName));
+    }
+
+    public static void projectCreated(int receiverId, String projectName) {
+        svc().create(receiverId, "Project created",
+                String.format("Your project \"%s\" has been created successfully.", projectName));
     }
 
     public static void taskAssigned(int receiverId, String taskName, String projectName, String senderName) {

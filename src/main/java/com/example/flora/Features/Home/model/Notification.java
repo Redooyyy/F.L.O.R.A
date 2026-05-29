@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Notification {
 
     private final int id;
+    private final int projectID;
     private final String title;
     private final String description;
     private final LocalDateTime time;
@@ -15,8 +16,9 @@ public class Notification {
     private final String projectName;
     private final String role;
 
-    public Notification(int id, String title, String description, LocalDateTime time, boolean isRead, NotificationType type, String senderName, String projectName, String role) {
+    public Notification(int id,int projectID, String title, String description, LocalDateTime time, boolean isRead, NotificationType type, String senderName, String projectName, String role) {
         this.id = id;
+        this.projectID = projectID;
         this.title = title;
         this.description = description;
         this.time = time;
@@ -29,6 +31,10 @@ public class Notification {
 
     public int getId() {
         return id;
+    }
+
+    public int getProjectID() {
+        return projectID;
     }
 
     public String getTitle() {

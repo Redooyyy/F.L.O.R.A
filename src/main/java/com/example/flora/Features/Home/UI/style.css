@@ -479,3 +479,15 @@
     -fx-background-color: rgba(52,211,153,0.22);
     -fx-border-color: #34D399;
 }
+
+.notif-badge {
+    -fx-background-color: #E53E3E;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+    -fx-padding: 0 3 0 3;
+    -fx-min-width: 16;
+    -fx-min-height: 16;
+}

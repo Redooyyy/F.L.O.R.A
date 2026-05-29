@@ -16,7 +16,9 @@ import com.example.flora.Features.Project.model.Project;
 import com.example.flora.Features.Settings.UI.SettingsUI_Controller;
 import com.example.flora.Features.Task.UI.TaskUI_Controller;
 import com.example.flora.Features.Task.model.TaskStatus;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -55,6 +57,8 @@ public class HomeUI_Controller implements Initializable {
     private ScrollPane notificationScroll;
     @FXML
     private Button clearAllButton;
+    @FXML
+    private Label notificationBadge;
 
     @FXML
     private AnchorPane notificationShow;
@@ -127,6 +131,7 @@ public class HomeUI_Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadStatus();
+        keepMeUpdate();
         removeScrollBar(notificationScroll);
         notificationScroll.setFitToWidth(true);
 
@@ -168,6 +173,27 @@ public class HomeUI_Controller implements Initializable {
         loadNotificationCard();
     }
 
+    private void updateBadge() {
+        long count = notificationViewModel.getNotifications().stream()
+                .filter(n -> !n.isRead())
+                .count();
+        if (count == 0) {
+            notificationBadge.setVisible(false);
+        } else {
+            notificationBadge.setVisible(true);
+            notificationBadge.setText(count > 99 ? "99+" : String.valueOf(count));
+        }
+    }
+
+    public void loadNotifAfterProjectCreate (){notificationViewModel.load();}
+    //loader every 10 sec
+    private void keepMeUpdate(){
+        Timeline poller = new Timeline(
+                new KeyFrame(Duration.seconds(10), e -> notificationViewModel.load())
+        );
+        poller.setCycleCount(Timeline.INDEFINITE);
+        poller.play();
+    }
 
     @FXML
     private void notificationCircle(MouseEvent mouseEvent) {
@@ -210,6 +236,7 @@ public class HomeUI_Controller implements Initializable {
             controller.setData(this, notificationViewModel, notification);
             notificationBar.getChildren().add(card);
         }
+        updateBadge();
     }
 
 

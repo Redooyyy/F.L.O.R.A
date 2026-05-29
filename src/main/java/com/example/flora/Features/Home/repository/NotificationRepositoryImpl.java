@@ -21,6 +21,7 @@ import java.util.List;
  *     role         VARCHAR(100),
  *     is_read      BOOLEAN      NOT NULL DEFAULT FALSE,
  *     created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+ *     project_id   INT         DEFAULT NULL
  * );
  */
 public class NotificationRepositoryImpl implements NotificationRepository {
@@ -57,6 +58,36 @@ public class NotificationRepositoryImpl implements NotificationRepository {
             ps.setString(5, senderName);
             ps.setString(6, projectName);
             ps.setString(7, role);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to create notification: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void createNotification(int userId,
+                                   String title,
+                                   String description,
+                                   NotificationType type,
+                                   String senderName,
+                                   String projectName,
+                                   String role,
+                                   Integer projectId) {  // added
+        String sql = """
+            INSERT INTO notifications
+                (user_id, title, description, type, sender_name, project_name, role, project_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt   (1, userId);
+            ps.setString(2, title);
+            ps.setString(3, description);
+            ps.setString(4, type.name());
+            ps.setString(5, senderName);
+            ps.setString(6, projectName);
+            ps.setString(7, role);
+            if (projectId != null) ps.setInt(8, projectId);
+            else ps.setNull(8, Types.INTEGER);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create notification: " + e.getMessage(), e);
@@ -123,6 +154,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
         return new Notification(
                 rs.getInt   ("id"),
+                rs.getInt("project_id"),
                 rs.getString("title"),
                 rs.getString("description"),
                 rs.getTimestamp("created_at").toLocalDateTime(),
