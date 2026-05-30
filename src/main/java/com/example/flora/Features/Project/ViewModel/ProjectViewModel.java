@@ -61,6 +61,9 @@ public class ProjectViewModel {
         }
     }
 
+    public void addMembers(String projectID, String invitedUserID){
+        projectService.addMember(projectID,invitedUserID);
+    }
 
     public void createProject() {
         try {
@@ -138,6 +141,10 @@ public class ProjectViewModel {
 
     public ObservableList<String> getTechs() {
         return techs;
+    }
+
+    public List<String> getMembers(String projectId) {
+        return projectService.getProjectMembers(projectId);
     }
 
 

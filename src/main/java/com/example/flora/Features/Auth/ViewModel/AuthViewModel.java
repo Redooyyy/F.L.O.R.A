@@ -25,4 +25,12 @@ public class AuthViewModel {
     public List<String> searchUsers(String query) {
         return authService.searchUsers(query);
     }
+
+    public User findByUserName(String username){
+        return authService.findByUsername(username);
+    }
+
+    public User findByUserID(Integer id){
+        return authService.findByID(id);
+    }
 }

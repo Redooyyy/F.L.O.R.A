@@ -25,6 +25,7 @@ public class ProjectDetailViewModel {
     private final TaskViewModel taskViewModel;
     private final BugViewModel bugViewModel;   // ← injected, no longer self-owned
     private final AuthViewModel authViewModel;
+    private final ProjectViewModel projectViewModel;
 
     private Project currentProject;
     private String currentUserId;
@@ -34,7 +35,8 @@ public class ProjectDetailViewModel {
 
     private final IntegerProperty memberCount = new SimpleIntegerProperty(0);
 
-    public ProjectDetailViewModel(TaskViewModel taskViewModel, BugViewModel bugViewModel,AuthViewModel authViewModel,String currentUserId) {
+    public ProjectDetailViewModel(ProjectViewModel projectViewModel,TaskViewModel taskViewModel, BugViewModel bugViewModel,AuthViewModel authViewModel,String currentUserId) {
+        this.projectViewModel = projectViewModel;
         this.taskViewModel = taskViewModel;
         this.bugViewModel = bugViewModel;
         this.currentUserId = currentUserId;
@@ -187,13 +189,13 @@ public class ProjectDetailViewModel {
 
     private void loadMembers() {
         members.clear();
-        members.addAll("bushra", "farhan", "reo"); // TODO: replace with real MemberService call
+        members.addAll(projectViewModel.getMembers(currentProject.getId()));
         memberCount.set(members.size());
     }
 
     public boolean sendInvite(String username) {
         if (username.isBlank()) return false;
-        // TODO: invitationService.sendInvite(...)
+        projectViewModel.addMembers(currentProject.getId(),authViewModel.findByUserName(username).getId().toString());
         return true;
     }
 
@@ -232,5 +234,9 @@ public class ProjectDetailViewModel {
     public ObservableList<String>passInTaskView(){
         loadMembers();
         return getMembers();
+    }
+
+    public String getLeaderUsername() {
+        return authViewModel.findByUserID(Integer.parseInt(currentProject.getOwnerId())).getUsername();
     }
 }

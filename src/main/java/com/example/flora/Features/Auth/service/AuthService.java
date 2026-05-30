@@ -45,6 +45,14 @@ public class AuthService {
         return user;
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User findByID(Integer id){
+        return userRepository.findByID(id);
+    }
+
     public List<String> searchUsers(String query) {
         return userRepository.searchByUsernameLike(query);
     }
