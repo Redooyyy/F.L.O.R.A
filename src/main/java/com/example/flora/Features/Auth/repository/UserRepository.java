@@ -10,4 +10,5 @@ public interface UserRepository {
     User findByEmail(String email);
     boolean userExist(String email);
     List<String> searchByUsernameLike(String query);
+    User findByUsername(String username);
 }

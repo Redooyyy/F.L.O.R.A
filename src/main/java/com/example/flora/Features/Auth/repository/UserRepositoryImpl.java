@@ -43,6 +43,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapRow(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find user by username: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
+    @Override
     public User findByID(Integer id) {
         String sql = "SELECT * FROM users WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
