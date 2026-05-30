@@ -29,4 +29,6 @@ public interface ProjectRepository {
     void removeMember(String projectId, String userId);
 
     Optional<ProjectRole> findUserRole(String projectId, String userId);
+
+    List<String> findMemberUsernamesByProjectId(String projectId);
 }

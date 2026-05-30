@@ -194,6 +194,25 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         return Optional.empty();
     }
 
+    @Override
+    public List<String> findMemberUsernamesByProjectId(String projectId) {
+        String sql = """
+            SELECT u.username
+            FROM users u
+            JOIN project_members pm ON pm.user_id = u.id
+            WHERE pm.project_id = ?
+            """;
+        List<String> usernames = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, projectId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) usernames.add(rs.getString("username"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch project members: " + e.getMessage(), e);
+        }
+        return usernames;
+    }
+
     private List<ProjectMembership> queryMemberships(String sql, String userId) {
         List<ProjectMembership> results = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

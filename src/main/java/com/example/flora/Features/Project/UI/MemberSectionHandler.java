@@ -61,9 +61,9 @@ public class MemberSectionHandler {
 
     public void renderMembers() {
         memberList.getChildren().clear();
-        String leaderId = viewModel.getCurrentProject().getOwnerId();
+        String leaderUsername = viewModel.getLeaderUsername();
         for (String username : viewModel.getMembers()) {
-            memberList.getChildren().add(buildMemberRow(username, username.equals(leaderId)));
+            memberList.getChildren().add(buildMemberRow(username, username.equals(leaderUsername)));
         }
     }
 

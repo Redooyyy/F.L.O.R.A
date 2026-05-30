@@ -17,7 +17,7 @@ import java.util.Optional;
 public class BugViewModel {
 
     private final BugService service;
-    private String currentUserId;
+    private final String currentUserId;
 
 
     private final ObservableList<Bug> filteredBugs = FXCollections.observableArrayList();
@@ -52,7 +52,6 @@ public class BugViewModel {
     public BugViewModel(BugService service,String currentUserId) {
         this.service = service;
         this.currentUserId = currentUserId;
-        refresh();
     }
 
 

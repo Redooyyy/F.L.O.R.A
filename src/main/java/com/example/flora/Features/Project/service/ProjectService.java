@@ -46,6 +46,9 @@ public class ProjectService {
 
     public void addMember(String projectId, String userId) {
         projectRepository.addMember(projectId, userId, ProjectRole.MEMBER);
+        String projectName = projectRepository.findById(projectId).map(Project::getName).orElse("Unknown");
+        String leaderName = projectRepository.findById(projectId).map(Project::getOwnerId).orElse("Unknown");
+        Notify.invite(Integer.parseInt(userId),Integer.parseInt(projectId),projectName,leaderName,"Leader");
     }
 
     public void removeMember(String projectId, String userId) {
@@ -80,5 +83,9 @@ public class ProjectService {
     @Deprecated
     public List<Project> getProjectsByOwner(String ownerId) {
         return projectRepository.findByOwnerId(ownerId);
+    }
+
+    public List<String> getProjectMembers(String projectId) {
+        return projectRepository.findMemberUsernamesByProjectId(projectId);
     }
 }
