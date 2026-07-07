@@ -47,7 +47,7 @@ public class MemberSectionHandler {
 
     public void sendInvite(ActionEvent event) {
         String username = inviteSearchField.getText().trim();
-        boolean ok = viewModel.sendInvite(username);
+        boolean ok = viewModel.sendInvite(username,Integer.parseInt(viewModel.getCurrentProject().getId()),viewModel.getCurrentProject().getName(),viewModel.getCurrentUserId());
         inviteFeedback.setText(ok ? "✔ Invite sent to @" + username : "✖ Could not send invite.");
         inviteFeedback.getStyleClass().removeAll("feedback-ok", "feedback-err");
         inviteFeedback.getStyleClass().add(ok ? "feedback-ok" : "feedback-err");

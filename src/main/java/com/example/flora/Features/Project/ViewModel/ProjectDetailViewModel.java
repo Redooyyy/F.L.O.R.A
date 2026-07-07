@@ -1,5 +1,6 @@
 package com.example.flora.Features.Project.ViewModel;
 
+import com.example.flora.Core.Notify.Notify;
 import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import com.example.flora.Features.Bug.model.Bug;
 import com.example.flora.Features.Bug.model.BugSeverity;
@@ -193,9 +194,9 @@ public class ProjectDetailViewModel {
         memberCount.set(members.size());
     }
 
-    public boolean sendInvite(String username) {
+    public boolean sendInvite(String username, Integer projectId,String projectName,String leaderName) {
         if (username.isBlank()) return false;
-        projectViewModel.addMembers(currentProject.getId(),authViewModel.findByUserName(username).getId().toString());
+        Notify.invite(authViewModel.findByUserName(username).getId(),projectId,projectName,leaderName,"Leader");
         return true;
     }
 
