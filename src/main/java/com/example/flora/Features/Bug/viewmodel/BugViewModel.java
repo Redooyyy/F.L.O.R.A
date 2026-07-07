@@ -4,7 +4,10 @@ import com.example.flora.Features.Bug.model.Bug;
 import com.example.flora.Features.Bug.model.BugSeverity;
 import com.example.flora.Features.Bug.model.BugStatus;
 import com.example.flora.Features.Bug.service.BugService;
+import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
+import com.example.flora.Features.Project.model.Project;
 import com.example.flora.Features.Bug.service.BugService.ProjectSummary;
+import com.example.flora.Features.Auth.ViewModel.AuthViewModel;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,11 +15,14 @@ import javafx.collections.ObservableList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.ArrayList;
 
 
 public class BugViewModel {
 
     private final BugService service;
+    private final ProjectViewModel projectViewModel;
+    private final AuthViewModel authViewModel;
     private final String currentUserId;
 
 
@@ -49,9 +55,12 @@ public class BugViewModel {
     private final ObservableList<ProjectSummary> projectSummaries =
             FXCollections.observableArrayList();
 
-    public BugViewModel(BugService service,String currentUserId) {
+    public BugViewModel(BugService service, ProjectViewModel projectViewModel, AuthViewModel authViewModel, String currentUserId) {
         this.service = service;
+        this.projectViewModel = projectViewModel;
+        this.authViewModel = authViewModel;
         this.currentUserId = currentUserId;
+        refresh();
     }
 
 
@@ -133,7 +142,16 @@ public class BugViewModel {
 
     public String getProjectLeader(String projectName) {
         String leader = service.getProjectLeader(projectName);
-        return leader.isBlank() ? "—" : leader;
+        return getUsernameById(leader);
+    }
+    
+    public String getUsernameById(String userId) {
+        if (userId == null || userId.isBlank()) return "—";
+        try {
+            return authViewModel.findByUserID(Integer.parseInt(userId)).getUsername();
+        } catch (Exception e) {
+            return userId; // Fallback
+        }
     }
 
 
@@ -207,9 +225,34 @@ public class BugViewModel {
 
 
     private void refresh() {
-        Map<String, ProjectSummary> summaryMap = service.getProjectSummaries();
-        projectSummaries.setAll(summaryMap.values());
+        if (projectViewModel.getProjects().isEmpty()) {
+            projectViewModel.loadProject();
+        }
 
+        Map<String, ProjectSummary> summaryMap = service.getProjectSummaries();
+        
+        List<ProjectSummary> orderedSummaries = new java.util.ArrayList<>();
+        
+        long totalOpen = 0, totalCrit = 0, totalHigh = 0, totalMed = 0, totalLow = 0;
+
+        // Add user's projects that have bugs
+        for (Project p : projectViewModel.getProjects()) {
+            ProjectSummary summary = summaryMap.get(p.getName());
+            if (summary != null) {
+                orderedSummaries.add(summary);
+                totalOpen += summary.openCount();
+                totalCrit += summary.criticalOpen();
+                totalHigh += summary.highOpen();
+                totalMed += summary.mediumOpen();
+                totalLow += summary.lowOpen();
+            }
+        }
+        
+        // Insert a custom "All Projects" summary at the top
+        ProjectSummary allSummary = new ProjectSummary(null, "", totalOpen, totalCrit, totalHigh, totalMed, totalLow);
+        orderedSummaries.add(0, allSummary);
+
+        projectSummaries.setAll(orderedSummaries);
         applyFilters();
     }
 
@@ -219,7 +262,17 @@ public class BugViewModel {
                 activeSeverity.get(),
                 activeStatus.get()
         );
-        filteredBugs.setAll(result);
-        bugCount.set(result.size());
+        
+        // Ensure we only show bugs from projects the user is actually involved in
+        List<String> userProjectNames = projectViewModel.getProjects().stream()
+                .map(Project::getName)
+                .toList();
+                
+        List<Bug> finalResult = result.stream()
+                .filter(b -> userProjectNames.contains(b.getProjectName()))
+                .toList();
+
+        filteredBugs.setAll(finalResult);
+        bugCount.set(finalResult.size());
     }
 }

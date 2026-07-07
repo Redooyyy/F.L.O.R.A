@@ -56,7 +56,11 @@ public class ProjectUI_Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setNickname("Bushra");
+        if (com.example.flora.Core.Session.UserSession.getUser() != null) {
+            setNickname(com.example.flora.Core.Session.UserSession.getUser().getUsername());
+        } else {
+            setNickname("User");
+        }
         removeScrollBar(projectCardView);
 
         projectViewModel.loadProject();
@@ -91,6 +95,32 @@ public class ProjectUI_Controller implements Initializable {
         projectGrid.getChildren().clear();
 
         List<Project> projects = projectViewModel.getProjects();
+        
+        // Update stats
+        if (totalProject != null) totalProject.setText(String.valueOf(projects.size()));
+        
+        int completedCount = 0;
+        int inProgressCount = 0;
+        int onHoldCount = 0;
+        int outOfScheduleCount = 0;
+
+        for (Project project : projects) {
+            String status = project.getStatus();
+            if ("COMPLETED".equalsIgnoreCase(status) || "DONE".equalsIgnoreCase(status)) {
+                completedCount++;
+            } else if ("ON_HOLD".equalsIgnoreCase(status)) {
+                onHoldCount++;
+            } else if ("PLANNING".equalsIgnoreCase(status) || "OUT_OF_SCHEDULE".equalsIgnoreCase(status)) {
+                outOfScheduleCount++;
+            } else {
+                inProgressCount++;
+            }
+        }
+
+        if (completedProject != null) completedProject.setText(String.valueOf(completedCount));
+        if (inProgressProject != null) inProgressProject.setText(String.valueOf(inProgressCount));
+        if (onholdProject != null) onholdProject.setText(String.valueOf(onHoldCount));
+        if (outOfScheduleProject != null) outOfScheduleProject.setText(String.valueOf(outOfScheduleCount));
 
         for (int i = 0; i < projects.size(); i++) {
             int col = i % 3;
@@ -116,7 +146,7 @@ public class ProjectUI_Controller implements Initializable {
 
         boolean isLeader = projectViewModel.isLeaderOf(project);
 
-        cardController.setData(project, projectViewModel.getCurrUserID(), detailController);
+        cardController.setData(project, projectViewModel, detailController);
 
         return card;
     }

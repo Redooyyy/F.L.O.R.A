@@ -129,6 +129,13 @@ public class BugUI_Controller implements Initializable {
 
 
     private void buildProjectSummaryPanel() {
+        viewModel.projectSummaries().addListener((javafx.collections.ListChangeListener<ProjectSummary>) c -> {
+            renderProjectSummaryPanel();
+        });
+        renderProjectSummaryPanel();
+    }
+
+    private void renderProjectSummaryPanel() {
         projectBugSummaryScroll.getChildren()
                 .removeIf(n -> !(n instanceof Label l && l.getStyleClass().contains("left-panel-header")));
 
@@ -165,7 +172,7 @@ public class BugUI_Controller implements Initializable {
             leaderRow.setAlignment(Pos.CENTER_LEFT);
             Label leaderKey = new Label("Leader:");
             leaderKey.setStyle("-fx-text-fill: #4A4060; -fx-font-size: 10px;");
-            Label leaderVal = new Label("@" + summary.leaderUserId());
+            Label leaderVal = new Label("@" + viewModel.getUsernameById(summary.leaderUserId()));
             leaderVal.setStyle("-fx-text-fill: #A855F7; -fx-font-size: 10px; -fx-font-weight: bold;");
             leaderRow.getChildren().addAll(leaderKey, leaderVal);
             card.getChildren().addAll(topRow, leaderRow);

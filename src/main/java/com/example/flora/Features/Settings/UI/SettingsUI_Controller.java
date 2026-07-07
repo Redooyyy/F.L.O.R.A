@@ -524,8 +524,14 @@ public class SettingsUI_Controller implements Initializable {
 
     private void initDemoIfEmpty() {
         if (viewModel.displayNameProperty().get().isBlank()) {
-            viewModel.displayNameProperty().set("Bushra Rahman");
-            viewModel.emailProperty().set("bushra@flora.app");
+            com.example.flora.Features.Auth.model.User user = com.example.flora.Core.Session.UserSession.getUser();
+            if (user != null) {
+                viewModel.displayNameProperty().set(user.getUsername());
+                viewModel.emailProperty().set(user.getEmail());
+            } else {
+                viewModel.displayNameProperty().set("User");
+                viewModel.emailProperty().set("user@flora.app");
+            }
             viewModel.bioProperty().set("Project lead & developer at Flora.");
         }
     }

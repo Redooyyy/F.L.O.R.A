@@ -1,6 +1,7 @@
 package com.example.flora.Features.Project.UI.Card;
 
 import com.example.flora.Features.Project.UI.ProjectDetailUI_Controller;
+import com.example.flora.Features.Project.ViewModel.ProjectViewModel;
 import com.example.flora.Features.Project.model.Project;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,7 +38,7 @@ public class ProjectCard_Controller implements Initializable {
     private Label      createdAtLabel;
 
     private Project project;
-    private String currentUserId;
+    private ProjectViewModel projectViewModel;
     private ProjectDetailUI_Controller detailController;
     private boolean isLeader;
 
@@ -54,22 +55,23 @@ public class ProjectCard_Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) { }
 
 
-    public void setData(Project project, String currentUserId,
+    public void setData(Project project, ProjectViewModel projectViewModel,
                         ProjectDetailUI_Controller detailController) {
-        setData(project, currentUserId, detailController,
-                List.of("Desktop", "Mobile", "Web"),
-                List.of("Java", "JavaFX", "SQL"),
-                "PLANNING");
+        setData(project, projectViewModel, detailController,
+                project.getDevices() != null && !project.getDevices().isEmpty() ? project.getDevices() : List.of("Desktop", "Mobile", "Web"),
+                project.getTechs() != null && !project.getTechs().isEmpty() ? project.getTechs() : List.of("Java", "JavaFX", "SQL"),
+                project.getStatus() != null ? project.getStatus() : "PLANNING");
     }
 
-    public void setData(Project project, String currentUserId, ProjectDetailUI_Controller detailController, List<String> devices, List<String> techs, String status) {
+    public void setData(Project project, ProjectViewModel projectViewModel, ProjectDetailUI_Controller detailController, List<String> devices, List<String> techs, String status) {
         this.project          = project;
-        this.currentUserId    = currentUserId;
+        this.projectViewModel = projectViewModel;
         this.detailController = detailController;
-        this.isLeader         = project.getOwnerId().equals(currentUserId);
+        this.isLeader         = projectViewModel.isLeaderOf(project);
 
         projectName.setText(project.getName());
-        projectLead.setText(project.getOwnerId());
+        String leaderUsername = detailController != null ? detailController.getUsernameById(project.getOwnerId()) : project.getOwnerId();
+        projectLead.setText("@" + leaderUsername);
         createdAtLabel.setText(project.getCreatedAt() != null ? project.getCreatedAt() : "");
 
 
@@ -93,7 +95,7 @@ public class ProjectCard_Controller implements Initializable {
         }
 
         rootCard.setOnMouseClicked(e -> detailController.openProject(
-                project, currentUserId, isLeader, () -> { }
+                project, projectViewModel.getCurrUserID(), isLeader, () -> { }
         ));
     }
 
@@ -102,10 +104,11 @@ public class ProjectCard_Controller implements Initializable {
     private void cycleProjectStatus() {
         if (!isLeader) return;
         statusIndex = (statusIndex + 1) % STATUS_OPTIONS.length;
-        applyStatus(STATUS_OPTIONS[statusIndex]);
+        String newStatus = STATUS_OPTIONS[statusIndex];
+        applyStatus(newStatus);
 
-        // TODO: persist the new status
-        // projectViewModel.updateStatus(project.getId(), STATUS_OPTIONS[statusIndex]);
+        project.setStatus(newStatus);
+        projectViewModel.updateProject(project);
     }
 
 

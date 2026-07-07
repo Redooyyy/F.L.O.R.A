@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseManager {
-   private static String url = "jdbc:mysql://localhost:3306/floraDB";
+   private static String url = "jdbc:mysql://localhost:3306/FloraDB";
    private static String user = "root";
    private static String password = "20052005";
    private static DatabaseManager databaseManager; //self referential

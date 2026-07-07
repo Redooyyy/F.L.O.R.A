@@ -11,6 +11,7 @@ public class Project {
     private String createdAt;
     private List<String> devices = new ArrayList<>();
     private List<String> techs = new ArrayList<>();
+    private String status = "PLANNING";
 
     public Project() {
     }
@@ -84,5 +85,13 @@ public class Project {
 
     public void setTechs(List<String> t) {
         this.techs = t != null ? t : new ArrayList<>();
+    }
+
+    public String getStatus() {
+        return status != null ? status : "PLANNING";
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

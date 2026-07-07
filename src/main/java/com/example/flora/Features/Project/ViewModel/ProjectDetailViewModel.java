@@ -209,6 +209,13 @@ public class ProjectDetailViewModel {
         return currentProject;
     }
 
+    public void updateCurrentProjectStatus(String status) {
+        if (currentProject != null) {
+            currentProject.setStatus(status);
+            projectViewModel.updateProject(currentProject);
+        }
+    }
+
     public String getCurrentUserId() {
         return currentUserId;
     }
@@ -237,6 +244,14 @@ public class ProjectDetailViewModel {
     }
 
     public String getLeaderUsername() {
-        return authViewModel.findByUserID(Integer.parseInt(currentProject.getOwnerId())).getUsername();
+        return getUsernameById(currentProject.getOwnerId());
+    }
+
+    public String getUsernameById(String userId) {
+        try {
+            return authViewModel.findByUserID(Integer.parseInt(userId)).getUsername();
+        } catch (Exception e) {
+            return userId; // Fallback to ID if not found
+        }
     }
 }
