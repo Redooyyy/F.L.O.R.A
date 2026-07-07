@@ -92,6 +92,11 @@ public class ProjectViewModel {
         loadProject();
     }
 
+    public void updateProject(Project project) {
+        projectService.updateProject(project);
+        loadProject();
+    }
+
 
     public boolean isLeaderOf(Project project) {
         return memberships.stream()

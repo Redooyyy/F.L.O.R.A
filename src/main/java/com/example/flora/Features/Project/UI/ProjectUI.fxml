@@ -36,13 +36,13 @@
                </font>
             </Text>
             <Separator layoutX="20.0" layoutY="288.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
-            <Text fill="#b5b5b5" layoutX="22.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In Progress" wrappingWidth="91.0">
+            <Text fill="#b5b5b5" layoutX="22.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Active" wrappingWidth="91.0">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Text>
             <Separator layoutX="149.0" layoutY="288.0" orientation="VERTICAL" prefHeight="41.0" prefWidth="8.0" />
-            <Text fill="#b5b5b5" layoutX="157.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Out of Scedule" wrappingWidth="102.0">
+            <Text fill="#b5b5b5" layoutX="157.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planning" wrappingWidth="102.0">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

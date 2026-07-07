@@ -22,8 +22,8 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
     @Override
     public void save(Project project) {
-        String sql = "INSERT INTO projects (name, description, owner_id, created_at, devices, techs) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO projects (name, description, owner_id, created_at, devices, techs, status) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, project.getName());
             ps.setString(2, project.getDescription());
@@ -31,6 +31,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             ps.setString(4, project.getCreatedAt());
             ps.setString(5, joinList(project.getDevices()));
             ps.setString(6, joinList(project.getTechs()));
+            ps.setString(7, project.getStatus());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -44,7 +45,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     public void update(Project project) {
         String sql = """
                 UPDATE projects
-                SET name = ?, description = ?, owner_id = ?, devices = ?, techs = ?
+                SET name = ?, description = ?, owner_id = ?, devices = ?, techs = ?, status = ?
                 WHERE id = ?
                 """;
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -53,7 +54,8 @@ public class ProjectRepositoryImpl implements ProjectRepository {
             ps.setString(3, project.getOwnerId());
             ps.setString(4, joinList(project.getDevices()));
             ps.setString(5, joinList(project.getTechs()));
-            ps.setString(6, project.getId());
+            ps.setString(6, project.getStatus());
+            ps.setString(7, project.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Failed to update project: " + e.getMessage(), e);
@@ -234,7 +236,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     private Project mapRow(ResultSet rs) throws SQLException {
         List<String> devices = splitList(safeGetString(rs, "devices"));
         List<String> techs = splitList(safeGetString(rs, "techs"));
-        return new Project(
+        Project project = new Project(
                 rs.getString("id"),
                 rs.getString("name"),
                 rs.getString("description"),
@@ -243,6 +245,8 @@ public class ProjectRepositoryImpl implements ProjectRepository {
                 devices,
                 techs
         );
+        project.setStatus(safeGetString(rs, "status"));
+        return project;
     }
 
     private String joinList(List<String> list) {

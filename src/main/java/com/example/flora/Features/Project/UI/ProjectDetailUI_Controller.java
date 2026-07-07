@@ -138,6 +138,10 @@ public class ProjectDetailUI_Controller implements Initializable {
         this.viewModel = viewModel;
     }
 
+    public String getUsernameById(String userId) {
+        return viewModel.getUsernameById(userId);
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -338,7 +342,7 @@ public class ProjectDetailUI_Controller implements Initializable {
                 project.getDescription() == null || project.getDescription().isBlank()
                         ? "No description." : project.getDescription());
         infoCreated.setText(project.getCreatedAt() != null ? project.getCreatedAt() : "—");
-        infoLeader.setText("@" + project.getOwnerId());
+        infoLeader.setText("@" + viewModel.getLeaderUsername());
         statTasks.setText(String.valueOf(viewModel.taskCountProperty().get()));
         statBugs.setText(String.valueOf(viewModel.bugCountProperty().get()));
         infoMemberCount.setText(viewModel.memberCountProperty().get() + " members");

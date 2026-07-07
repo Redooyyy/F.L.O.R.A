@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS projects (
     created_at  VARCHAR(50)  NOT NULL,
     devices     TEXT         DEFAULT '',
     techs       TEXT         DEFAULT '',
+    status      VARCHAR(50)  DEFAULT 'IN_PROGRESS',
 
     FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );

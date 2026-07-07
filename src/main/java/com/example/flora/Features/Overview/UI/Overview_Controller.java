@@ -1,7 +1,11 @@
 package com.example.flora.Features.Overview.UI;
 
+import com.example.flora.Core.DI.AppContainer;
 import com.example.flora.Features.Home.UI.Cards.ProjectShowCardController;
 import com.example.flora.Features.Home.UI.Cards.TaskNotifyController;
+import com.example.flora.Features.Project.model.Project;
+import com.example.flora.Features.Task.model.Task;
+import com.example.flora.Features.Task.model.TaskStatus;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,6 +17,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Overview_Controller implements Initializable {
@@ -30,30 +35,56 @@ public class Overview_Controller implements Initializable {
     @FXML
     private Label dueTask;
 
+    private final AppContainer appContainer;
 
+    public Overview_Controller(AppContainer appContainer) {
+        this.appContainer = appContainer;
+    }
 
-    //NOTE: Dummy data for testing
-    void dummyData(){
+    //NOTE: Load data from DB
+    void loadData(){
         try {
-            loadProjectCard("F.L.O.R.A","Full-Stack","Redoy","In-Progress",.25);
-            loadProjectCard("M.E.M.O.","Full-Stack","Redoy","In-Progress",.45);
-            loadProjectCard("Hospital Management System","Full-Stack","Redoy","In-Progress",.95);
-            loadProjectCard("AI-Assistant","Full-Stack","Redoy","In-Progress",.55);
-            loadProjectCard("Student Portal","Full-Stack","Redoy","In-Progress",.15);
-            loadProjectCard("Weather App","Full-Stack","Redoy","In-Progress",1.00);
+            appContainer.getProjectViewModel().loadProject();
+            List<Project> projects = appContainer.getProjectViewModel().getProjects();
+            int completedTasksCount = 0;
+            int dueTasksCount = 0;
 
-            loadTaskNotifyCard("Project Management System","15");
-            loadTaskNotifyCard("MEMO","25");
-            loadTaskNotifyCard("Hospital Management System","35");
-            loadTaskNotifyCard("Student Portal","5");
-            loadTaskNotifyCard("Weather App","55");
+            for (Project project : projects) {
+                String leadName = "Unknown";
+                List<String> members = appContainer.getProjectViewModel().getMembers(project.getId());
+                if(members != null && !members.isEmpty()) {
+                    leadName = members.get(0); // Approximate lead
+                }
+
+                appContainer.getTaskViewModel().init(project.getId(), true);
+                List<Task> tasks = appContainer.getTaskViewModel().getTasks();
+                int projectTaskCount = tasks.size();
+
+                double progress = 0.0;
+                if(projectTaskCount > 0) {
+                    long doneTasks = tasks.stream().filter(t -> t.getStatus() == TaskStatus.DONE).count();
+                    progress = (double) doneTasks / projectTaskCount;
+                }
+                
+                for(Task task : tasks) {
+                    if (task.getStatus() == TaskStatus.DONE) {
+                        completedTasksCount++;
+                    } else {
+                        dueTasksCount++;
+                    }
+                }
+
+                loadProjectCard(project.getName(), "Project", leadName, progress == 1.0 ? "Done" : "In-Progress", progress);
+                loadTaskNotifyCard(project.getName(), String.valueOf(projectTaskCount));
+            }
+            
+            if(completedTask != null) completedTask.setText(String.valueOf(completedTasksCount));
+            if(dueTask != null) dueTask.setText(String.valueOf(dueTasksCount));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
     //NOTE: Project card
     void loadProjectCard(String projectName, String projectCategory, String leadName, String projectStatus, double projectProgress) throws IOException {
@@ -84,6 +115,6 @@ public class Overview_Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         removeScrollBar(this.scrollPane);
         removeScrollBar(this.scrollPaneP);
-        dummyData();
+        loadData();
     }
 }

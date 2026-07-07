@@ -123,7 +123,7 @@ public class TaskViewModel {
     public List<Task> getFilteredTasks() {
         return switch (activeFilter.get()) {
             case "MY" -> tasks.stream()
-                    .filter(t -> !t.isDraft() && currentUserId.equalsIgnoreCase(t.getAssigneeId()))
+                    .filter(t -> !t.isDraft() && com.example.flora.Core.Session.UserSession.getUser().getUsername().equalsIgnoreCase(t.getAssigneeId()))
                     .collect(Collectors.toList());
             case "COMPLETED" -> tasks.stream()
                     .filter(t -> !t.isDraft() && t.getStatus() == TaskStatus.DONE)

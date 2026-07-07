@@ -350,7 +350,7 @@ public class HomeUI_Controller implements Initializable {
 
     @FXML
     private void overviewPage() throws IOException {
-        loadPage(Path.OVERVIEW, e -> new Overview_Controller());
+        loadPage(Path.OVERVIEW, e -> new Overview_Controller(appContainer));
         toggle();
     }
 
